@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next mist" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="翻译,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="萝卜平" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="原文  Fragment Transactions 和 Activity 状态丢失自Android3.0后，以下报错信息在StackOverflow困扰众人许久了  java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState at android.support.v4.app.Fra">
+<meta name="keywords" content="翻译">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fragment Transactions &amp; Activity State Loss (译)">
+<meta property="og:url" content="http://wjploop.github.io/2021/03/05/Fragment-Transactions-Activity-State-Loss-译/index.html">
+<meta property="og:site_name" content="萝卜平">
+<meta property="og:description" content="原文  Fragment Transactions 和 Activity 状态丢失自Android3.0后，以下报错信息在StackOverflow困扰众人许久了  java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState at android.support.v4.app.Fra">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-06-16T18:30:47.210Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Fragment Transactions &amp; Activity State Loss (译)">
+<meta name="twitter:description" content="原文  Fragment Transactions 和 Activity 状态丢失自Android3.0后，以下报错信息在StackOverflow困扰众人许久了  java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState at android.support.v4.app.Fra">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://wjploop.github.io/2021/03/05/Fragment-Transactions-Activity-State-Loss-译/">
+
+
+
+
+
+  <title>Fragment Transactions & Activity State Loss (译) | 萝卜平</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?478e3d64eb01e301d525f47d26394d76";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">萝卜平</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">没想好的一个副标题</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://wjploop.github.io/2021/03/05/Fragment-Transactions-Activity-State-Loss-译/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="萝卜平">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="萝卜平">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Fragment Transactions & Activity State Loss (译)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-03-05T11:13:31+08:00">
+                2021-03-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/03/05/Fragment-Transactions-Activity-State-Loss-译/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2021/03/05/Fragment-Transactions-Activity-State-Loss-译/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  7
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p><a href="https://www.androiddesignpatterns.com/2013/08/fragment-transaction-commit-state-loss.html" target="_blank" rel="noopener">原文</a></p>
+</blockquote>
+<h1 id="Fragment-Transactions-和-Activity-状态丢失"><a href="#Fragment-Transactions-和-Activity-状态丢失" class="headerlink" title="Fragment Transactions 和 Activity 状态丢失"></a>Fragment Transactions 和 Activity 状态丢失</h1><p>自Android3.0后，以下报错信息在StackOverflow困扰众人许久了</p>
+<blockquote>
+<p>java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
+at android.support.v4.app.FragmentManagerImpl.checkStateLoss(FragmentManager.java:1341)
+at android.support.v4.app.FragmentManagerImpl.enqueueAction(FragmentManager.java:1352)
+at android.support.v4.app.BackStackRecord.commitInternal(BackStackRecord.java:595)
+at android.support.v4.app.BackStackRecord.commit(BackStackRecord.java:574)</p>
+</blockquote>
+<p>本文将要解释该异常为什么会出现，以及何时会出现，随便给出几个建议来处理该问题。</p>
+<h2 id="该异常为什么会发生？"><a href="#该异常为什么会发生？" class="headerlink" title="该异常为什么会发生？"></a>该异常为什么会发生？</h2><p>该异常抛出的原因是，在Activity状态已经保存后仍试图提交一个FragmentTransaction，其导致了一个现象被称之为状态丢失。在探究其中的
+各种细节之前，我们先来看看<code>onSaveInstanceState()</code>方法调用时发生了什么。正如在我的上一篇文章
+<a href="https://www.androiddesignpatterns.com/2013/08/binders-death-recipients.html" target="_blank" rel="noopener">Binders &amp; Death Recipients</a> 所说,
+在Android的运行环境中，App对自己的命运掌控甚少。Android系统在内存不足的情况下可以在杀死任意进程，导致后台Activity在未收到任何通知下
+被杀掉。为了避免用户察觉的到这种不稳定的问题（切换到后台的App，被杀或不被杀，当切回到前台时表现会不一样；不被杀，数据正常，被杀掉了，
+数据跟关闭前的不一样），在Activity可能被销毁的情况下，系统给给了它一个机会，能使用<code>onSaveInstanceState()</code>方法先来保存好当前的状态。
+当App由后台切换到前台时，恢复之前保存的状态，这样，无论App是否被杀与否，用户体验都是一样的。</p>
+<p>当系统回调<code>onSaveInstanceState()</code>方法时，它将一个<code>Bundle</code>对象传给Activity用于保存Dialog,Fragment,Views的状态，在该方法
+返回后，系统序列化该Bundle数据（通过parcel序列化）通过Binder传给系统服务进程（System Server process）,使其能安全保存着。之后
+当系统重建创建Activity时，又将该Bundle传回给应用使其恢复原来的状态。</p>
+<p>那为什么该异常会抛出呢？该问题源自于该Bundle数据代表Activity在调用<code>onSaveInstance()</code>这一时刻的快照，这意味着在
+<code>onSaveInstance()</code>之后调用<code>FragemntTransaction#commit()</code>，这个transaction将不会被保存。而从用户的角度上看，会导致UI的
+数据混乱。为了保证用户体验，Android只好抛异常来避免状态丢失了（默认数据正确性优先）。</p>
+<h2 id="何时该异常会抛出？"><a href="#何时该异常会抛出？" class="headerlink" title="何时该异常会抛出？"></a>何时该异常会抛出？</h2><p>假如你之前遇到该异常，你可能会注意到该异常抛出的时间点在不同Android版本上会有所不同。比如，你可能注意到在老设备上更容易抛出该异常，或是
+当使用支持库（android.support.Fragment）而非官方库(android.app.Fragment)时你的应用可能更容易崩溃。这些细小的不一致行为导致很多人认为支持库是存在bug而不能被信任，而这些观点，
+通常是错误的。</p>
+<p>这些不一致行为，原因是在在Android3.0之后，Activity的生命周期方法发生了一些重大改变。3.0之前，Activity是在paused之后就可以
+被系统认为是”可杀的”，意味着在<code>onPause()</code>方法之前会保证调用<code>onSaveInstance()</code>。而在3.0之后，Activity是要在<code>onStop()</code>后
+才会被认为是可杀的，也就是会在<code>stoped</code>之前保证保存状态。</p>
+<p>由于Activity生命周期的变化，支持库需要兼容不同的平台版本。比如，该异常会在<code>onSaveInstanceState()</code>方法后执行<code>commit()</code>便会
+抛出，以此提示开发者状态丢失了。而<code>onSaveInstanceState()</code>调用时机在3.0之前更早一些，也就导致低版本更容易状态丢失。为了能够在
+支持不同版本，Android团队做了妥协：允许在低版本上Android中，在<code>onPause()</code>和<code>onStop()</code>之间提交commit会导致异常。支持库在
+不同版本表现如下表格：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th align="center">3.0前</th>
+<th align="center">3.0后</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>在 onPause()前 commit()</td>
+<td align="center">OK</td>
+<td align="center">OK</td>
+</tr>
+<tr>
+<td>在 onPause() 和 onStop() 之间commit()</td>
+<td align="center">状态丢失</td>
+<td align="center">OK</td>
+</tr>
+<tr>
+<td>在 onStop() 之后commit()</td>
+<td align="center">Exception</td>
+<td align="center">Exception</td>
+</tr>
+</tbody></table>
+<h2 id="如何避免该异常"><a href="#如何避免该异常" class="headerlink" title="如何避免该异常"></a>如何避免该异常</h2><p>一旦理解状态丢失是如何发生之后，避免该异常就容易多了。若是你在阅读本文之前就理解了，也希望你可以通过本文知道支持库是如何工作的以及
+为什么App中避免状态丢失如此重要。若是你在搜索一个快速的解决方案而看到本文，这里有几个建议希望能够对你处理FragmentTransaction
+有帮助。</p>
+<h3 id="在Activity生命周期提交事务（commit-transaction）时需要谨慎"><a href="#在Activity生命周期提交事务（commit-transaction）时需要谨慎" class="headerlink" title="在Activity生命周期提交事务（commit transaction）时需要谨慎"></a>在Activity生命周期提交事务（commit transaction）时需要谨慎</h3><p>大部分应用只会在onCreate()方法中或是响应用户操作时才会提交事务，这不会出现什么问题。然而，在其它的生命周期方法中提交事务时，事情就会
+变得复杂了，比如<code>onActivityResult()</code>,<code>onStart()</code>,<code>onResume()</code>. 比如，你不应该在<code>onResume()</code>方法中提交事务，因为有可能
+此时Activity的状态没有恢复原来保存的状态（restored）,详见
+<a href="https://developer.android.com/reference/android/support/v4/app/FragmentActivity.html#onResume()" target="_blank" rel="noopener">文档</a>,</p>
+<blockquote>
+<p>文档内容（译者加）：</p>
+<ul>
+<li>Activity#onResume()<br>分发 onResume() 方法给Fragment。注意，为了更好的兼容低版本平台，该activity中attached Fragment并没有
+进入resumed。这意味着Activity原来保存的状态（若是以前保存有）没有恢复（原来的状态还是在bundle中，而非在当前state中），当前是不
+允许提交事务修改状态的，你应该在<code>onResumeFragments()</code>方法中提交事务修改。</li>
+</ul>
+</blockquote>
+<p>如果你需要在onCreate()之外的生命周期中提交事务，应该在<code>FragmentActivity#onResumeFragemnts()</code>或<code>Activity#onPostResume()</code>。
+这两个方法保证原来的状态已经正确的恢复，因此可以避免状态丢失的可能性。（若是想要在<code>Activity#onActivityResult()</code>方法中提交
+事务，可以参看我的StackOverFlow中的
+<a href="https://stackoverflow.com/questions/16265733/failure-delivering-result-onactivityforresult" target="_blank" rel="noopener">回答</a> ）</p>
+<h3 id="避免在异步的回调方法中提交事务"><a href="#避免在异步的回调方法中提交事务" class="headerlink" title="避免在异步的回调方法中提交事务"></a>避免在异步的回调方法中提交事务</h3><p>常见的异步回调方法，比如 <code>AsyncTask#onPoastExecute()</code>和<code>LoadManager.LoaderCallback#onLoadFinished()</code>，当在这些方法
+提交事务时，我们并不知道当前Activity所处的状态。如下展示异常出现的过程。</p>
+<ol>
+<li>Activity中开始执行一个<code>AsyncTask</code></li>
+<li>用户点击Home键，导致Activity的<code>onSaveStateInstance()</code>和<code>onStop()</code>执行</li>
+<li><code>AsyncTask</code>任务完成执行<code>onPostExecutes()</code>,并不意识到Activity已经 stopped</li>
+<li>在<code>onPostExecutes()</code>中提交事务，导致异常抛出</li>
+</ol>
+<p>通常来说，最好不在异步回调中提交事务。谷歌工程师认同这一原则，在Android开发团队的一篇
+<a href="https://groups.google.com/d/msg/android-developers/dXZZjhRjkMk/QybqCW5ukDwJ" target="_blank" rel="noopener">文章</a> 中，认为在异步回调中
+执行提交事务会使得界面突然切换，这会造成糟糕的用户体验。若是你的App一定要在异步回调中提交事务，并没有容易的方法来保证提交事务在
+保存状态前执行，你可能需要使用<code>commitAllowStateLoss()</code>，但这需要自己处理状态能会丢失的情况。(StackOverFlow有两篇帖子可以参考，
+<a href="https://stackoverflow.com/questions/8040280/how-to-handle-handler-messages-when-activity-fragment-is-paused" target="_blank" rel="noopener">帖子1</a>
+<a href="https://stackoverflow.com/questions/7992496/how-to-handle-asynctask-onpostexecute-when-paused-to-avoid-illegalstateexception" target="_blank" rel="noopener">帖子2</a>
+）</p>
+<h3 id="使用commitAllowStateLoss-应当作为最后选项"><a href="#使用commitAllowStateLoss-应当作为最后选项" class="headerlink" title="使用commitAllowStateLoss 应当作为最后选项"></a>使用commitAllowStateLoss 应当作为最后选项</h3><p><code>commit()</code>和<code>commitAllowStateLoss()</code>两者唯一区别在于后者在状态状态可能丢失时，不会抛异常。通常你也不该使用该方法，因为这
+意味这要承受状态丢失的可能。最好的解决方案当然是保证commit在保存状态前执行，这保证了良好的用户体验。除非状态丢失无法避免，否则
+<code>commitAllowStateLoss</code>不该使用。</p>
+<p>希望这些建议能够解决你遇到的问题。若是你仍遇到问题，在StackOverFlow提交问题并在下面评论区留下链接，我会帮忙看看滴。</p>
+<p>总之，感谢你的阅读。若是有问题欢迎评论，别忘了点赞分享~</p>
+<blockquote>
+<p>上次更新于2014-1-8<br>译者翻译于2021-3-5，哭了~，陈年好文啊</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/翻译/" rel="tag"># 翻译</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/03/05/朴素的思路-俄罗斯套娃/" rel="next" title="朴素的思路-俄罗斯套娃">
+                <i class="fa fa-chevron-left"></i> 朴素的思路-俄罗斯套娃
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/03/31/刷题中对一些算法思想的理解/" rel="prev" title="刷题中对一些算法思想的理解">
+                刷题中对一些算法思想的理解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpeg" alt="萝卜平">
+            
+              <p class="site-author-name" itemprop="name">萝卜平</p>
+              <p class="site-description motion-element" itemprop="description">Android, Java</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/wjploop" target="_blank" title="GitHub">
+                      GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:wjploop@gmail.com" target="_blank" title="E-Mail">
+                      E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/wjploop" target="_blank" title="Google">
+                      Google</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Fragment-Transactions-和-Activity-状态丢失"><span class="nav-number">1.</span> <span class="nav-text">Fragment Transactions 和 Activity 状态丢失</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#该异常为什么会发生？"><span class="nav-number">1.1.</span> <span class="nav-text">该异常为什么会发生？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#何时该异常会抛出？"><span class="nav-number">1.2.</span> <span class="nav-text">何时该异常会抛出？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何避免该异常"><span class="nav-number">1.3.</span> <span class="nav-text">如何避免该异常</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#在Activity生命周期提交事务（commit-transaction）时需要谨慎"><span class="nav-number">1.3.1.</span> <span class="nav-text">在Activity生命周期提交事务（commit transaction）时需要谨慎</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#避免在异步的回调方法中提交事务"><span class="nav-number">1.3.2.</span> <span class="nav-text">避免在异步的回调方法中提交事务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用commitAllowStateLoss-应当作为最后选项"><span class="nav-number">1.3.3.</span> <span class="nav-text">使用commitAllowStateLoss 应当作为最后选项</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">萝卜平</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">44.6k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'VipNTLR7JbL6sNRHDHVjzSIo-gzGzoHsz',
+        appKey: 'cIR7F3k3JyRsMwF8Lto5UtT7',
+        placeholder: '说点什么？',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+    
+  </script>
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next mist" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="萝卜平" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="##碎碎念 介绍Glide的文章看了挺多，偶尔也会点击查看部分的Glide的源码，可感觉对Glide的还是不太懂。个人觉得，每个人 的水平不同，对知识点的掌握的面不同，可能他人的已掌握的知识点于自己而言是盲点，，写源码分析的人一般将自己 觉得值得写的东西记录下来，故通过看他人的二手资料来了解一个库，可能会出现这么个情况，感觉自己自己看懂了， 但却没有学到什么东西。看文章时是假设他人掌握的知识来得出">
+<meta name="keywords" content="滴滴哒哒">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Glide源码略看">
+<meta property="og:url" content="http://wjploop.github.io/2020/06/29/Glide源码略看/index.html">
+<meta property="og:site_name" content="萝卜平">
+<meta property="og:description" content="##碎碎念 介绍Glide的文章看了挺多，偶尔也会点击查看部分的Glide的源码，可感觉对Glide的还是不太懂。个人觉得，每个人 的水平不同，对知识点的掌握的面不同，可能他人的已掌握的知识点于自己而言是盲点，，写源码分析的人一般将自己 觉得值得写的东西记录下来，故通过看他人的二手资料来了解一个库，可能会出现这么个情况，感觉自己自己看懂了， 但却没有学到什么东西。看文章时是假设他人掌握的知识来得出">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-06-30T07:10:47.446Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Glide源码略看">
+<meta name="twitter:description" content="##碎碎念 介绍Glide的文章看了挺多，偶尔也会点击查看部分的Glide的源码，可感觉对Glide的还是不太懂。个人觉得，每个人 的水平不同，对知识点的掌握的面不同，可能他人的已掌握的知识点于自己而言是盲点，，写源码分析的人一般将自己 觉得值得写的东西记录下来，故通过看他人的二手资料来了解一个库，可能会出现这么个情况，感觉自己自己看懂了， 但却没有学到什么东西。看文章时是假设他人掌握的知识来得出">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://wjploop.github.io/2020/06/29/Glide源码略看/">
+
+
+
+
+
+  <title>Glide源码略看 | 萝卜平</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?478e3d64eb01e301d525f47d26394d76";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">萝卜平</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">没想好的一个副标题</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://wjploop.github.io/2020/06/29/Glide源码略看/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="萝卜平">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="萝卜平">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Glide源码略看</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-29T18:55:50+08:00">
+                2020-06-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/06/29/Glide源码略看/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/06/29/Glide源码略看/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  4.5k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  20
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>##碎碎念</p>
+<p>介绍Glide的文章看了挺多，偶尔也会点击查看部分的Glide的源码，可感觉对Glide的还是不太懂。个人觉得，每个人
+的水平不同，对知识点的掌握的面不同，可能他人的已掌握的知识点于自己而言是盲点，，写源码分析的人一般将自己
+觉得值得写的东西记录下来，故通过看他人的二手资料来了解一个库，可能会出现这么个情况，感觉自己自己看懂了，
+但却没有学到什么东西。看文章时是假设他人掌握的知识来得出结论的，可自己实际上没有学到那些前置知识。故，我
+还是想尝试自己看看。</p>
+<p>##开始</p>
+<p>看不懂现在的库，切换早些年的版本，比较容易查看整体轮廓。</p>
+<h2 id="版本时间2012-12-21"><a href="#版本时间2012-12-21" class="headerlink" title="版本时间2012/12/21"></a>版本时间2012/12/21</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PhotoManager</span> </span>&#123;</span><br><span class="line">    <span class="comment">//1.两个缓存</span></span><br><span class="line">    <span class="comment">//加载图片，二级缓存，优先从内存获取，其次从磁盘，最后才会请求网络。</span></span><br><span class="line">    <span class="keyword">private</span> PhotoDiskCache diskCache;</span><br><span class="line">    <span class="keyword">private</span> LruPhotoCache memoryCache;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//2.图片大小转换器</span></span><br><span class="line">    <span class="comment">//解决源图片，与我们显示的图片大小不一致的问题</span></span><br><span class="line">    <span class="keyword">private</span> PhotoStreamResizer resizer;</span><br><span class="line">    <span class="comment">//3.任务调度</span></span><br><span class="line">    <span class="keyword">private</span> Map&lt;Object, Future&gt; taskManager = <span class="keyword">new</span> HashMap&lt;Object, Future&gt;();</span><br><span class="line">    <span class="keyword">private</span> Handler backgroundHandler;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="二个缓存"><a href="#二个缓存" class="headerlink" title="二个缓存"></a>二个缓存</h3><p>加载图片的流程，感觉是最常问也最重要的知识点了。加载图片，存在二个缓存，内存缓存和磁盘缓存，空间换时间的
+经典例子了。其中，缓存的实现使用是LRU算法，内部实现可以使用<code>LinkedHashMap</code>，只要将构造方法中
+<code>accessOrder</code>设为true既可。</p>
+<h3 id="图片大小转换器"><a href="#图片大小转换器" class="headerlink" title="图片大小转换器"></a>图片大小转换器</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">// 有图片地址，有想要图片的大小，故我们需要将原图缩放成指定的大小</span></span><br><span class="line">    <span class="comment">// 转换时耗时的，故这里使用Future来</span></span><br><span class="line">    <span class="comment">// Future个人理解就是可以获得返回结果的线程</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Future&lt;Bitmap&gt; <span class="title">loadApproximate</span><span class="params">(<span class="keyword">final</span> String path, <span class="keyword">final</span> <span class="keyword">int</span> width, <span class="keyword">final</span> <span class="keyword">int</span> height, ResizeCallback callback)</span></span>&#123;</span><br><span class="line">        Callable&lt;Bitmap&gt; task = <span class="keyword">new</span> Callable&lt;Bitmap&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> Bitmap <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> Utils.streamIn(path, width, height);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">return</span> startTask(task, callback);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>###关于线程切换，这里使用了<code>Handler</code>的例子。<br>比如我们执行转换图片的任务，需要到子线程处理，转换完成后，需要将结果给UI线程来处理接口。<br>如何将一部分实现交给调用者，这里使用了<code>Callback</code>。如下：  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">StreamResizeFuture</span> <span class="keyword">extends</span> <span class="title">FutureTask</span>&lt;<span class="title">Bitmap</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">// 处理的结果结果需要交给UI线程处理，故需要主线程的handler</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Handler mainHandler;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ResizeCallback callback;</span><br><span class="line">    <span class="keyword">private</span> Bitmap result;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">done</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.done();</span><br><span class="line">        <span class="keyword">if</span> (!isCancelled())&#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                result = get();</span><br><span class="line">                <span class="comment">// 将部分逻辑在UI线程执行</span></span><br><span class="line">                mainHandler.post(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                        callback.onResizeComplete(result);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (<span class="keyword">final</span> Exception e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">                mainHandler.post(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                        callback.onResizeFailed(e);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="图片大小转换的具体实现"><a href="#图片大小转换的具体实现" class="headerlink" title="图片大小转换的具体实现"></a>图片大小转换的具体实现</h3><p>感觉缩放图片的大小具体实现挺有意思（见识短，大惊小怪）   </p>
+<p>将变换的逻辑在矩阵上操作，比如放大，设置轴点，再将该变换应用于图片流上，最后便得到我们想要的图片。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Future&lt;Bitmap&gt; <span class="title">resizeCenterCrop</span><span class="params">(<span class="keyword">final</span> String path, <span class="keyword">final</span> <span class="keyword">int</span> width, <span class="keyword">final</span> <span class="keyword">int</span> height, ResizeCallback callback)</span></span>&#123;</span><br><span class="line">    Callable&lt;Bitmap&gt; task = <span class="keyword">new</span> Callable&lt;Bitmap&gt;()&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Bitmap <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">            Bitmap result = <span class="keyword">null</span>, streamed = <span class="keyword">null</span>;</span><br><span class="line">            <span class="comment">// 获取到图片流，</span></span><br><span class="line">            streamed = Utils.streamIn(path, width, height);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (streamed.getWidth() == width &amp;&amp; streamed.getHeight() == height) &#123;</span><br><span class="line">                <span class="keyword">return</span> streamed;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//from ImageView/Bitmap.createScaledBitmap</span></span><br><span class="line">            <span class="comment">//https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/core/java/android/widget/ImageView.java</span></span><br><span class="line">            <span class="comment">//https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/graphics/java/android/graphics/Bitmap.java</span></span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">float</span> scale;</span><br><span class="line">            <span class="keyword">float</span> dx = <span class="number">0</span>, dy = <span class="number">0</span>;</span><br><span class="line">            <span class="comment">// 创建矩阵，将图片流画在矩阵中</span></span><br><span class="line">            Matrix m = <span class="keyword">new</span> Matrix();</span><br><span class="line">            <span class="keyword">if</span> (streamed.getWidth() * height &gt; width * streamed.getHeight()) &#123;</span><br><span class="line">                scale = (<span class="keyword">float</span>) height / (<span class="keyword">float</span>) streamed.getHeight();</span><br><span class="line">                dx = (width - streamed.getWidth() * scale) * <span class="number">0.5f</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                scale = (<span class="keyword">float</span>) width / (<span class="keyword">float</span>) streamed.getWidth();</span><br><span class="line">                dy = (height - streamed.getHeight() * scale) * <span class="number">0.5f</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            m.setScale(scale, scale);</span><br><span class="line">            m.postTranslate((<span class="keyword">int</span>) dx + <span class="number">0.5f</span>, (<span class="keyword">int</span>) dy + <span class="number">0.5f</span>);</span><br><span class="line">            Bitmap bitmap = Bitmap.createBitmap(width, height, streamed.getConfig());</span><br><span class="line">            Canvas canvas = <span class="keyword">new</span> Canvas(bitmap);</span><br><span class="line">            Paint paint = <span class="keyword">new</span> Paint();</span><br><span class="line">            <span class="comment">//only if scaling up</span></span><br><span class="line">            paint.setFilterBitmap(<span class="keyword">false</span>);</span><br><span class="line">            paint.setAntiAlias(<span class="keyword">true</span>);</span><br><span class="line">            canvas.drawBitmap(streamed, m, paint);</span><br><span class="line">            result = bitmap;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">return</span> startTask(task, callback);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="似乎是一个常见的面试问题的源头"><a href="#似乎是一个常见的面试问题的源头" class="headerlink" title="似乎是一个常见的面试问题的源头"></a>似乎是一个常见的面试问题的源头</h3><p>如何加载一个很大的图片？假设一张原图片像素有10000<em>10000,而我们只需要10</em>10的像素的图片，那么我们不该
+将整个图片读取下来再缩放成我们想要的大小，而且假设有一个巨大大图片，读取整个图片内存直接爆了。我们是能
+否将部分图片读取显示呢？</p>
+<p>大佬也遇到了这个问题，也给(google)出了答案。<br>其中，思路是这样的，</p>
+<ol>
+<li>读取图片文件前半部分的字节（16字节足以），获取到该图片的信息，如图片大小</li>
+<li>根据原图大小和想要的大小，算出采样的比例，再次读取是传入采样比例,这样子，读取的图片就只有目标图片
+所占的内存。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//from http://stackoverflow.com/questions/7051025/how-do-i-scale-a-streaming-bitmap-in-place-without-reading-the-whole-image-first</span></span><br><span class="line"><span class="comment">//streams in to near, but not exactly at the desired width and height.</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Bitmap <span class="title">streamIn</span><span class="params">(String path, <span class="keyword">int</span> width, <span class="keyword">int</span> height)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    Bitmap result = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// 创建一个Opitions来记录图片大小</span></span><br><span class="line">        <span class="keyword">final</span> BitmapFactory.Options decodeBitmapOptions = <span class="keyword">new</span> BitmapFactory.Options();</span><br><span class="line">        <span class="comment">// For further memory savings, you may want to consider using this option</span></span><br><span class="line">        InputStream first = <span class="keyword">new</span> BufferedInputStream(<span class="keyword">new</span> FileInputStream(path), <span class="number">16384</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//find the dimensions of the actual image</span></span><br><span class="line">        <span class="comment">//获取到原图的实际大小</span></span><br><span class="line">        <span class="keyword">final</span> BitmapFactory.Options decodeBoundsOptions = <span class="keyword">new</span> BitmapFactory.Options();</span><br><span class="line">        <span class="comment">// 如其所说，仅解码该图片大小</span></span><br><span class="line">        decodeBoundsOptions.inJustDecodeBounds = <span class="keyword">true</span>;</span><br><span class="line">        BitmapFactory.decodeStream(first, <span class="keyword">null</span>, decodeBoundsOptions); <span class="comment">//doesn't load, just sets the decodeBounds</span></span><br><span class="line">        first.close();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> originalWidth = decodeBoundsOptions.outWidth;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> originalHeight = decodeBoundsOptions.outHeight;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// inSampleSize prefers multiples of 2, but we prefer to prioritize memory savings</span></span><br><span class="line">        <span class="keyword">int</span> sampleSize = Math.min(originalHeight / height, originalWidth / width);</span><br><span class="line">        InputStream second = <span class="keyword">new</span> BufferedInputStream(<span class="keyword">new</span> FileInputStream(path), <span class="number">16384</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//算出采样比例，并传入作为参数传入下一次解码方法中</span></span><br><span class="line">        decodeBitmapOptions.inSampleSize = sampleSize;</span><br><span class="line">        <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt; <span class="number">11</span>) &#123;</span><br><span class="line">            decodeBitmapOptions.inMutable = <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        Log.d(<span class="string">"PSR: Loading image with sample size: "</span> + sampleSize);</span><br><span class="line">        result = BitmapFactory.decodeStream(second, <span class="keyword">null</span>, decodeBitmapOptions);</span><br><span class="line">        <span class="keyword">if</span>(orientation != <span class="number">0</span>) &#123;</span><br><span class="line">            result = Photo.rotateImage(result, orientation);</span><br><span class="line">        &#125;</span><br><span class="line">        second.close();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">        Log.d(<span class="string">"PSR: error decoding image: "</span> + e);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (OutOfMemoryError e)&#123;</span><br><span class="line">        Log.d(<span class="string">"PSR: not enough memory to resize image at "</span> + path);</span><br><span class="line">        Log.d(e.toString());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>要明白以上问题的答案，感觉应该查看这个文件。暂且了解以下两个属性吧</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BitmapFactory</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Options</span> </span>&#123;</span><br><span class="line">                <span class="comment">// 解码器仅查询原图大小，而不会分配内存来保存这些图片的像素</span></span><br><span class="line">                <span class="comment">/**</span></span><br><span class="line"><span class="comment">                 * If set to true, the decoder will return null (no bitmap), but</span></span><br><span class="line"><span class="comment">                 * the &lt;code&gt;out...&lt;/code&gt; fields will still be set, allowing the caller to</span></span><br><span class="line"><span class="comment">                 * query the bitmap without having to allocate the memory for its pixels.</span></span><br><span class="line"><span class="comment">                 */</span></span><br><span class="line">                <span class="keyword">public</span> <span class="keyword">boolean</span> inJustDecodeBounds;</span><br><span class="line">       </span><br><span class="line">                <span class="comment">// 采样图片的比例，比如传入4，加载图片有16M, 则加载的图片大小只有1M</span></span><br><span class="line">                <span class="comment">/**</span></span><br><span class="line"><span class="comment">                 * If set to a value &gt; 1, requests the decoder to subsample the original</span></span><br><span class="line"><span class="comment">                 * image, returning a smaller image to save memory. The sample size is</span></span><br><span class="line"><span class="comment">                 * the number of pixels in either dimension that correspond to a single</span></span><br><span class="line"><span class="comment">                 * pixel in the decoded bitmap. For example, inSampleSize == 4 returns</span></span><br><span class="line"><span class="comment">                 * an image that is 1/4 the width/height of the original, and 1/16 the</span></span><br><span class="line"><span class="comment">                 * number of pixels. Any value &lt;= 1 is treated the same as 1. Note: the</span></span><br><span class="line"><span class="comment">                 * decoder uses a final value based on powers of 2, any other value will</span></span><br><span class="line"><span class="comment">                 * be rounded down to the nearest power of 2.</span></span><br><span class="line"><span class="comment">                 */</span></span><br><span class="line">                <span class="keyword">public</span> <span class="keyword">int</span> inSampleSize;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>关于图片的处理，有挺多盲区的。平常对图片精细的操作很少，诸如上述问题，日常开发App也很少遇到，
+但是其原理确实应当了解。</p>
+<h2 id="一些零碎的版本追踪"><a href="#一些零碎的版本追踪" class="headerlink" title="一些零碎的版本追踪"></a>一些零碎的版本追踪</h2><p>看到作者作者一步步添加了好多小东西，</p>
+<p>添加Presenter来将Bitmap放置到ImageView</p>
+<p>ImageLoader可以从加载Path和Assets资源文件，抽象成公共的接口</p>
+<p>加载图片的key，缓存使用到，key的生成从加载的大小，加入显示类型，比如center_crop,fit_center</p>
+<p>使用Weak reference避免内存泄漏</p>
+<h2 id="引入android项目后的第一个版本-2013-1-10"><a href="#引入android项目后的第一个版本-2013-1-10" class="headerlink" title="引入android项目后的第一个版本 2013-1-10"></a>引入android项目后的第一个版本 2013-1-10</h2><p>项目使用Flickr网站的图片作为Demo   </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Activity中的一个ListView中的Adapter实现</span></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> View <span class="title">getView</span><span class="params">(<span class="keyword">int</span> position, View view, ViewGroup container)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">final</span> ImagePresenter&lt;Photo&gt; presenter;</span><br><span class="line">            <span class="keyword">if</span> (view == <span class="keyword">null</span>) &#123;</span><br><span class="line">                Log.d(<span class="string">"MyActivity: inflate"</span>);</span><br><span class="line">                ImageView imageView = (ImageView) inflater.inflate(R.layout.photo_grid_square, container, <span class="keyword">false</span>);</span><br><span class="line">                <span class="keyword">final</span> Animation fadeIn = AnimationUtils.loadAnimation(MyActivity.<span class="keyword">this</span>, R.anim.fade_in);</span><br><span class="line">                <span class="comment">// Presenter作为连接ImageView和ImageLoader的桥梁</span></span><br><span class="line">                <span class="comment">// 传入泛型参数包含图片源的基本信息，可以是图片的URL地址或是磁盘地址,这里的Photo包含有了</span></span><br><span class="line">                presenter = <span class="keyword">new</span> ImagePresenter.Builder&lt;Photo&gt;()</span><br><span class="line">                        .setImageView(imageView)</span><br><span class="line">                         <span class="comment">//这里传入一个缓存地址，会优先从磁盘获取的</span></span><br><span class="line">                        .setPathLoader(<span class="keyword">new</span> FlickPathLoader(flickerApi, cacheDir))</span><br><span class="line">                        <span class="comment">// 设置我们的加载ImageLoader哈</span></span><br><span class="line">                        .setImageLoader(<span class="keyword">new</span> CenterCrop&lt;Photo&gt;(imageManager))</span><br><span class="line">                        <span class="comment">// 获取到图片加载到ImageView</span></span><br><span class="line">                        .setImageSetCallback(<span class="keyword">new</span> ImageSetCallback() &#123;</span><br><span class="line">                            <span class="meta">@Override</span></span><br><span class="line">                            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onImageSet</span><span class="params">(ImageView view, <span class="keyword">boolean</span> fromCache)</span> </span>&#123;</span><br><span class="line">                                view.clearAnimation();</span><br><span class="line">                                <span class="keyword">if</span> (!fromCache)</span><br><span class="line">                                    view.startAnimation(fadeIn);</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;)</span><br><span class="line">                        .build();</span><br><span class="line">                imageView.setTag(presenter);</span><br><span class="line">                view = imageView;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                presenter = (ImagePresenter&lt;Photo&gt;) view.getTag();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            presenter.setModel(photos.get(position));</span><br><span class="line">            <span class="keyword">return</span> view;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="看看如何优先从磁盘加载的呢"><a href="#看看如何优先从磁盘加载的呢" class="headerlink" title="看看如何优先从磁盘加载的呢"></a>看看如何优先从磁盘加载的呢</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">downloadPhoto</span><span class="params">(Photo photo, File cacheDir, <span class="keyword">final</span> PhotoCallback cb)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//根据photo的信息和缓存地址，定位到对应的文件是否存在哈</span></span><br><span class="line">    File out = <span class="keyword">new</span> File(cacheDir.getPath() + File.separator + photo.id + photo.secret);</span><br><span class="line">    <span class="keyword">if</span> (out.exists()) &#123;</span><br><span class="line">        cb.onDownloadComplete(out.getPath());</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        Log.d(<span class="string">"API: missing photo, downloading"</span>);</span><br><span class="line">        <span class="comment">// 开始从网络获取了</span></span><br><span class="line">        downloader.download(getPhotoUrl(photo), out, <span class="keyword">new</span> Downloader.DiskCallback() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDownloadReady</span><span class="params">(String path)</span> </span>&#123;</span><br><span class="line">                cb.onDownloadComplete(path);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>之后，我们在看看Downloader是如何加载网络的资源，即download方法,我们找到了Downloader</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Downloader</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 下载器作为单例存在，</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Downloader DOWNLOADER;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Handler mainHandler;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ExecutorService executor;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//其中维护了一个固定6个线程池</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="title">Downloader</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        HandlerThread workerThread = <span class="keyword">new</span> HandlerThread(<span class="string">"downloader_thread"</span>);</span><br><span class="line">        workerThread.start();</span><br><span class="line">        executor = Executors.newFixedThreadPool(<span class="number">6</span>);</span><br><span class="line">        mainHandler = <span class="keyword">new</span> Handler();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//下载方法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">download</span><span class="params">(String url, File out, DiskCallback cb)</span> </span>&#123;</span><br><span class="line">        post(<span class="keyword">new</span> DiskDownloadWorker(url, out, cb));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//将任务放入线程池中启动</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">post</span><span class="params">(Runnable runnable)</span> </span>&#123;</span><br><span class="line">        executor.execute(runnable);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//这个下载任务如何执行的呢</span></span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">DiskDownloadWorker</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            Log.d(<span class="string">"Downloader: run"</span>);</span><br><span class="line">            HttpURLConnection urlConnection = <span class="keyword">null</span>;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="comment">//朴素的URLConnection打开流</span></span><br><span class="line">                <span class="keyword">final</span> URL targetUrl = <span class="keyword">new</span> URL(url);</span><br><span class="line">                urlConnection = (HttpURLConnection) targetUrl.openConnection();</span><br><span class="line">                InputStream in = <span class="keyword">new</span> BufferedInputStream(urlConnection.getInputStream());</span><br><span class="line">                OutputStream out = <span class="keyword">new</span> FileOutputStream(output);</span><br><span class="line">                <span class="comment">//将输入流写入文件</span></span><br><span class="line">                writeToOutput(in, out);</span><br><span class="line">                out.close();</span><br><span class="line">                in.close();</span><br><span class="line">                <span class="comment">//这里，使用mainHandler来切换当前线程到UI线程中执行</span></span><br><span class="line">                mainHandler.post(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                        cb.onDownloadReady(output.getPath());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (urlConnection != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    urlConnection.disconnect();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">writeToOutput</span><span class="params">(InputStream in, OutputStream out)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">            <span class="keyword">byte</span>[] buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">            <span class="keyword">int</span> bytesRead;</span><br><span class="line">            <span class="keyword">while</span> (((bytesRead = in.read(buffer)) != -<span class="number">1</span>)) &#123;</span><br><span class="line">                out.write(buffer, <span class="number">0</span>, bytesRead);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Downloader实现了如何从一个URL转变成一个文件，其中，<br>本身作为单例存在，因为我们对于不同的下载，我们是可以复用同一个线程池的。<br>而使用线程池应付多个图片的请求。<br>另外使用了handler在下载完成后切换到UI线程中执行会回调，回调就是执行展示的操作  </p>
+<p>回到Activiy，我们不能忘了我们的主角<code>ImageLoader</code>啊</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//在onCreate方法中创建ImageLoader</span></span><br><span class="line">ImageManager.Options options = <span class="keyword">new</span> ImageManager.Options();</span><br><span class="line">    options.maxMemorySize = <span class="number">2</span> * <span class="number">1024</span> * <span class="number">1024</span>;</span><br><span class="line">    options.maxPerSize = <span class="number">40</span>;</span><br><span class="line">    imageManager = <span class="keyword">new</span> ImageManager(<span class="keyword">this</span>, options);</span><br><span class="line"></span><br><span class="line"><span class="comment">//并且监听了Activity的生命周期方法</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onResume</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onResume();</span><br><span class="line">    imageManager.resume();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onPause</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onPause();</span><br><span class="line">    imageManager.pause();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中ImageLoader主要逻辑在第一版本已经说得差不多了，代码逻辑与最差版本相差不是很大。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Handler mainHandler;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> LruPhotoCache memoryCache;    <span class="comment">// 内存最近使用</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> ImageResizer resizer;     <span class="comment">//图片大小转换</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Executor executor;        <span class="comment">//线程池调度</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;Integer, Integer&gt; bitmapReferenceCounter = <span class="keyword">new</span> HashMap&lt;Integer, Integer&gt;();</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> SizedBitmapCache bitmapCache;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> PhotoDiskCache diskCache;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">boolean</span> isBitmapRecyclingEnabled;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Glide名字出生了-2013-7-17"><a href="#Glide名字出生了-2013-7-17" class="headerlink" title="Glide名字出生了 2013-7-17"></a>Glide名字出生了 2013-7-17</h2><p>伴随着项目包名换成<code>glide</code>，不久之后，引入了Glide这个类，普通用户只需要懂得这个类就ok了，想了解原理的人
+也可以从这个类开始探索~     
+看看作者的介绍吧</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Static helper methods/classes to present a simple unified interface for using glide. Allows 90%</span></span><br><span class="line"><span class="comment"> * of the functionality of the library. The trade off is some extra unused object allocation, and a few unavailable</span></span><br><span class="line"><span class="comment"> * methods. For many users this should be enough to make effective use of the library. For others it can serve as a</span></span><br><span class="line"><span class="comment"> * starting point and example. This class is not thread safe.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Glide</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 直接给创建一个单例</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Glide GLIDE = <span class="keyword">new</span> Glide();</span><br><span class="line">    <span class="comment">//定义了两个model，可以加载成图片流的源，File or URL</span></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Map&lt;Class, ModelStreamLoader&gt; classToModelStream = <span class="keyword">new</span> HashMap&lt;Class, ModelStreamLoader&gt;() &#123;&#123;</span><br><span class="line">            put(File.class, <span class="keyword">new</span> FileStreamLoader());</span><br><span class="line">            put(URL.class, <span class="keyword">new</span> UrlStreamLoader());</span><br><span class="line">        &#125;&#125;;</span><br><span class="line">    <span class="comment">//之前的大名隐匿于此了</span></span><br><span class="line">    <span class="keyword">private</span> ImageManager imageManager;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Manages building, tagging, retrieving and/or replacing an ImagePresenter for the given ImageView and model</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> &lt;T&gt; The type of model that will be loaded into the view</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="comment">//如何将图片源，加载到的目标ImageView的统一</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Request</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">final</span> T model;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">final</span> ImageView imageView;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">final</span> Context context;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> ImagePresenter&lt;T&gt; presenter;</span><br><span class="line">        <span class="keyword">private</span> ImagePresenter.Builder&lt;T&gt; builder;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Request</span><span class="params">(T model, ImageView imageView)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.model = model;</span><br><span class="line">            <span class="keyword">this</span>.imageView = imageView;</span><br><span class="line">            <span class="keyword">this</span>.context = imageView.getContext();</span><br><span class="line"></span><br><span class="line">            presenter = (ImagePresenter&lt;T&gt;) imageView.getTag(R.id.image_presenter_id);</span><br><span class="line">            builder = <span class="keyword">new</span> ImagePresenter.Builder&lt;T&gt;()</span><br><span class="line">                    .setImageView(imageView)</span><br><span class="line">                    .setImageLoader(<span class="keyword">new</span> Approximate(getImageManager()));</span><br><span class="line"></span><br><span class="line">            ModelStreamLoader&lt;T&gt; loader = classToModelStream.get(model.getClass());</span><br><span class="line">            <span class="keyword">if</span> (loader != <span class="keyword">null</span>) &#123;</span><br><span class="line">                builder.setModelStreamLoader(loader);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>期间作者改了好多次类名哦，并加了很多注释<br>对于线程安全方面，一些关键方法加了syschronized关键字，或是改用了concurrent包中的集合<br>在加载图片的公开方法上，出现了大致的轮廓，如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Glide.load(current)</span><br><span class="line">                    .into(viewHolder.imageView)</span><br><span class="line">                    .with(<span class="keyword">new</span> DirectFlickrStreamLoader(api))</span><br><span class="line">                    .centerCrop()</span><br><span class="line">                    .animate(R.anim.fade_in)</span><br><span class="line">                    .begin();</span><br></pre></td></tr></table></figure>
+
+<p>使用Vollery in UrlLoader<br>添加一些测试
+为了方便，图片源添加一个<code>StringLoader</code>，其内部是转换成UrlLoader</p>
+<p>对于UrlLoader，因为最终都是要打开流的，故存在了StreamLoader接口<br>其功能就是打开流，并定义了Callback,用于打开成功或失败的处理</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">StreamLoader</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">StreamReadyCallback</span> </span>&#123;</span><br><span class="line">           </span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onStreamReady</span><span class="params">(InputStream is)</span></span>;</span><br><span class="line">    </span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onException</span><span class="params">(Exception e)</span></span>;</span><br><span class="line">    </span><br><span class="line">        &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">loadStream</span><span class="params">(StreamReadyCallback cb)</span></span>;</span><br><span class="line">   </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">cancel</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line">```  </span><br><span class="line">那么图片流的来源可分为两类，本地的和远程的  </span><br><span class="line">本地的指Android定义流，如Assert读取的文件，提供的协议头 content：file:</span><br><span class="line">远程的包括http和https</span><br><span class="line"></span><br><span class="line">## 允许加载任意的Transformation和加载image通任意的目标</span><br><span class="line"></span><br><span class="line">这个两个功能确实为该框架添加了很多色彩啊  </span><br><span class="line"></span><br><span class="line">设置转场动画，比如加载图片时，需要设置fadeIn加载的动画，看起来确实很舒服,以及暴露了可以加载自定义动画</span><br><span class="line"></span><br><span class="line">新添加了`Target`的概念，这个概念我第一次遇到确实蒙的</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Target是定义了可以防止图片的目标，需要处理</span><br><span class="line"></span><br><span class="line">    <span class="comment">//图片准备好了时该怎么展示啊</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onImageReady</span><span class="params">(Bitmap bitmap)</span></span>;</span><br><span class="line">    <span class="comment">//占位图片啊，要注意这里的占位图是包括加载前和加载失败的，在不同状态时，Glide会设置不同的图片</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPlaceholder</span><span class="params">(Drawable placeholder)</span></span>;</span><br><span class="line">    <span class="comment">//获取到该目标能显示多大的图片，如ImageView的wrap_content时，是需要异步的等待结果的</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getSize</span><span class="params">(SizeReadyCallback cb)</span></span>;</span><br><span class="line">    <span class="comment">//可选性的提供转场动画</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startAnimation</span><span class="params">(Animation animation)</span></span>;</span><br><span class="line">    <span class="comment">//获取和设置Presenter</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setImagePresenter</span><span class="params">(ImagePresenter imagePresenter)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ImagePresenter <span class="title">getImagePresenter</span><span class="params">()</span></span>;</span><br><span class="line">    </span><br><span class="line">总的看，就是一个能放置图片的玩意，应该具备有什么能力(方法)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">看完这个`Target`，再看`Presenter`吧</span><br><span class="line"></span><br><span class="line">Presenter跟Android中的MVP中P概念是一致的，   </span><br><span class="line">持有View，负责捉取图片，和加载正确大的图片，即使View回收时</span><br><span class="line">类型参数中的T就是Model，定义了图片的来源，这里看看设置Model的方法</span><br><span class="line">```java</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Sets a model to load an image from. Each subsequent call will override all previous calls and will prevent any</span></span><br><span class="line"><span class="comment">     * bitmaps that are loaded from previous calls from being displayed even if the load completes successfully. Any</span></span><br><span class="line"><span class="comment">     * image being displayed at the time of this call will be replaced either by the placeholder or by the new image</span></span><br><span class="line"><span class="comment">     * if the load completes synchronously (ie it was in an in memory cache)</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * &lt;p&gt;</span></span><br><span class="line"><span class="comment">     *     Note - A load will not begin before the ImagePresenter has determined the width and height of the wrapped</span></span><br><span class="line"><span class="comment">     * view, which can't happen until that view has been made visible and undergone layout out for the first time. Until</span></span><br><span class="line"><span class="comment">     * then the current load is stored. Subsequent calls will replace the stored load</span></span><br><span class="line"><span class="comment">     * &lt;/p&gt;</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> model The model containing the information required to load a path and/or bitmap</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setModel</span><span class="params">(<span class="keyword">final</span> T model)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (model == <span class="keyword">null</span>) &#123;</span><br><span class="line">            clear();</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!model.equals(currentModel)) &#123;</span><br><span class="line">            loadedFromCache = <span class="keyword">true</span>;</span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">int</span> loadCount = ++currentCount;</span><br><span class="line">            currentModel = model;</span><br><span class="line">            isImageSet = <span class="keyword">false</span>;</span><br><span class="line">            <span class="comment">//需要target定好自己的大小后，才会真正加载图片</span></span><br><span class="line">            target.getSize(<span class="keyword">new</span> Target.SizeReadyCallback() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onSizeReady</span><span class="params">(<span class="keyword">int</span> width, <span class="keyword">int</span> height)</span> </span>&#123;</span><br><span class="line">                    </span><br><span class="line">                    fetchImage(model, width, height, loadCount);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line"></span><br><span class="line">            loadedFromCache = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (!isImageSet) &#123;</span><br><span class="line">                resetPlaceHolder();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">fetchImage</span><span class="params">(<span class="keyword">final</span> T model, <span class="keyword">int</span> width, <span class="keyword">int</span> height, <span class="keyword">final</span> <span class="keyword">int</span> loadCount)</span> </span>&#123;</span><br><span class="line">        imageLoader.clear();</span><br><span class="line">        <span class="keyword">final</span> String id = modelLoader.getId(model);</span><br><span class="line">        <span class="keyword">final</span> StreamLoader sl = modelLoader.getStreamLoader(model, width, height);</span><br><span class="line">        <span class="keyword">final</span> Transformation t = transformationLoader.getTransformation(model);</span><br><span class="line">        <span class="comment">//使用ImageLoader来加载图片</span></span><br><span class="line">        imageToken = imageLoader.fetchImage(id, sl, t, width, height, <span class="keyword">new</span> ImageLoader.ImageReadyCallback() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onImageReady</span><span class="params">(Bitmap image)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">if</span> (loadCount != currentCount || !canSetImage() || image == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (imageReadyCallback != <span class="keyword">null</span>)</span><br><span class="line">                    imageReadyCallback.onImageReady(target, loadedFromCache);</span><br><span class="line">                target.onImageReady(image);</span><br><span class="line">                isImageSet = <span class="keyword">true</span>;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onException</span><span class="params">(Exception e)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">final</span> <span class="keyword">boolean</span> relevant = loadCount == currentCount;</span><br><span class="line">                <span class="keyword">if</span> (exceptionHandler != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    exceptionHandler.onException(e, model, relevant);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">//若是设置错误的占位图，则会显示啊</span></span><br><span class="line">                <span class="keyword">if</span> (relevant &amp;&amp; canSetPlaceholder()) &#123;</span><br><span class="line">                    target.setPlaceholder(errorDrawable);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="暂且看到版本2013-8-31"><a href="#暂且看到版本2013-8-31" class="headerlink" title="暂且看到版本2013-8-31"></a>暂且看到版本2013-8-31</h2><h2 id="感想"><a href="#感想" class="headerlink" title="感想"></a>感想</h2><p>好累哦，感觉继续看下去自己脑子要糊了~~</p>
+<p>2013年，有些遥远了啊，想想当时自己还没上大学呢。</p>
+<p>考古的感觉是如何的呢？  </p>
+<p>看着大佬的一步步的从简单的版本一步步到2013-8这个版本，也快一年的工作量，消化不过来了。最初的版本的有个操作，读取文件流仅却不加载
+到内存的操作，为了获取到图片源的大小，故，可以根据需要展示的图片大小，通过设置采样，不必加载整个文件，就可以加载出我们所需的图片。</p>
+<p>这个操作在android官方文档似乎就有看到呢，且在国内的知名Android博主的文章也提及。而当自己在源码中看到这个真实的代码时，自己确实有些许
+激动的。</p>
+<p>另个一个感触是，看到开始的这些版本，感觉作者的代码，自己也是大致能完全理解的哈，Glide一步步成为知名框架，是有迹可循的。开始的代码，作者写的也
+很朴素，之后代码逐渐重构清晰。结合自己看的EventBus源码，感觉大佬的炼成之路真的需要坚持啊。</p>
+<p>另外，教训，感觉之后的源码需要切入某个方面来看，否则好难坚持。</p>
+<p>比如作者添加错误的占位图这个功能时，根据作者写的commit，看的时候，思路就会清晰点。(小提示，以后自己提的commit也要用心点)</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/06/13/使用注解为部分接口添加加密逻辑/" rel="next" title="使用注解为部分接口添加加密逻辑">
+                <i class="fa fa-chevron-left"></i> 使用注解为部分接口添加加密逻辑
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/06/30/有限状态机/" rel="prev" title="有限状态机">
+                有限状态机 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpeg" alt="萝卜平">
+            
+              <p class="site-author-name" itemprop="name">萝卜平</p>
+              <p class="site-description motion-element" itemprop="description">Android, Java</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/wjploop" target="_blank" title="GitHub">
+                      GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:wjploop@gmail.com" target="_blank" title="E-Mail">
+                      E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/wjploop" target="_blank" title="Google">
+                      Google</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#版本时间2012-12-21"><span class="nav-number">1.</span> <span class="nav-text">版本时间2012/12/21</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#二个缓存"><span class="nav-number">1.1.</span> <span class="nav-text">二个缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图片大小转换器"><span class="nav-number">1.2.</span> <span class="nav-text">图片大小转换器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图片大小转换的具体实现"><span class="nav-number">1.3.</span> <span class="nav-text">图片大小转换的具体实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#似乎是一个常见的面试问题的源头"><span class="nav-number">1.4.</span> <span class="nav-text">似乎是一个常见的面试问题的源头</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些零碎的版本追踪"><span class="nav-number">2.</span> <span class="nav-text">一些零碎的版本追踪</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#引入android项目后的第一个版本-2013-1-10"><span class="nav-number">3.</span> <span class="nav-text">引入android项目后的第一个版本 2013-1-10</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#看看如何优先从磁盘加载的呢"><span class="nav-number">3.1.</span> <span class="nav-text">看看如何优先从磁盘加载的呢</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Glide名字出生了-2013-7-17"><span class="nav-number">4.</span> <span class="nav-text">Glide名字出生了 2013-7-17</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#暂且看到版本2013-8-31"><span class="nav-number">5.</span> <span class="nav-text">暂且看到版本2013-8-31</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#感想"><span class="nav-number">6.</span> <span class="nav-text">感想</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">萝卜平</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">44.6k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'VipNTLR7JbL6sNRHDHVjzSIo-gzGzoHsz',
+        appKey: 'cIR7F3k3JyRsMwF8Lto5UtT7',
+        placeholder: '说点什么？',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+    
+  </script>
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
