@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="萝卜平">
 <meta property="og:description" content="整体认识Retrofit 用接口中的方法和注解来描述一个HTTP请求，用户只用关注接口如何描述这个请求，而不用关注内部的具体实现。它将网络请求中，封装Request 对象，解析Response对象等模板代码封装了起来，使得使用者只要描述做什么，而无需关心怎么做。 内部网络请求部分依赖了OkHttp,这样，解析方法后，就是OkHttp的工作了，创建Request，解析Response，而在这两个过程">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2021-07-14T11:17:57.912Z">
+<meta property="og:updated_time" content="2021-07-21T11:59:26.351Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Retrofit">
 <meta name="twitter:description" content="整体认识Retrofit 用接口中的方法和注解来描述一个HTTP请求，用户只用关注接口如何描述这个请求，而不用关注内部的具体实现。它将网络请求中，封装Request 对象，解析Response对象等模板代码封装了起来，使得使用者只要描述做什么，而无需关心怎么做。 内部网络请求部分依赖了OkHttp,这样，解析方法后，就是OkHttp的工作了，创建Request，解析Response，而在这两个过程">
@@ -381,7 +381,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  978
+                  1.1k
                 </span>
               
 
@@ -436,12 +436,14 @@
 <p>一个复杂的类，可以实现多个接口，它表示可以提供一系列服务的类，这些服务对外形成了一个整体的概念，而在实现方法中，又可以划分为子服务，在内部使用
 其他自服务的实例来完成，以这个概念来看，我觉得这样的思考方法非常符合<code>分治</code>的思维，将大问题拆分为子问题，在子问题的实现上，可能又会继续拆分。
 大问题和子问题之间的关系，完成依照它们的接口来完成，不会跟他们的子问题实现产生联系，这样，在查看代码时，使得我们很容易在了解这一个层次上类关系，
-而不是陷入子问题实现的细节中。</p>
-<p>好吧，扯得有点远了。<br>代理模式在印象中记得有一个案例是，在Android插件化中，对于Android四大组件类，我们会对他们进行插桩，在Manifest清单文件中
+而不是陷入子问题实现的细节中。       </p>
+<p>好吧，扯得有点远了。<br>代理模式在印象中有一个案例是，在Android插件化中，对于Android四大组件类，我们会对他们进行插桩，在Manifest清单文件中
 声明一个ProxyActivity，而在我们得插件类PluginActivity中，虽然我们实现了Activity得方法，但是其具体得实现是转发给ProxyActivity来是实现的，
 比如 <code>findViewById()</code>,<code>getAssertManager()</code>方法，因为即使我们在插件模块中创建了Activity实例，我们也不能直接使用相关的方法，因为这个
-Activity是没有在Android系统中注册，系统在处理Intent时是找不到该Activity的，所以，。，</p>
-
+Activity是没有在Android系统中注册，系统在处理Intent时是找不到该Activity。</p>
+<p>而动态代理，区别于静态代理需要声明一个接口，在目标类和代理中都要是实现接口方法，动态代理不需要在编译时引入接口类，在调用代理类方法时，除了转发给
+目标类对应方法，也可以添加自己的增强代码（日志、额外操作等）。</p>
+<h3 id><a href="#" class="headerlink" title></a></h3>
       
     </div>
     
@@ -640,7 +642,7 @@ Activity是没有在Android系统中注册，系统在处理Intent时是找不�
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#整体认识"><span class="nav-number">1.</span> <span class="nav-text">整体认识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#感叹细节实现"><span class="nav-number">2.</span> <span class="nav-text">感叹细节实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#动态代理"><span class="nav-number">2.1.</span> <span class="nav-text">动态代理</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#整体认识"><span class="nav-number">1.</span> <span class="nav-text">整体认识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#感叹细节实现"><span class="nav-number">2.</span> <span class="nav-text">感叹细节实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#动态代理"><span class="nav-number">2.1.</span> <span class="nav-text">动态代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#null"><span class="nav-number">2.2.</span> <span class="nav-text"></span></a></li></ol></li></ol></div>
             
 
           </div>
