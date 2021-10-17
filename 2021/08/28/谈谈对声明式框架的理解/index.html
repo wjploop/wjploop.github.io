@@ -79,17 +79,18 @@
 
 
 
-<meta name="description" content="Android, Java">
+<meta name="description" content="昨晚把React的官方入门Demo敲了一遍，感觉对声明式的框架 React,Flutter,Android-Compose都有了一些认知，故想记录下。 我开始学习的是Flutter，看了文档，敲Demo，对比Android原生开发的一些熟悉概念，后面看到Android也推出了Compose，又跑去玩玩Compose， 发现两个框架都在”抄” React，忍不住去认认这”祖师爷”，通过不同框架对同一">
 <meta name="keywords" content="滴滴哒哒">
-<meta property="og:type" content="website">
-<meta property="og:title" content="萝卜平">
-<meta property="og:url" content="http://wjploop.github.io/archives/2021/index.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="谈谈对声明式框架的理解">
+<meta property="og:url" content="http://wjploop.github.io/2021/08/28/谈谈对声明式框架的理解/index.html">
 <meta property="og:site_name" content="萝卜平">
-<meta property="og:description" content="Android, Java">
+<meta property="og:description" content="昨晚把React的官方入门Demo敲了一遍，感觉对声明式的框架 React,Flutter,Android-Compose都有了一些认知，故想记录下。 我开始学习的是Flutter，看了文档，敲Demo，对比Android原生开发的一些熟悉概念，后面看到Android也推出了Compose，又跑去玩玩Compose， 发现两个框架都在”抄” React，忍不住去认认这”祖师爷”，通过不同框架对同一">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-10-17T02:38:01.321Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="萝卜平">
-<meta name="twitter:description" content="Android, Java">
+<meta name="twitter:title" content="谈谈对声明式框架的理解">
+<meta name="twitter:description" content="昨晚把React的官方入门Demo敲了一遍，感觉对声明式的框架 React,Flutter,Android-Compose都有了一些认知，故想记录下。 我开始学习的是Flutter，看了文档，敲Demo，对比Android原生开发的一些熟悉概念，后面看到Android也推出了Compose，又跑去玩玩Compose， 发现两个框架都在”抄” React，忍不住去认认这”祖师爷”，通过不同框架对同一">
 
 
 
@@ -119,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://wjploop.github.io/archives/2021/">
+  <link rel="canonical" href="http://wjploop.github.io/2021/08/28/谈谈对声明式框架的理解/">
 
 
 
 
 
-  <title>归档 | 萝卜平</title>
+  <title>谈谈对声明式框架的理解 | 萝卜平</title>
   
 
 
@@ -154,7 +155,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -290,390 +291,213 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
 
-      <span class="archive-page-counter">
-        
-        
-         
-        
-        OK! 目前共计 39 篇日志。 继续努力。
-      </span>
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://wjploop.github.io/2021/08/28/谈谈对声明式框架的理解/">
 
-      
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="萝卜平">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="萝卜平">
+    </span>
+
+    
+      <header class="post-header">
 
         
         
+          <h1 class="post-title" itemprop="name headline">谈谈对声明式框架的理解</h1>
         
 
-        
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-08-28T16:58:51+08:00">
+                2021-08-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2021">2021</h1>
-          </div>
-        
-        
 
-        
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/08/28/谈谈对声明式框架的理解/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2021/08/28/谈谈对声明式框架的理解/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2021/08/28/谈谈对声明式框架的理解/" itemprop="url">
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
               
-                <span itemprop="name">谈谈对声明式框架的理解</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1k
+                </span>
               
-            </a>
-        
-      </h2>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2021-08-28T16:58:51+08:00" content="2021-08-28">
-          08-28
-        </time>
-      </div>
+              
+                <span class="post-meta-divider">|</span>
+              
 
-    </header>
-  </article>
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  3
+                </span>
+              
+            </div>
+          
 
+          
 
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2021/07/20/写简历时的烦躁/" itemprop="url">
-              
-                <span itemprop="name">写简历时的烦躁</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2021-07-20T23:09:25+08:00" content="2021-07-20">
-          07-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
+      
+        <p>昨晚把<code>React</code>的官方入门Demo敲了一遍，感觉对声明式的框架 <code>React,Flutter,Android-Compose</code>都有了一些认知，故想记录下。</p>
+<p>我开始学习的是Flutter，看了文档，敲Demo，对比Android原生开发的一些熟悉概念，后面看到Android也推出了Compose，又跑去玩玩Compose，
+发现两个框架都在”抄” React，忍不住去认认这”祖师爷”，通过不同框架对同一概念的实现，从而加深对声明式框架的理解。</p>
+<p>前端，主要干的活，定义如何展示数据，处理数据和视图的关系，处理事件到来后数据变化，重新渲染数据成视图。</p>
+<p>其中，由于数据在视图中是变化的，故，我们将之称为状态state，而对于一部分数据对本视图而言，它是不可变的，我们称之为属性props，要注意的
+是这里的可变或不可变是对于本视图而言的，一般，父亲的state对孩子的来说就是props。
+而，事件通常分为用户产生，如触摸事件，和系统产生，如时钟滴答导致状态进入下一个生命周期，我们称之为动作action。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">model = props + state 　// 数据由不变的属性和可变状态组成</span><br><span class="line">view = render(model)    // 视图通过渲染model形成</span><br></pre></td></tr></table></figure>
 
-        
-        
+<p>此后便是声明式和传统的开发的区分</p>
+<p>传统的方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">action(model) &gt;&gt; diff   // 事件过来进行处理，产生一些变化diff</span><br><span class="line">new_view = view + renderDiff(dff)   // 根据这个diff渲染出一部分区别的view,　再将这个差别view融入原来的view以形成新的view</span><br></pre></td></tr></table></figure>
 
-        
+<p>存在的问题是，我们渲染数据的逻辑变得很复杂，为何？一个事件，产生一个变化diff，需要对这个diff添加新的渲染代码，即随着事件的远远不断地到来，
+我们要不断地维护更新这个视图树，随着事件变多，往往会出现，model和view不同步的情况，因为我们在修改model的同时，也要同时修改view。</p>
+<p>而声明式的方法是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">action(model) &gt;&gt; new_model  // 事件过来产生一个新的model</span><br><span class="line">new_view = render(new_model)    // 由于新的model和原来的model结构完全一致，故，我们可以使用原来的render方法</span><br></pre></td></tr></table></figure>
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2021/07/10/Retrofit/" itemprop="url">
-              
-                <span itemprop="name">Retrofit</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2021-07-10T15:08:41+08:00" content="2021-07-10">
-          07-10
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+<p>这样，当定义好一个渲染逻辑后，只要model的结构不变，我们就可以不用改变原来的render方法，从而保持渲染逻辑的简单。</p>
+<p>以上，是对声明式框架的理解，以下做一些额外的思考。</p>
+<p>若论性能而言，传统开发更优，但是声明式开发模式更注重开发效率和代码维护性。 以此，声明式开发是未来的一种趋势。</p>
+<p>传统方式，直接修改原来数据，然后视图同步数据的修改，而声明式开发，复制了全部的数据，修改数据后交给视图一个全新的数据镜像重新渲染。
+根据这点，声明式要使用更多的内存和更频繁的对象销毁回收，因此在利用计算机性能上效率低。但，从历史趋势的趋势上声明式开发是未来，一方面，
+计算性能在增加，另一方面，降低编程心智负担一直我们追求的目标；这个论证过程也可从编程语言的发展史得到印证。</p>
+<p>而在框架的具体实现上，性能上也做了很多优化。Flutter，从用户描述到渲染经过了 widget &gt; element &gt; renderObject的过程，
+widget是我们对一个组件的最简单的描述定义，element表示了其组件的关系树，而renderObject才是真正用于渲染的视图树。
+其作用是，导致widget对象都很小，回收成本低，而真正的渲染树，在widget修改时，对应渲染树只是增量更新，而不是和widget一样全量更新。</p>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2021/07/07/SparseArray/" itemprop="url">
-              
-                <span itemprop="name">SparseArray</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2021-07-07T16:18:29+08:00" content="2021-07-07">
-          07-07
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2021/06/19/关于并发/" itemprop="url">
-              
-                <span itemprop="name">关于并发</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2021-06-19T15:50:13+08:00" content="2021-06-19">
-          06-19
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2021/06/17/关于JVM/" itemprop="url">
-              
-                <span itemprop="name">关于JVM</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2021-06-17T00:26:33+08:00" content="2021-06-17">
-          06-17
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2021/06/11/关于线程/" itemprop="url">
-              
-                <span itemprop="name">关于线程</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2021-06-11T21:59:45+08:00" content="2021-06-11">
-          06-11
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2021/04/26/Android-Transition/" itemprop="url">
-              
-                <span itemprop="name">Android-Transition</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2021-04-26T11:47:36+08:00" content="2021-04-26">
-          04-26
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2021/04/15/协程笔记/" itemprop="url">
-              
-                <span itemprop="name">协程笔记</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2021-04-15T10:40:24+08:00" content="2021-04-15">
-          04-15
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2021/03/31/刷题中对一些算法思想的理解/" itemprop="url">
-              
-                <span itemprop="name">刷题中对一些算法思想的理解</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2021-03-31T21:34:30+08:00" content="2021-03-31">
-          03-31
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/07/20/写简历时的烦躁/" rel="next" title="写简历时的烦躁">
+                <i class="fa fa-chevron-left"></i> 写简历时的烦躁
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/2021/page/2/">2</a><a class="extend next" rel="next" href="/archives/2021/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
+  </article>
 
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -681,6 +505,13 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
 
         </div>
         
@@ -952,6 +783,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 

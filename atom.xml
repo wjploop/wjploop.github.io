@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://wjploop.github.io/"/>
-  <updated>2021-08-28T11:36:34.576Z</updated>
+  <updated>2021-10-17T02:38:01.321Z</updated>
   <id>http://wjploop.github.io/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>探探对生命式框架的理解</title>
-    <link href="http://wjploop.github.io/2021/08/28/%E6%8E%A2%E6%8E%A2%E5%AF%B9%E7%94%9F%E5%91%BD%E5%BC%8F%E6%A1%86%E6%9E%B6%E7%9A%84%E7%90%86%E8%A7%A3/"/>
-    <id>http://wjploop.github.io/2021/08/28/探探对生命式框架的理解/</id>
+    <title>谈谈对声明式框架的理解</title>
+    <link href="http://wjploop.github.io/2021/08/28/%E8%B0%88%E8%B0%88%E5%AF%B9%E5%A3%B0%E6%98%8E%E5%BC%8F%E6%A1%86%E6%9E%B6%E7%9A%84%E7%90%86%E8%A7%A3/"/>
+    <id>http://wjploop.github.io/2021/08/28/谈谈对声明式框架的理解/</id>
     <published>2021-08-28T08:58:51.000Z</published>
-    <updated>2021-08-28T11:36:34.576Z</updated>
+    <updated>2021-10-17T02:38:01.321Z</updated>
     
     <content type="html"><![CDATA[<p>昨晚把<code>React</code>的官方入门Demo敲了一遍，感觉对声明式的框架 <code>React,Flutter,Android-Compose</code>都有了一些认知，故想记录下。</p><p>我开始学习的是Flutter，看了文档，敲Demo，对比Android原生开发的一些熟悉概念，后面看到Android也推出了Compose，又跑去玩玩Compose，发现两个框架都在”抄” React，忍不住去认认这”祖师爷”，通过不同框架对同一概念的实现，从而加深对声明式框架的理解。</p><p>前端，主要干的活，定义如何展示数据，处理数据和视图的关系，处理事件到来后数据变化，重新渲染数据成视图。</p><p>其中，由于数据在视图中是变化的，故，我们将之称为状态state，而对于一部分数据对本视图而言，它是不可变的，我们称之为属性props，要注意的是这里的可变或不可变是对于本视图而言的，一般，父亲的state对孩子的来说就是props。而，事件通常分为用户产生，如触摸事件，和系统产生，如时钟滴答导致状态进入下一个生命周期，我们称之为动作action。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">model = props + state 　// 数据由不变的属性和可变状态组成</span><br><span class="line">view = render(model)    // 视图通过渲染model形成</span><br></pre></td></tr></table></figure><p>此后便是声明式和传统的开发的区分</p><p>传统的方法</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">action(model) &gt;&gt; diff   // 事件过来进行处理，产生一些变化diff</span><br><span class="line">new_view = view + renderDiff(dff)   // 根据这个diff渲染出一部分区别的view,　再将这个差别view融入原来的view以形成新的view</span><br></pre></td></tr></table></figure><p>存在的问题是，我们渲染数据的逻辑变得很复杂，为何？一个事件，产生一个变化diff，需要对这个diff添加新的渲染代码，即随着事件的远远不断地到来，我们要不断地维护更新这个视图树，随着事件变多，往往会出现，model和view不同步的情况，因为我们在修改model的同时，也要同时修改view。</p><p>而声明式的方法是</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">action(model) &gt;&gt; new_model  // 事件过来产生一个新的model</span><br><span class="line">new_view = render(new_model)    // 由于新的model和原来的model结构完全一致，故，我们可以使用原来的render方法</span><br></pre></td></tr></table></figure><p>这样，当定义好一个渲染逻辑后，只要model的结构不变，我们就可以不用改变原来的render方法，从而保持渲染逻辑的简单。</p><p>以上，是对声明式框架的理解，以下做一些额外的思考。</p><p>若论性能而言，传统开发更优，但是声明式开发模式更注重开发效率和代码维护性。 以此，声明式开发是未来的一种趋势。</p><p>传统方式，直接修改原来数据，然后视图同步数据的修改，而声明式开发，复制了全部的数据，修改数据后交给视图一个全新的数据镜像重新渲染。根据这点，声明式要使用更多的内存和更频繁的对象销毁回收，因此在利用计算机性能上效率低。但，从历史趋势的趋势上声明式开发是未来，一方面，计算性能在增加，另一方面，降低编程心智负担一直我们追求的目标；这个论证过程也可从编程语言的发展史得到印证。</p><p>而在框架的具体实现上，性能上也做了很多优化。Flutter，从用户描述到渲染经过了 widget &gt; element &gt; renderObject的过程，widget是我们对一个组件的最简单的描述定义，element表示了其组件的关系树，而renderObject才是真正用于渲染的视图树。其作用是，导致widget对象都很小，回收成本低，而真正的渲染树，在widget修改时，对应渲染树只是增量更新，而不是和widget一样全量更新。</p>]]></content>
     
