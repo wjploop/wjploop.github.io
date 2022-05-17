@@ -66,7 +66,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="Android 笔记,">
 
 
 
@@ -80,14 +80,14 @@
 
 
 <meta name="description" content="整体认识Retrofit 用接口中的方法和注解来描述一个HTTP请求，用户只用关注接口如何描述这个请求，而不用关注内部的具体实现。它将网络请求中，封装Request 对象，解析Response对象等模板代码封装了起来，使得使用者只要描述做什么，而无需关心怎么做。 内部网络请求部分依赖了OkHttp,这样，解析方法后，就是OkHttp的工作了，创建Request，解析Response，而在这两个过程">
-<meta name="keywords" content="滴滴哒哒">
+<meta name="keywords" content="Android 笔记">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Retrofit">
 <meta property="og:url" content="http://wjploop.github.io/2021/07/10/Retrofit/index.html">
 <meta property="og:site_name" content="萝卜平">
 <meta property="og:description" content="整体认识Retrofit 用接口中的方法和注解来描述一个HTTP请求，用户只用关注接口如何描述这个请求，而不用关注内部的具体实现。它将网络请求中，封装Request 对象，解析Response对象等模板代码封装了起来，使得使用者只要描述做什么，而无需关心怎么做。 内部网络请求部分依赖了OkHttp,这样，解析方法后，就是OkHttp的工作了，创建Request，解析Response，而在这两个过程">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2021-07-21T11:59:26.351Z">
+<meta property="og:updated_time" content="2022-05-17T13:49:02.365Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Retrofit">
 <meta name="twitter:description" content="整体认识Retrofit 用接口中的方法和注解来描述一个HTTP请求，用户只用关注接口如何描述这个请求，而不用关注内部的具体实现。它将网络请求中，封装Request 对象，解析Response对象等模板代码封装了起来，使得使用者只要描述做什么，而无需关心怎么做。 内部网络请求部分依赖了OkHttp,这样，解析方法后，就是OkHttp的工作了，创建Request，解析Response，而在这两个过程">
@@ -381,7 +381,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1.1k
+                  2.4k
                 </span>
               
 
@@ -397,7 +397,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  3
+                  9
                 </span>
               
             </div>
@@ -423,7 +423,7 @@
 <p>内部网络请求部分依赖了OkHttp,这样，解析方法后，就是OkHttp的工作了，创建Request，解析Response，而在这两个过程，涉及到
 数据（json, xml, 二进制（protobuf)）与Java对象的转换，即数据序列化/反序列，这里Retrofit没有新造轮子，而是提供一个适配器，让用户选择合适
 自己需求的工具，完美践行了<em>对扩展开放</em>的原则。</p>
-<h2 id="感叹细节实现"><a href="#感叹细节实现" class="headerlink" title="感叹细节实现"></a>感叹细节实现</h2><h3 id="动态代理"><a href="#动态代理" class="headerlink" title="动态代理"></a>动态代理</h3><p>关于这个设计模式，说下自己的理解。</p>
+<h2 id="动态代理"><a href="#动态代理" class="headerlink" title="动态代理"></a>动态代理</h2><p>关于这个设计模式，说下自己的理解。</p>
 <p>代理，需要一个服务<code>ServiceA</code>，存在现有的类（代理目标类<code>Obj</code>）可以满足或满足部分需求，这时，假设想让<code>User</code>也拥有提供该服务的能力，
 我们不是直接继承<code>Obj</code>， 而时将该服务抽象为一个接口<code>ProvideServiceA</code>，表示具备可以提供这个服务A，此时，真正提供具备这个服务实现类为<code>Obj</code>，
 而我们的<code>User</code>也想拥有这份能力，可<code>User</code>又不但仅有这份能力，它还可能拥有A,B,C能力，故，它在是实现了 <code>ProviderServiceA</code>接口，但不是自己
@@ -443,7 +443,35 @@
 Activity是没有在Android系统中注册，系统在处理Intent时是找不到该Activity。</p>
 <p>而动态代理，区别于静态代理需要声明一个接口，在目标类和代理中都要是实现接口方法，动态代理不需要在编译时引入接口类，在调用代理类方法时，除了转发给
 目标类对应方法，也可以添加自己的增强代码（日志、额外操作等）。</p>
-<h3 id><a href="#" class="headerlink" title></a></h3>
+<h2 id="感叹细节实现"><a href="#感叹细节实现" class="headerlink" title="感叹细节实现"></a>感叹细节实现</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line"> // 描述业务上需要Http方法</span><br><span class="line">interface Service &#123;</span><br><span class="line">  @GET(&quot;/&quot;) Call&lt;ResponseBody&gt; getBody();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  // 用于创建一个Retrofit实例</span><br><span class="line">  Retrofit retrofit = new Retrofit.Builder()</span><br><span class="line">      .baseUrl(server.url(&quot;/&quot;))</span><br><span class="line">      .build();</span><br><span class="line">  // 为描述接口方法创建具体的代理实例</span><br><span class="line">  Service example = retrofit.create(Service.class);</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建一个代理实例"><a href="#创建一个代理实例" class="headerlink" title="创建一个代理实例"></a>创建一个代理实例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">public &lt;T&gt; T create(final Class&lt;T&gt; service) &#123;</span><br><span class="line">  validateServiceInterface(service);</span><br><span class="line">  return (T)</span><br><span class="line">          // 返回一个代理实例，代理实现interfaces中的方法</span><br><span class="line">          // 所有方法都会通过InvocationHandler来实现</span><br><span class="line">          // 被代理的接口，仅是描述了要干什么，怎么干委托给了handler</span><br><span class="line">          // 原本接口的方法实现仅是 method.invoke(proxy, args)，或者为abstract方法无法直接调用</span><br><span class="line">          // 而在handler中我们可以在基于该方法默认实现之上，可以做AOP类似的骚操作，比如修改参数、修改返回值，插入日志、甚至替换原来的实现</span><br><span class="line">          // 而在这个库中，只是提取方法中信息（主要是注解），创建一个ServiceMethod，而在这个方法后</span><br><span class="line">      Proxy.newProxyInstance(</span><br><span class="line">          service.getClassLoader(),</span><br><span class="line">          // 被代理额目标类，所有的方法都会转发给下面的Handler处理</span><br><span class="line">          new Class&lt;?&gt;[] &#123;service&#125;,</span><br><span class="line">          new InvocationHandler() &#123;</span><br><span class="line">            private final Platform platform = Platform.get();</span><br><span class="line">            private final Object[] emptyArgs = new Object[0];</span><br><span class="line"></span><br><span class="line">            @Override</span><br><span class="line">            public @Nullable Object invoke(Object proxy, Method method, @Nullable Object[] args)</span><br><span class="line">                throws Throwable &#123;</span><br><span class="line">              // If the method is a method from Object then defer to normal invocation.</span><br><span class="line">              // 正常调用Object的方法</span><br><span class="line">              if (method.getDeclaringClass() == Object.class) &#123;</span><br><span class="line">                return method.invoke(this, args);</span><br><span class="line">              &#125;</span><br><span class="line">              args = args != null ? args : emptyArgs;</span><br><span class="line">              return platform.isDefaultMethod(method)</span><br><span class="line">                  // 若是Java8提供的默认方法，直接调用</span><br><span class="line">                  ? platform.invokeDefaultMethod(method, service, proxy, args)</span><br><span class="line">                  // 解析该方法并执行</span><br><span class="line">                  : loadServiceMethod(method).invoke(args);</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以下就是解析方法，执行方法了</p>
+<h2 id="解析方法"><a href="#解析方法" class="headerlink" title="解析方法"></a>解析方法</h2><h3 id="使用缓存避免解析多次"><a href="#使用缓存避免解析多次" class="headerlink" title="使用缓存避免解析多次"></a>使用缓存避免解析多次</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">ServiceMethod&lt;?&gt; loadServiceMethod(Method method) &#123;</span><br><span class="line">  // 解析方法费时，缓存下来</span><br><span class="line">  ServiceMethod&lt;?&gt; result = serviceMethodCache.get(method);</span><br><span class="line">  if (result != null) return result;</span><br><span class="line"></span><br><span class="line">  // 这里为什么需要加锁呢？</span><br><span class="line">  // 在添加方法时，避免解析多次</span><br><span class="line">  synchronized (serviceMethodCache) &#123;</span><br><span class="line">    // 假设由两个线程A,B都调用同一个方法，且该方法未解析</span><br><span class="line">    // A解析后修改map，退出</span><br><span class="line">    // B等到A释放锁后，再次检验该map，来确认是否要解析</span><br><span class="line">    result = serviceMethodCache.get(method);</span><br><span class="line">    if (result == null) &#123;</span><br><span class="line">      // 见下解析方法2</span><br><span class="line">      result = ServiceMethod.parseAnnotations(this, method);</span><br><span class="line">      serviceMethodCache.put(method, result);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="解析出信息"><a href="#解析出信息" class="headerlink" title="解析出信息"></a>解析出信息</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">static &lt;T&gt; ServiceMethod&lt;T&gt; parseAnnotations(Retrofit retrofit, Method method) &#123;</span><br><span class="line">  // 只是解析注解信息出来</span><br><span class="line">  RequestFactory requestFactory = RequestFactory.parseAnnotations(retrofit, method);</span><br><span class="line"></span><br><span class="line">  // 判断方法的返回值</span><br><span class="line">  Type returnType = method.getGenericReturnType();</span><br><span class="line">  if (Utils.hasUnresolvableType(returnType)) &#123;</span><br><span class="line">    throw methodError(</span><br><span class="line">        method,</span><br><span class="line">        &quot;Method return type must not include a type variable or wildcard: %s&quot;,</span><br><span class="line">        returnType);</span><br><span class="line">  &#125;</span><br><span class="line">  // 注意定义的接口时不能返回值为空的，</span><br><span class="line">  // 那么怎么不判断Kotlin的Unit? todo</span><br><span class="line">  if (returnType == void.class) &#123;</span><br><span class="line">    throw methodError(method, &quot;Service methods cannot return void.&quot;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // Http方法具体实现，见下</span><br><span class="line">  return HttpServiceMethod.parseAnnotations(retrofit, method, requestFactory);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>HttpServiceMethod.java</p>
+</blockquote>
+<p>解析注解信息后，依据返回值类型，选择可用的 CallAdapter、Converter</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">static &lt;ResponseT, ReturnT&gt; HttpServiceMethod&lt;ResponseT, ReturnT&gt; parseAnnotations(</span><br><span class="line">     Retrofit retrofit, Method method, RequestFactory requestFactory) &#123;</span><br><span class="line">   Annotation[] annotations = method.getAnnotations();</span><br><span class="line">   // 获取返回值类型</span><br><span class="line">   Type adapterType;</span><br><span class="line">   adapterType = method.getGenericReturnType();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   // 根据解析出来了方法返回值类型，选择合适的CallAdapter</span><br><span class="line">   // 何为CallAdapter, 将</span><br><span class="line">   CallAdapter&lt;ResponseT, ReturnT&gt; callAdapter =</span><br><span class="line">       createCallAdapter(retrofit, method, adapterType, annotations);</span><br><span class="line">   // 返回确切的Response类型</span><br><span class="line">   // 比如在RxJava Complete会是Void.class, Observable&lt;User&gt;，则是User</span><br><span class="line">   Type responseType = callAdapter.responseType();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   if (responseType == Response.class) &#123;</span><br><span class="line">     throw methodError(method, &quot;Response must include generic type (e.g., Response&lt;String&gt;)&quot;);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   // OKHttp返回一个ResponseBody，选择一个Converter来转换</span><br><span class="line"></span><br><span class="line">   Converter&lt;ResponseBody, ResponseT&gt; responseConverter =</span><br><span class="line">       createResponseConverter(retrofit, method, responseType);</span><br><span class="line"></span><br><span class="line">   okhttp3.Call.Factory callFactory = retrofit.callFactory;</span><br><span class="line">   return new CallAdapted&lt;&gt;(requestFactory, callFactory, responseConverter, callAdapter);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="执行方法"><a href="#执行方法" class="headerlink" title="执行方法"></a>执行方法</h3><p>在真正执行该方法时，跳到这里</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">final @Nullable ReturnT invoke(Object[] args) &#123;</span><br><span class="line">  // 创建一个OkHttpCall</span><br><span class="line">  Call&lt;ResponseT&gt; call = new OkHttpCall&lt;&gt;(requestFactory, args, callFactory, responseConverter);</span><br><span class="line">  // 准备一切后，真正开始调用方法</span><br><span class="line">  return adapt(call, args);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>比如在Rxjava中的 adapt方法实现</p>
+<p>原本一个Call的返回只是一个Response，通过适配adapt，将其转换成我们想要的东西。</p>
+<p>在RxJava中将Response创建了一个可以观察的源，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  @Override</span><br><span class="line">  public Object adapt(Call&lt;R&gt; call) &#123;</span><br><span class="line">  </span><br><span class="line">    Observable&lt;Response&lt;R&gt;&gt; responseObservable =</span><br><span class="line">        isAsync ? new CallEnqueueObservable&lt;&gt;(call) : new CallExecuteObservable&lt;&gt;(call);</span><br><span class="line"></span><br><span class="line">    Observable&lt;?&gt; observable;</span><br><span class="line">    if (isResult) &#123;</span><br><span class="line">      observable = new ResultObservable&lt;&gt;(responseObservable);</span><br><span class="line">    &#125; else if (isBody) &#123;</span><br><span class="line">      observable = new BodyObservable&lt;&gt;(responseObservable);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      observable = responseObservable;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 不为空，还为其切换到响应的线程执行</span><br><span class="line">    if (scheduler != null) &#123;</span><br><span class="line">      observable = observable.subscribeOn(scheduler);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (isFlowable) &#123;</span><br><span class="line">      return observable.toFlowable(BackpressureStrategy.LATEST);</span><br><span class="line">    &#125;</span><br><span class="line">    if (isSingle) &#123;</span><br><span class="line">      return observable.singleOrError();</span><br><span class="line">    &#125;</span><br><span class="line">    if (isMaybe) &#123;</span><br><span class="line">      return observable.singleElement();</span><br><span class="line">    &#125;</span><br><span class="line">    if (isCompletable) &#123;</span><br><span class="line">      return observable.ignoreElements();</span><br><span class="line">    &#125;</span><br><span class="line">    return RxJavaPlugins.onAssembly(observable);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>整体下来，看得挺懵逼的~  </p>
+<p>基本思路，解析方法上的信息后，尤其时返回值类型，判断其需要的CallAdapter，用于将请求返回值构建成对应的实例。默认下，返回一个定义Call,表示了一个
+请求，包括发送一个request和返回一个Response，当RxJava的适配器时则返回一个Observable。</p>
+<p>另一个就是Converter，将对象转换成http协议支持的类型，比如Json，普通文本，或数据流。转换时，包括创建请求时的requestBodyConverter以及responseBodyConverter。</p>
+<p>无论是CallAdapter，还是Converter，两者都是可以配置补充的。当解析接口方法时，检查到其类型时，在Retrofit配置的Factory支持集合中选择合适的类型。</p>
+
       
     </div>
     
@@ -457,6 +485,12 @@ Activity是没有在Android系统中注册，系统在处理Intent时是找不�
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android-笔记/" rel="tag"># Android 笔记</a>
+          
+        </div>
       
 
       
@@ -477,8 +511,8 @@ Activity是没有在Android系统中注册，系统在处理Intent时是找不�
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2021/08/28/谈谈对声明式框架的理解/" rel="prev" title="谈谈对声明式框架的理解">
-                谈谈对声明式框架的理解 <i class="fa fa-chevron-right"></i>
+              <a href="/2021/07/28/OKHttp-文档篇/" rel="prev" title="OKHttp 文档篇">
+                OKHttp 文档篇 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -561,7 +595,7 @@ Activity是没有在Android系统中注册，系统在处理Intent时是找不�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -583,7 +617,7 @@ Activity是没有在Android系统中注册，系统在处理Intent时是找不�
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -642,7 +676,7 @@ Activity是没有在Android系统中注册，系统在处理Intent时是找不�
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#整体认识"><span class="nav-number">1.</span> <span class="nav-text">整体认识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#感叹细节实现"><span class="nav-number">2.</span> <span class="nav-text">感叹细节实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#动态代理"><span class="nav-number">2.1.</span> <span class="nav-text">动态代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#null"><span class="nav-number">2.2.</span> <span class="nav-text"></span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#整体认识"><span class="nav-number">1.</span> <span class="nav-text">整体认识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态代理"><span class="nav-number">2.</span> <span class="nav-text">动态代理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#感叹细节实现"><span class="nav-number">3.</span> <span class="nav-text">感叹细节实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建一个代理实例"><span class="nav-number">4.</span> <span class="nav-text">创建一个代理实例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解析方法"><span class="nav-number">5.</span> <span class="nav-text">解析方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用缓存避免解析多次"><span class="nav-number">5.1.</span> <span class="nav-text">使用缓存避免解析多次</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解析出信息"><span class="nav-number">5.2.</span> <span class="nav-text">解析出信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行方法"><span class="nav-number">5.3.</span> <span class="nav-text">执行方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
@@ -662,7 +696,7 @@ Activity是没有在Android系统中注册，系统在处理Intent时是找不�
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -676,7 +710,7 @@ Activity是没有在Android系统中注册，系统在处理Intent时是找不�
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">44.5k</span>
+    <span title="Site words total count">50.1k</span>
   
 </div>
 
