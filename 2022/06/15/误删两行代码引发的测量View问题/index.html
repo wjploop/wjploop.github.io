@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="今天解决的一个Bug很有意思，涉及View测量流程，故记之。 问题描述： 定制化的Launcher中，在所有 App 页面，当用户点击任一全屏App返回后，该 GridLayout 中的 ItemView 大小明显变大了。具有俩页的列表，第二个列表的子项明显大了好多。当滑动在第一、二页中间状态时，如下图所示：     一般的应用中，ViewPager 会搭配 FragmentPagerAdapte">
+<meta name="description" content="今天解决的一个bug很有意思，涉及View测量流程，故记之。 bug描述：Launcher中，当用户点击任一全屏App返回后，GridLayout 中的 ItemView 大小测量不正常了。如下图所示：     Launcher的布局结构是一个ViewPager，每一页是一个GridLayout，以下是对应的代码（也可以忽略不看）。 12345678910111213141516171819202">
 <meta name="keywords" content="滴滴哒哒">
 <meta property="og:type" content="article">
 <meta property="og:title" content="误删两行代码引发的测量View问题">
 <meta property="og:url" content="http://wjploop.github.io/2022/06/15/误删两行代码引发的测量View问题/index.html">
 <meta property="og:site_name" content="萝卜平">
-<meta property="og:description" content="今天解决的一个Bug很有意思，涉及View测量流程，故记之。 问题描述： 定制化的Launcher中，在所有 App 页面，当用户点击任一全屏App返回后，该 GridLayout 中的 ItemView 大小明显变大了。具有俩页的列表，第二个列表的子项明显大了好多。当滑动在第一、二页中间状态时，如下图所示：     一般的应用中，ViewPager 会搭配 FragmentPagerAdapte">
+<meta property="og:description" content="今天解决的一个bug很有意思，涉及View测量流程，故记之。 bug描述：Launcher中，当用户点击任一全屏App返回后，GridLayout 中的 ItemView 大小测量不正常了。如下图所示：     Launcher的布局结构是一个ViewPager，每一页是一个GridLayout，以下是对应的代码（也可以忽略不看）。 12345678910111213141516171819202">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://wjploop.github.io/images/image-20220615204045941.png">
-<meta property="og:updated_time" content="2022-06-17T00:43:36.165Z">
+<meta property="og:updated_time" content="2022-09-14T01:46:49.372Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="误删两行代码引发的测量View问题">
-<meta name="twitter:description" content="今天解决的一个Bug很有意思，涉及View测量流程，故记之。 问题描述： 定制化的Launcher中，在所有 App 页面，当用户点击任一全屏App返回后，该 GridLayout 中的 ItemView 大小明显变大了。具有俩页的列表，第二个列表的子项明显大了好多。当滑动在第一、二页中间状态时，如下图所示：     一般的应用中，ViewPager 会搭配 FragmentPagerAdapte">
+<meta name="twitter:description" content="今天解决的一个bug很有意思，涉及View测量流程，故记之。 bug描述：Launcher中，当用户点击任一全屏App返回后，GridLayout 中的 ItemView 大小测量不正常了。如下图所示：     Launcher的布局结构是一个ViewPager，每一页是一个GridLayout，以下是对应的代码（也可以忽略不看）。 12345678910111213141516171819202">
 <meta name="twitter:image" content="http://wjploop.github.io/images/image-20220615204045941.png">
 
 
@@ -405,7 +405,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2.3k
+                  2.4k
                 </span>
               
 
@@ -421,7 +421,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  9
+                  10
                 </span>
               
             </div>
@@ -442,28 +442,33 @@
       
 
       
-        <p>今天解决的一个Bug很有意思，涉及View测量流程，故记之。</p>
-<p>问题描述：</p>
-<p>定制化的Launcher中，在所有 App 页面，当用户点击<strong>任一全屏App</strong>返回后，该 GridLayout 中的 ItemView 大小明显变大了。具有俩页的列表，第二个列表的子项明显大了好多。当滑动在第一、二页中间状态时，如下图所示：</p>
+        <p>今天解决的一个bug很有意思，涉及View测量流程，故记之。</p>
+<h4 id="bug描述："><a href="#bug描述：" class="headerlink" title="bug描述："></a>bug描述：</h4><p>Launcher中，当用户点击<strong>任一全屏App</strong>返回后，GridLayout 中的 ItemView 大小测量不正常了。如下图所示：</p>
 <img src="/images/image-20220615204045941.png">
 
 
 
-<p>一般的应用中，ViewPager 会搭配 FragmentPagerAdapter使用，而在本Launcher中，是直接继承了PagerAdaper （FragmentPagerAdapter的父类）自定了一个Adapter，自己管理每一个页的GridLayout，而非使用Fragment承载。为何？其原因我不太确定，我猜这是以前大佬的对代码洁癖（褒义）的追求吧，能用基础的类完成，绝不会引用庞大的工具包。dｄ</p>
-<p>以下看看大概看看这个Adapter：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">public class AppPagerAdapter extends PagerAdapter &#123;</span><br><span class="line">  ...</span><br><span class="line"></span><br><span class="line">	// 刷新每一个页的内容</span><br><span class="line">	// 一个页面是简单的 FrameLayout &gt; GridLayout 结构</span><br><span class="line">    private void refreshItemLayout(int position, ViewGroup c_item_layout) &#123;</span><br><span class="line">        AppGridItemView c_app_view;</span><br><span class="line">        GridLayout c_grid_layout = (GridLayout) c_item_layout.getChildAt(0);</span><br><span class="line">        for (int c_page_index = 0; c_page_index &lt; m_page_count_per_page; c_page_index++) &#123;</span><br><span class="line">        	// 根据在第几页、第几项确定对应的app</span><br><span class="line">            int c_app_index = (position * m_page_count_per_page) + c_page_index;</span><br><span class="line">            View view = c_grid_layout.getChildAt(c_page_index);</span><br><span class="line">            if (view == null || !(view instanceof AppGridItemView)) &#123;</span><br><span class="line">            	// 第一个创建 GridLayout 中的 ItemView</span><br><span class="line">                c_app_view = (AppGridItemView) View.inflate(this.m_context, R.layout.app_item_layout, (ViewGroup) null);</span><br><span class="line">                c_app_view.setShortCutClickListener(this.m_listener);</span><br><span class="line">                GridLayout.LayoutParams c_para = new GridLayout.LayoutParams();</span><br><span class="line">                // 关键是这里，我误删掉了这两行，导致出现了Bug</span><br><span class="line">//                c_para.width = 0;</span><br><span class="line">//                c_para.height = 0;</span><br><span class="line">                c_para.columnSpec = GridLayout.spec(c_page_index % m_page_colum_num, 1.0f);</span><br><span class="line">                c_para.rowSpec = GridLayout.spec(c_page_index / m_page_colum_num, 1.0f);</span><br><span class="line">                c_app_view.setLayoutParams(c_para);</span><br><span class="line">                c_grid_layout.addView(c_app_view);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                c_app_view = (AppGridItemView) view;</span><br><span class="line">            &#125;</span><br><span class="line">            if (c_app_index &lt; this.m_app_list.size()) &#123;</span><br><span class="line">                c_app_view.setAppInfo(this.m_app_list.get(c_app_index));</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                c_app_view.setAppInfo((AppInfo) null);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	// ViewPager中创建一个页面</span><br><span class="line">    public Object instantiateItem(@NonNull ViewGroup container, int position) &#123;</span><br><span class="line">        // 复用整个页面View，其结构（FrameLayout &gt; GridLayout）</span><br><span class="line">        FrameLayout c_item_layout = getFreeLayout();</span><br><span class="line">		// 针对每一页创建内容</span><br><span class="line">        refreshItemLayout(position, c_item_layout);</span><br><span class="line">        </span><br><span class="line">        this.m_use_layout_list.add(c_item_layout);</span><br><span class="line">        container.addView(c_item_layout);</span><br><span class="line">        c_item_layout.setTag(Integer.valueOf(position));</span><br><span class="line">        return c_item_layout;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Launcher的布局结构是一个ViewPager，每一页是一个GridLayout，以下是对应的代码（也可以忽略不看）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">public class AppPagerAdapter extends PagerAdapter &#123;</span><br><span class="line">  ...</span><br><span class="line"></span><br><span class="line">	// 刷新每一个页的内容</span><br><span class="line">	// 一个页面是简单的 FrameLayout &gt; GridLayout 结构</span><br><span class="line">    private void refreshItemLayout(int position, ViewGroup c_item_layout) &#123;</span><br><span class="line">        AppGridItemView c_app_view;</span><br><span class="line">        GridLayout c_grid_layout = (GridLayout) c_item_layout.getChildAt(0);</span><br><span class="line">        for (int c_page_index = 0; c_page_index &lt; m_page_count_per_page; c_page_index++) &#123;</span><br><span class="line">        	// 根据在第几页、第几项确定对应的app</span><br><span class="line">            int c_app_index = (position * m_page_count_per_page) + c_page_index;</span><br><span class="line">            View view = c_grid_layout.getChildAt(c_page_index);</span><br><span class="line">            if (view == null || !(view instanceof AppGridItemView)) &#123;</span><br><span class="line">            	// 第一个创建 GridLayout 中的 ItemView</span><br><span class="line">                c_app_view = (AppGridItemView) View.inflate(this.m_context, R.layout.app_item_layout, (ViewGroup) null);</span><br><span class="line">                c_app_view.setShortCutClickListener(this.m_listener);</span><br><span class="line">                GridLayout.LayoutParams c_para = new GridLayout.LayoutParams();</span><br><span class="line">                // 关键是这里，误删掉了这两行，导致出现了Bug</span><br><span class="line">//                c_para.width = 0;</span><br><span class="line">//                c_para.height = 0;</span><br><span class="line">                c_para.columnSpec = GridLayout.spec(c_page_index % m_page_colum_num, 1.0f);</span><br><span class="line">                c_para.rowSpec = GridLayout.spec(c_page_index / m_page_colum_num, 1.0f);</span><br><span class="line">                c_app_view.setLayoutParams(c_para);</span><br><span class="line">                c_grid_layout.addView(c_app_view);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                c_app_view = (AppGridItemView) view;</span><br><span class="line">            &#125;</span><br><span class="line">            if (c_app_index &lt; this.m_app_list.size()) &#123;</span><br><span class="line">                c_app_view.setAppInfo(this.m_app_list.get(c_app_index));</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                c_app_view.setAppInfo((AppInfo) null);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	// ViewPager中创建一个页面</span><br><span class="line">    public Object instantiateItem(@NonNull ViewGroup container, int position) &#123;</span><br><span class="line">        // 复用整个页面View，其结构（FrameLayout &gt; GridLayout）</span><br><span class="line">        FrameLayout c_item_layout = getFreeLayout();</span><br><span class="line">		// 针对每一页创建内容</span><br><span class="line">        refreshItemLayout(position, c_item_layout);</span><br><span class="line">        </span><br><span class="line">        this.m_use_layout_list.add(c_item_layout);</span><br><span class="line">        container.addView(c_item_layout);</span><br><span class="line">        c_item_layout.setTag(Integer.valueOf(position));</span><br><span class="line">        return c_item_layout;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>我的<strong>误删操作</strong>就是在刷新页面的<code>refreshItemLayout()</code>方法中，在创建的 GridLayout 中的 ItemView 时，将 ” itemView 的 LayoutParam 宽高设为了0“的代码删掉了，如下：</p>
+<h4 id="bug原因"><a href="#bug原因" class="headerlink" title="bug原因"></a>bug原因</h4><p>先给出Bug原因：创建GridLayout子项的布局参数中，我把 宽高==0 改为了 宽高==wrap_content。</p>
+<h4 id="追溯我写bug的起因"><a href="#追溯我写bug的起因" class="headerlink" title="追溯我写bug的起因"></a>追溯我写bug的起因</h4><p>创建的 GridLayout 中的 ItemView 时，我将 ” itemView 的 LayoutParam 宽高设为了0“ 的两行代码注释掉了，如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">                GridLayout.LayoutParams c_para = new GridLayout.LayoutParams();</span><br><span class="line">                // 关键是这里，我误删掉了这两行，导致出现了Bug</span><br><span class="line">//                c_para.width = 0;</span><br><span class="line">//                c_para.height = 0;</span><br></pre></td></tr></table></figure>
 
-<p>回想我怎么干出这样的蠢事？</p>
-<p>应该是想到了，一个属性值默认为0，就不需要额外设置了。</p>
-<p>要注意到， <code>ViewGroup.LayoutParams</code>默认构造方法中，默认的宽高的是0。</p>
-<p>实际上，<code>GridLayout.LayoutPrams</code> 的默认构造方法中，会将默认的宽高设为 -2，即<code>Wrap_Content</code>。</p>
-<p>以上为Bug的发生的过程，以下探索Bug的原因。</p>
-<p>简单来说，其原因就是因为其布局参数宽高为 0 和 wrap_content 的不同。</p>
-<p>当从全屏应用返回后，触发了一次重新测量的流程，若是参数为0时，itemView不会重新测量。</p>
-<p>从GridLayout的 onMeasure() 开始追踪</p>
+<p>回想我怎么干出这样的”蠢事”？</p>
+<p>应该是想到了，一个属性值默认为0，就不需要额外设置了呀。</p>
+<p>一般情况下， <code>ViewGroup.LayoutParams</code>　无参构造方法中，默认的宽高的是0。</p>
+<p>但是，<code>GridLayout.LayoutPrams</code> 的无参构造方法中，会将默认的宽高设为<code>wrap_content</code>。</p>
+<p>这样，因为我的想当然，将布局参数由 <code>0</code>  改为了 <code>wrap_content</code>。</p>
+<h4 id="bug-的分析-布局参数-0-和-wrap-content的不同"><a href="#bug-的分析-布局参数-0-和-wrap-content的不同" class="headerlink" title="bug 的分析　布局参数 0 和 wrap_content的不同"></a>bug 的分析　布局参数 0 和 wrap_content的不同</h4><p>直接给出结论：</p>
+<p>0 时，对应的测量模式是exactly，导致父容器大小变化时，不会重新测量自己，而wrap_content会在每次父容器大小变化时测量自己。</p>
+<p>具体针对本bug，则是在全屏应用切换时，导致 gridLayout的大小发生了变化，进而触发子项view重新测量自己。当从全屏应用返回后，触发了一次重新测量的流程，若是参数为0时，则itemView不会重新测量。</p>
+<blockquote>
+<p>其实深究这个问题，还是存在不清楚的地方：</p>
+<p>为什么进入其他全屏应用时会触发重新测量，而返回Launcher时没有触发测量？</p>
+<p>或是说，仅是从全屏应用返回后，Launcher触发了重新测量，但是测量时状态栏仍是处于隐藏的状态，故而导致此情况。</p>
+</blockquote>
+<h4 id="bug延伸，源码追踪-为什么０和-wrap-content不同"><a href="#bug延伸，源码追踪-为什么０和-wrap-content不同" class="headerlink" title="bug延伸，源码追踪,为什么０和 wrap_content不同"></a>bug延伸，源码追踪,为什么０和 wrap_content不同</h4><p>从GridLayout的 onMeasure() 开始追踪</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line">   protected void onMeasure(int widthSpec, int heightSpec) &#123;</span><br><span class="line">	...</span><br><span class="line">	</span><br><span class="line">	// 第一次测量，（1）</span><br><span class="line">       measureChildrenWithMargins(widthSpecSansPadding, heightSpecSansPadding, true);</span><br><span class="line">	// 第二次测量</span><br><span class="line">	measureChildrenWithMargins(widthSpecSansPadding, heightSpecSansPadding, false);</span><br><span class="line">	</span><br><span class="line">	// 确定当前 GridLayout 的大小</span><br><span class="line">       setMeasuredDimension(</span><br><span class="line">               resolveSizeAndState(measuredWidth,   widthSpec, 0),</span><br><span class="line">               resolveSizeAndState(measuredHeight, heightSpec, 0));</span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   </span><br><span class="line">   private void measureChildrenWithMargins(int widthSpec, int heightSpec, boolean firstPass) &#123;</span><br><span class="line">       for (int i = 0, N = getChildCount(); i &lt; N; i++) &#123;</span><br><span class="line">           View c = getChildAt(i);</span><br><span class="line">           // 这里，就是使用布局参数的地方</span><br><span class="line">           LayoutParams lp = getLayoutParams(c);</span><br><span class="line">           if (firstPass) &#123;</span><br><span class="line">			// 结合父级的spec和子View的想要的大小，来确定子View的大小 （2）</span><br><span class="line">               measureChildWithMargins2(c, widthSpec, heightSpec, lp.width, lp.height);</span><br><span class="line">           &#125; else &#123;</span><br><span class="line">               boolean horizontal = (mOrientation == HORIZONTAL);</span><br><span class="line">               Spec spec = horizontal ? lp.columnSpec : lp.rowSpec;</span><br><span class="line">               if (spec.getAbsoluteAlignment(horizontal) == FILL) &#123;</span><br><span class="line">                   Interval span = spec.span;</span><br><span class="line">                   Axis axis = horizontal ? mHorizontalAxis : mVerticalAxis;</span><br><span class="line">                   int[] locations = axis.getLocations();</span><br><span class="line">                   int cellSize = locations[span.max] - locations[span.min];</span><br><span class="line">                   int viewSize = cellSize - getTotalMargin(c, horizontal);</span><br><span class="line">                   if (horizontal) &#123;</span><br><span class="line">                   	// 若是水平的，即GridLayout限制了水平方向有固定N个，将父级width平分N分后，做为itemView的宽</span><br><span class="line">                   	// 而在垂直方向，仍尊重孩子自己申请的大小</span><br><span class="line">                       measureChildWithMargins2(c, widthSpec, heightSpec, viewSize, lp.height);</span><br><span class="line">                   &#125; else &#123;</span><br><span class="line">                       measureChildWithMargins2(c, widthSpec, heightSpec, lp.width, viewSize);</span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   private void measureChildWithMargins2(View child, int parentWidthSpec, int parentHeightSpec,</span><br><span class="line">           int childWidth, int childHeight) &#123;</span><br><span class="line">       // itemView 测量自身使用 measureSpec 的确定过程，</span><br><span class="line">       int childWidthSpec = getChildMeasureSpec(parentWidthSpec,</span><br><span class="line">               getTotalMargin(child, true), childWidth);</span><br><span class="line">       int childHeightSpec = getChildMeasureSpec(parentHeightSpec,</span><br><span class="line">               getTotalMargin(child, false), childHeight);</span><br><span class="line">       // itemView 得到 spec 后来测量自身</span><br><span class="line">       child.measure(childWidthSpec, childHeightSpec);</span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">// ViewGroup.java</span><br><span class="line">   public static int getChildMeasureSpec(int spec, int padding, int childDimension) &#123;</span><br><span class="line">   	// spec 的拆分，前2位来存储mode, 后30位存储期望的值</span><br><span class="line">       int specMode = MeasureSpec.getMode(spec);</span><br><span class="line">       int specSize = MeasureSpec.getSize(spec);</span><br><span class="line"></span><br><span class="line">       int resultSize = 0;</span><br><span class="line">       int resultMode = 0;</span><br><span class="line"></span><br><span class="line">       switch (specMode) &#123;</span><br><span class="line">       // Parent has imposed an exact size on us</span><br><span class="line">      	// 正常情况，GridLayout 传下来的是 exactly, 即gridLayout本身确定了自己的大小，不期望收到孩子的影响</span><br><span class="line">       case MeasureSpec.EXACTLY:</span><br><span class="line">       	// 这里，孩子的布局参数设置为0时，即导致孩子使用的spec为 (exactly + 0) 组成</span><br><span class="line">           if (childDimension &gt;= 0) &#123;</span><br><span class="line">               resultSize = childDimension;</span><br><span class="line">               resultMode = MeasureSpec.EXACTLY;</span><br><span class="line">           &#125; else if (childDimension == LayoutParams.MATCH_PARENT) &#123;</span><br><span class="line">               // Child wants to be our size. So be it.</span><br><span class="line">               resultSize = size;</span><br><span class="line">               resultMode = MeasureSpec.EXACTLY;</span><br><span class="line">           &#125; else if (childDimension == LayoutParams.WRAP_CONTENT) &#123;</span><br><span class="line">               // 当我们使用默认的 wrap_content时，孩子会使用的 spec 为 (at_most + size)</span><br><span class="line">               // 注意这个size为GridLayout已经确定好的size</span><br><span class="line">               resultSize = size;</span><br><span class="line">               resultMode = MeasureSpec.AT_MOST;</span><br><span class="line">           &#125;</span><br><span class="line">           break;</span><br><span class="line"></span><br><span class="line">       return MeasureSpec.makeMeasureSpec(resultSize, resultMode);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 
 <p>到这里，我们完成了从 LayoutParam的到 spec 的转变过程。</p>
@@ -592,8 +597,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -682,6 +696,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#bug描述："><span class="nav-number">1.</span> <span class="nav-text">bug描述：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#bug原因"><span class="nav-number">2.</span> <span class="nav-text">bug原因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#追溯我写bug的起因"><span class="nav-number">3.</span> <span class="nav-text">追溯我写bug的起因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#bug-的分析-布局参数-0-和-wrap-content的不同"><span class="nav-number">4.</span> <span class="nav-text">bug 的分析　布局参数 0 和 wrap_content的不同</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#bug延伸，源码追踪-为什么０和-wrap-content不同"><span class="nav-number">5.</span> <span class="nav-text">bug延伸，源码追踪,为什么０和 wrap_content不同</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -709,7 +739,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">53.2k</span>
+    <span title="Site words total count">53.3k</span>
   
 </div>
 

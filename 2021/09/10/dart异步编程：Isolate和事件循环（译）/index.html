@@ -66,7 +66,7 @@
 
 
 
-  <meta name="keywords" content="python,">
+  <meta name="keywords" content="code flutter,">
 
 
 
@@ -79,18 +79,20 @@
 
 
 
-<meta name="description" content="面向对象构造方法： 12345class Student(object):  //继承自object     def __init__(self,name,score):  //注意类中方法，必须传递一个形参self        self.name = name            self.score = score  访问限制： 12345&quot;&quot; 与java对应的public, defaul">
-<meta name="keywords" content="python">
+<meta name="description" content="原文  Dart, 尽管作为一个单线程语言，但也提供了一系列的API，诸如Future, Stream，来帮助我们编写一个现代、异步、响应式的程序。本文主要讲述Dart在底层如何支持这样的后台任务，包括 isolate, 事件循环。 IsolateIsolate，指代码运行之处，指Dart程序所拥有的内存空间，以及在其之上运行的事件循环。 在一些类似C++的语言中，支持多个线程共享一段内存空间，">
+<meta name="keywords" content="code flutter">
 <meta property="og:type" content="article">
-<meta property="og:title" content="python-note_1">
-<meta property="og:url" content="http://wjploop.github.io/2019/06/05/python-note-1/index.html">
+<meta property="og:title" content="dart异步编程：Isolate和事件循环（译）">
+<meta property="og:url" content="http://wjploop.github.io/2021/09/10/dart异步编程：Isolate和事件循环（译）/index.html">
 <meta property="og:site_name" content="萝卜平">
-<meta property="og:description" content="面向对象构造方法： 12345class Student(object):  //继承自object     def __init__(self,name,score):  //注意类中方法，必须传递一个形参self        self.name = name            self.score = score  访问限制： 12345&quot;&quot; 与java对应的public, defaul">
+<meta property="og:description" content="原文  Dart, 尽管作为一个单线程语言，但也提供了一系列的API，诸如Future, Stream，来帮助我们编写一个现代、异步、响应式的程序。本文主要讲述Dart在底层如何支持这样的后台任务，包括 isolate, 事件循环。 IsolateIsolate，指代码运行之处，指Dart程序所拥有的内存空间，以及在其之上运行的事件循环。 在一些类似C++的语言中，支持多个线程共享一段内存空间，">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-05T02:19:45.000Z">
+<meta property="og:image" content="https://dart.cn/articles/archive/images/both-queues.png">
+<meta property="og:updated_time" content="2022-09-13T11:48:30.289Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="python-note_1">
-<meta name="twitter:description" content="面向对象构造方法： 12345class Student(object):  //继承自object     def __init__(self,name,score):  //注意类中方法，必须传递一个形参self        self.name = name            self.score = score  访问限制： 12345&quot;&quot; 与java对应的public, defaul">
+<meta name="twitter:title" content="dart异步编程：Isolate和事件循环（译）">
+<meta name="twitter:description" content="原文  Dart, 尽管作为一个单线程语言，但也提供了一系列的API，诸如Future, Stream，来帮助我们编写一个现代、异步、响应式的程序。本文主要讲述Dart在底层如何支持这样的后台任务，包括 isolate, 事件循环。 IsolateIsolate，指代码运行之处，指Dart程序所拥有的内存空间，以及在其之上运行的事件循环。 在一些类似C++的语言中，支持多个线程共享一段内存空间，">
+<meta name="twitter:image" content="https://dart.cn/articles/archive/images/both-queues.png">
 
 
 
@@ -120,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://wjploop.github.io/2019/06/05/python-note-1/">
+  <link rel="canonical" href="http://wjploop.github.io/2021/09/10/dart异步编程：Isolate和事件循环（译）/">
 
 
 
 
 
-  <title>python-note_1 | 萝卜平</title>
+  <title>dart异步编程：Isolate和事件循环（译） | 萝卜平</title>
   
 
 
@@ -305,7 +307,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://wjploop.github.io/2019/06/05/python-note-1/">
+    <link itemprop="mainEntityOfPage" href="http://wjploop.github.io/2021/09/10/dart异步编程：Isolate和事件循环（译）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="萝卜平">
@@ -322,7 +324,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">python-note_1</h1>
+          <h1 class="post-title" itemprop="name headline">dart异步编程：Isolate和事件循环（译）</h1>
         
 
         <div class="post-meta">
@@ -334,8 +336,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-05T09:04:13+08:00">
-                2019-06-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-09-10T15:21:53+08:00">
+                2021-09-10
               </time>
             
 
@@ -345,28 +347,6 @@
           </span>
 
           
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
 
           
             
@@ -375,8 +355,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/06/05/python-note-1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/06/05/python-note-1/" itemprop="commentCount"></span>
+                <a href="/2021/09/10/dart异步编程：Isolate和事件循环（译）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2021/09/10/dart异步编程：Isolate和事件循环（译）/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -403,7 +383,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  729
+                  1.4k
                 </span>
               
 
@@ -419,7 +399,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  3
+                  5
                 </span>
               
             </div>
@@ -440,35 +420,37 @@
       
 
       
-        <h3 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h3><p>构造方法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span><span class="params">(object)</span>:</span>  //继承自object </span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,name,score)</span>:</span>  //注意类中方法，必须传递一个形参self</span><br><span class="line">        self.name = name    </span><br><span class="line">        self.score = score</span><br></pre></td></tr></table></figure>
-
-<p>访问限制：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">""</span> 与java对应的public, default, protected, private</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span><span class="params">()</span>:</span></span><br><span class="line">    _name  //约定，仍可从外部直接访问，但依照约定，提示使用者应该将其视为私有变量</span><br><span class="line">    __name  //解释器将其编译成 _Student__name, 使用者不能直接使用__name来访问了，可以说，将门槛提更高来告知限制</span><br></pre></td></tr></table></figure>
-
-<p>继承多态：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span><span class="params">()</span>:</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'go go go ...`)</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">class Duck(Animal):</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    def run(self):</span></span><br><span class="line"><span class="string">        print('</span>duck run slowly<span class="string">')</span></span><br></pre></td></tr></table></figure>
-
-<p>Duck 可以拥有父类的成员，概念和java一样<br>只不过的，作为动态类型的python，在方法调用时，假设要传入一个Animal类型来使用其run方法。<br>java要求其参数必须是Animal的类型实例，而python不做要求，只要其对象实例拥有run方法既可。</p>
-<p>判断对象是否是某个类的实例，可以使用 isInstance(object,Class) 来判断object是否是Class的类型</p>
-<p>获取对象信息：</p>
-<p>使用type(), 判断对象类型。  </p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(<span class="number">123</span>)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">int</span>'&gt;</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">&gt;&gt;&gt; <span class="title">type</span><span class="params">(<span class="string">'123'</span>)</span></span></span><br><span class="line"><span class="class">&lt;<span class="title">class</span> `<span class="title">str</span>'&gt;</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">Animal</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span> </span><br><span class="line"></span><br><span class="line">a = Animal()</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>type(a) </span><br><span class="line"></span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">__main__</span>.<span class="title">Animal</span>'&gt;   //即一个<span class="title">main</span>线上的<span class="title">Animal</span>类型</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">额外的，还可以判断一个对象是否是函数类型。</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"><span class="title">import</span> <span class="title">types</span></span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"><span class="title">def</span> <span class="title">fn</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">type(fn) == types.FunctionType  //<span class="keyword">return</span> <span class="literal">True</span></span><br></pre></td></tr></table></figure>
-
-<p>使用isInstance(obj,cls) 判断obj是否是cls类型</p>
-<p>使用 dir() 列出一个对象的所有属性和方法，返回一个字符串的list</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>dir(<span class="string">'123'</span>)</span><br><span class="line">[<span class="string">'__add__'</span>, <span class="string">'__class__'</span>, <span class="string">'__contains__'</span>, <span class="string">'__delattr__'</span>, <span class="string">'__dir__'</span>, <span class="string">'__doc__'</span>, <span class="string">'__eq__'</span>, <span class="string">'__format__'</span>, <span class="string">'__ge__'</span>,</span><br><span class="line"> <span class="string">'__getattribute__'</span>, <span class="string">'__getitem__'</span>, <span class="string">'__getnewargs__'</span>, <span class="string">'__gt__'</span>, <span class="string">'__hash__'</span>, <span class="string">'__init__'</span>, <span class="string">'__init_subclass__'</span>,</span><br><span class="line">  <span class="string">'__iter__'</span>, <span class="string">'__le__'</span>, <span class="string">'__len__'</span>, <span class="string">'__lt__'</span>, <span class="string">'__mod__'</span>, <span class="string">'__mul__'</span>, <span class="string">'__ne__'</span>, <span class="string">'__new__'</span>, <span class="string">'__reduce__'</span>, </span><br><span class="line">  <span class="string">'__reduce_ex__'</span>, <span class="string">'__repr__'</span>, <span class="string">'__rmod__'</span>, <span class="string">'__rmul__'</span>, <span class="string">'__setattr__'</span>, <span class="string">'__sizeof__'</span>, <span class="string">'__str__'</span>, <span class="string">'__subclasshook__'</span>,</span><br><span class="line">   <span class="string">'capitalize'</span>, <span class="string">'casefold'</span>, <span class="string">'center'</span>, <span class="string">'count'</span>, <span class="string">'encode'</span>, <span class="string">'endswith'</span>, <span class="string">'expandtabs'</span>, <span class="string">'find'</span>, <span class="string">'format'</span>, <span class="string">'format_map'</span>, </span><br><span class="line">   <span class="string">'index'</span>, <span class="string">'isalnum'</span>, <span class="string">'isalpha'</span>, <span class="string">'isascii'</span>, <span class="string">'isdecimal'</span>, <span class="string">'isdigit'</span>, <span class="string">'isidentifier'</span>, <span class="string">'islower'</span>, <span class="string">'isnumeric'</span>, </span><br><span class="line">   <span class="string">'isprintable'</span>, <span class="string">'isspace'</span>, <span class="string">'istitle'</span>, <span class="string">'isupper'</span>, <span class="string">'join'</span>, <span class="string">'ljust'</span>, <span class="string">'lower'</span>, <span class="string">'lstrip'</span>, <span class="string">'maketrans'</span>, <span class="string">'partition'</span>, </span><br><span class="line">   <span class="string">'replace'</span>, <span class="string">'rfind'</span>, <span class="string">'rindex'</span>, <span class="string">'rjust'</span>, <span class="string">'rpartition'</span>, <span class="string">'rsplit'</span>, <span class="string">'rstrip'</span>, <span class="string">'split'</span>, <span class="string">'splitlines'</span>, <span class="string">'startswith'</span>, </span><br><span class="line">   <span class="string">'strip'</span>, <span class="string">'swapcase'</span>, <span class="string">'title'</span>, <span class="string">'translate'</span>, <span class="string">'upper'</span>, <span class="string">'zfill'</span>]</span><br></pre></td></tr></table></figure>
-
-<p>有很多内置方法，比如<em>_add</em> ，字符串拼接时，就是调用了这个方法，使用上，直接使用 ‘+’ ，重载操作符。<br>由此，可以联想到，在我们自定义的类中，也可以重载这些方法。</p>
-<p>为了方便，判断一个对象是否某方法或属性，我们可以用 getattr(), setattr(), hasattr()</p>
-<p>比如： </p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">readImage</span><span class="params">(fp)</span>:</span>      //判断对象fp是否read方法，若是有读取数据返回，否则返回<span class="literal">None</span></span><br><span class="line">    <span class="keyword">if</span>(hasattr(fp, <span class="string">'read'</span>):</span><br><span class="line">        <span class="keyword">return</span> readData(fp)</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
-
-<p>类属性，实例属性</p>
-<p>感觉这个有点神坑啊</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span><span class="params">()</span>:</span>        //定义了一个Student类型，并赋予了一个类属性 name</span><br><span class="line">    name = <span class="string">'student'</span></span><br><span class="line">    </span><br><span class="line">s = Student();  //创建一个实例</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.name      //通过实例，可以访问到类属性</span><br><span class="line">student</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.name = <span class="string">'wolf'</span> //定义一个对象属性，而且与类属性重名</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.name  //访问该属性，实例属性优先于类属性。（实例属性屏蔽类属性）</span><br><span class="line">wolf</span><br></pre></td></tr></table></figure>
-
-<p>实例属性，尽量不要定义跟类属性一样了</p>
+        <blockquote>
+<p><a href="https://medium.com/dartlang/dart-asynchronous-programming-isolates-and-event-loops-bffc3e296a6a" target="_blank" rel="noopener">原文</a></p>
+</blockquote>
+<p>Dart, 尽管作为一个单线程语言，但也提供了一系列的API，诸如Future, Stream，来帮助我们编写一个现代、异步、响应式的程序。本文主要讲述Dart在底层如何支持这样的后台任务，包括 isolate, 事件循环。</p>
+<h2 id="Isolate"><a href="#Isolate" class="headerlink" title="Isolate"></a>Isolate</h2><p>Isolate，指代码运行之处，指Dart程序所拥有的内存空间，以及在其之上运行的事件循环。</p>
+<p>在一些类似C++的语言中，支持多个线程共享一段内存空间，每个线程可以运行你想要的代码块（堆、方法区共享）。而在dart中，一个线程就是一个isolate和其持有的内存区，其线程就只是一直在处理事件。</p>
+<p>通常一个Dart程序只会开启一个Isolate, 但也支持开启多个。若是有一个耗时任务在主线程中执行，会导致app丢帧，就可以用 <code>Isolsate.spawn()</code>, <code>Flutter的 compute()</code>方法，两者都会开启一个新的Isolate， 使得主Isolate忙于重建、渲染widget。</p>
+<p>新的Isolate拥有自己的事件循环和内存空间，即使是由父类孵化(Spawn)出来的，父级也不允许访问孵化出来的Isolate。也就如其名所言，Isolate岛屿之意。</p>
+<p>实际上，Isolate之间的交互只能通过相互发送信息。，相比于Java/C++不同线程共享一个内存空间的机制而言，这种缺乏共享内存的设计可能看起来过于严格，效率不高。但Dart定位为客户端语言来说，却也有一定好处。比如，内存分配，垃圾回收不必需要使用锁了。因为只有一个线程，对于一个段内存空间而言，在某一个时刻，永远只会有一个CPU在访问。这样的特点，非常适用于客户端程序，因为需要频繁的重建、销毁原来的widget对象。</p>
+<h2 id="Event-Loops-事件循环"><a href="#Event-Loops-事件循环" class="headerlink" title="Event Loops 事件循环"></a>Event Loops 事件循环</h2><p>以上简单介绍了Isolate，让我们继续探究一个单线程如何实现异步的，即事件循环。</p>
+<p>想象一个app的生命周期，包括了开始、结束、和中间一些系列事件的发生，包括io事件、用户点击事件等。</p>
+<p>你的程序并不能预测这些事件何时会发生，所以你只能开始时定义好收到什么事件时，该如何处理。</p>
+<blockquote>
+<blockquote>
+<p>不想继续翻译了，后面重复一个概念，告诉我们，所有无论是启动一个Callback、或开启一个Future，都是在添加一个事件处理到事件循环中，当其被调用时，只是收到了一个事件。</p>
+</blockquote>
+</blockquote>
+<h2 id="本人后续思考补充"><a href="#本人后续思考补充" class="headerlink" title="本人后续思考补充"></a>本人后续思考补充</h2><h3 id="关于dart单线程的设计在客户端中具有优势？"><a href="#关于dart单线程的设计在客户端中具有优势？" class="headerlink" title="关于dart单线程的设计在客户端中具有优势？"></a>关于dart单线程的设计在客户端中具有优势？</h3><p>感觉优势不是很大呀。即便在支持多线程的语言的Android中，管理UI会由唯一的UI线程来处理。即便是对于SurfaceView的场景来说，有了额外的线程来绘制UI，在展示时还是得交由UI线程保证每一帧的有序。但，这应该不是dart所提到相对优势的点，多个线程同时处理一个UI的框架，似乎没有遇到过。</p>
+<h3 id="dart有俩个队列，micro-event，为啥Android只有一个队列呢？"><a href="#dart有俩个队列，micro-event，为啥Android只有一个队列呢？" class="headerlink" title="dart有俩个队列，micro, event，为啥Android只有一个队列呢？"></a>dart有俩个队列，micro, event，为啥Android只有一个队列呢？</h3><p>问答这个问题，得先了解dart为什么要分了俩个队列，其作用是什么？</p>
+<p><img src="https://dart.cn/articles/archive/images/both-queues.png" alt="flowchart: main() -&gt; microtasks -&gt; next event -&gt; microtasks -&gt; ..."></p>
+<p>通过这个图，可知，microtask的优先级很高，每次从event队列取出一task时，会先把micro队列的task执行完。</p>
+<p>假设我们 new 俩个future，相当于把俩个task A, B 依次放入到 event队列中，这里，我们可以保证 A &gt; B的顺序。</p>
+<p>在执行A时，我们又 new 了 task C, 那么，可以保证顺序 A &gt; B &gt; C。</p>
+<p>若是在执行 task A时，需要执行一个比较急迫的任务 urgentC，需要保证 A &gt; ugentC &gt; B,  故需要将urgentC放入到micro队列。</p>
+<p>为什么会有这么一个需求呢？因为我们不知道后续的B需要执行多久，或是A，B同时修改一个状态时，我们的 urgentC需要依赖A修改后的状态。或是，我们在执行A时，发现不需要后续的B执行了。这个有点像Android Handler的removeMessage，比如急着将对象引用断开。可以注意到的是，这个急迫的 urgentC的队列为啥叫 microtask queue, 相比于急迫，更重要的是要保证该任务是轻量的。 实际上很多task放入event队列，比如响应用户的事件。</p>
+<p>简单说，microd task就是保证该任务会优先于后续的event task执行。既然存在这么一个需求，dart存在micro task方案，那么在Android中肯定也有对应的方案。是的，MessageQueue存在一个同步屏障的概念，sync barrier。postSyncBarrier() 有这么一段注释:</p>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;      * This method is used to immediately postpone execution of all subsequently posted</span><br><span class="line">&gt;      * synchronous messages until a condition is met that releases the barrier.</span><br><span class="line">&gt;      * Asynchronous messages (see &#123;@link Message#isAsynchronous&#125; are exempt from the barrier</span><br><span class="line">&gt;      * and continue to be processed as usual.</span><br><span class="line">&gt; </span><br><span class="line">&gt;       该方法用于推迟处理后续提交同步消息，直至同步屏障的释放。而异步消息则免于其干扰正常执行。</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>在Android中急迫的task是根据 异步任务和同步屏障配合而生效的，入队列的任务，当 barrier出现时，先优先执行异步消息。</p>
+<p>异步任务与dart的micro task有一点区别，dart一旦发布micro task，必将优先一个个执行完。而android的异步任务，其优先性的是依赖barrier而生效的，可以说异步任务更为灵活点。</p>
 
       
     </div>
@@ -486,7 +468,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/python/" rel="tag"># python</a>
+            <a href="/tags/code-flutter/" rel="tag"># code flutter</a>
           
         </div>
       
@@ -499,8 +481,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/04/27/android-note-0/" rel="next" title="android_note_0">
-                <i class="fa fa-chevron-left"></i> android_note_0
+              <a href="/2021/08/28/谈谈对声明式框架的理解/" rel="next" title="谈谈对声明式框架的理解">
+                <i class="fa fa-chevron-left"></i> 谈谈对声明式框架的理解
               </a>
             
           </div>
@@ -509,8 +491,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/08/11/ViewPager/" rel="prev" title="ViewPager">
-                ViewPager <i class="fa fa-chevron-right"></i>
+              <a href="/2022/04/06/平静的感觉/" rel="prev" title="平静的感觉">
+                平静的感觉 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -674,7 +656,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#面向对象"><span class="nav-number">1.</span> <span class="nav-text">面向对象</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Isolate"><span class="nav-number">1.</span> <span class="nav-text">Isolate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Event-Loops-事件循环"><span class="nav-number">2.</span> <span class="nav-text">Event Loops 事件循环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本人后续思考补充"><span class="nav-number">3.</span> <span class="nav-text">本人后续思考补充</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#关于dart单线程的设计在客户端中具有优势？"><span class="nav-number">3.1.</span> <span class="nav-text">关于dart单线程的设计在客户端中具有优势？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dart有俩个队列，micro-event，为啥Android只有一个队列呢？"><span class="nav-number">3.2.</span> <span class="nav-text">dart有俩个队列，micro, event，为啥Android只有一个队列呢？</span></a></li></ol></li></ol></div>
             
 
           </div>
