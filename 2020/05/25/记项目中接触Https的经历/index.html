@@ -66,7 +66,7 @@
 
 
 
-  <meta name="keywords" content="经历,">
+  <meta name="keywords" content="网络,">
 
 
 
@@ -80,14 +80,14 @@
 
 
 <meta name="description" content="服务端接入了一个加速服务，导致Android端请求不了服务器，抛出了该异常： 1javax.net.ssl.SSLHandshakeException: java.security.cert.CertPathValidatorException: Trust anchor for certification path not found.  初看，SSL握手失败，原因：在该信任的证书源中未找到该证">
-<meta name="keywords" content="经历">
+<meta name="keywords" content="网络">
 <meta property="og:type" content="article">
 <meta property="og:title" content="记项目中接触Https的经历">
 <meta property="og:url" content="http://wjploop.github.io/2020/05/25/记项目中接触Https的经历/index.html">
 <meta property="og:site_name" content="萝卜平">
 <meta property="og:description" content="服务端接入了一个加速服务，导致Android端请求不了服务器，抛出了该异常： 1javax.net.ssl.SSLHandshakeException: java.security.cert.CertPathValidatorException: Trust anchor for certification path not found.  初看，SSL握手失败，原因：在该信任的证书源中未找到该证">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-06-13T08:14:16.233Z">
+<meta property="og:updated_time" content="2022-09-14T01:53:41.153Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="记项目中接触Https的经历">
 <meta name="twitter:description" content="服务端接入了一个加速服务，导致Android端请求不了服务器，抛出了该异常： 1javax.net.ssl.SSLHandshakeException: java.security.cert.CertPathValidatorException: Trust anchor for certification path not found.  初看，SSL握手失败，原因：在该信任的证书源中未找到该证">
@@ -448,7 +448,7 @@ IOS存在2个tcp连接，而android却有6，7个连接。</p>
 发现还是没有解决问题</p>
 </li>
 </ol>
-<p>后来啊，第三方加速服务那边说，捉包查看tcp连接时，存在RST包，怀疑是SSL的问题，我回想到原来处理证书的问题，
+<p>后来，第三方加速服务那边说，捉包查看tcp连接时，存在RST包，怀疑是SSL的问题，我回想到原来处理证书的问题，
 将忽略验证的方式改成了方案一App提供一个内置的证书，解决问题。</p>
 <h3 id="Https-回顾总结"><a href="#Https-回顾总结" class="headerlink" title="Https 回顾总结"></a>Https 回顾总结</h3><p>依赖非对称加密<br>公钥私钥，一者加密的内容需要另一方解密，服务器保存私钥，客户端保存公钥<br>这样，这样客户端发送的信息只有服务才能解密查看</p>
 <h3 id="中间人攻击"><a href="#中间人攻击" class="headerlink" title="中间人攻击"></a>中间人攻击</h3><p>正常是C向服务器请求pub_S，然后C使用这个公钥pub_S与服务器通信<br>可以若是存在一个中间人M在C和S之间,<br>当请求通信时，中间人自己生成了一对密钥，pub_M,pri_M,这样，客户端使用了pub_m来加密，而中间人转发请求时用了pub_m加密，这样，通信内容全被中间知道了。</p>
@@ -490,7 +490,7 @@ C根据CA验证服务器的合法性  </p>
       
         <div class="post-tags">
           
-            <a href="/tags/经历/" rel="tag"># 经历</a>
+            <a href="/tags/网络/" rel="tag"># 网络</a>
           
         </div>
       
@@ -597,7 +597,7 @@ C根据CA验证服务器的合法性  </p>
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -608,7 +608,7 @@ C根据CA验证服务器的合法性  </p>
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -619,7 +619,7 @@ C根据CA验证服务器的合法性  </p>
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -712,7 +712,7 @@ C根据CA验证服务器的合法性  </p>
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">53.3k</span>
+    <span title="Site words total count">54.2k</span>
   
 </div>
 

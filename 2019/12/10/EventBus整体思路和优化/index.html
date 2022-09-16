@@ -66,7 +66,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="android,">
 
 
 
@@ -80,14 +80,14 @@
 
 
 <meta name="description" content="整体思路一个最简化的订阅，注册，发布事件 发了一个事件，如何回调相关注册的方法呢？  最重要的Map，subscriptionsByEventType，一个事件对应多个订阅，订阅包含了订阅者和订阅方法。  一个订阅包含两个信息，谁去做（订阅者），做什么（交给用户实现的部分），怎么做（线程如何调度，threadMode）  12345678910111213141516//根据事件找到订阅priva">
-<meta name="keywords" content="滴滴哒哒">
+<meta name="keywords" content="android">
 <meta property="og:type" content="article">
 <meta property="og:title" content="EventBus整体思路和优化">
 <meta property="og:url" content="http://wjploop.github.io/2019/12/10/EventBus整体思路和优化/index.html">
 <meta property="og:site_name" content="萝卜平">
 <meta property="og:description" content="整体思路一个最简化的订阅，注册，发布事件 发了一个事件，如何回调相关注册的方法呢？  最重要的Map，subscriptionsByEventType，一个事件对应多个订阅，订阅包含了订阅者和订阅方法。  一个订阅包含两个信息，谁去做（订阅者），做什么（交给用户实现的部分），怎么做（线程如何调度，threadMode）  12345678910111213141516//根据事件找到订阅priva">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-12-10T11:46:31.923Z">
+<meta property="og:updated_time" content="2022-09-14T01:53:41.151Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="EventBus整体思路和优化">
 <meta name="twitter:description" content="整体思路一个最简化的订阅，注册，发布事件 发了一个事件，如何回调相关注册的方法呢？  最重要的Map，subscriptionsByEventType，一个事件对应多个订阅，订阅包含了订阅者和订阅方法。  一个订阅包含两个信息，谁去做（订阅者），做什么（交给用户实现的部分），怎么做（线程如何调度，threadMode）  12345678910111213141516//根据事件找到订阅priva">
@@ -425,11 +425,9 @@
 
 
 
-
 <h3 id="关于注销订阅"><a href="#关于注销订阅" class="headerlink" title="关于注销订阅"></a>关于注销订阅</h3><p> 订阅建立后，<code>订阅者</code>接受相关的<code>事件</code>的订阅就会被触发，做该做的事了，可若是订阅者不想订阅了，不想继续受到该之前订阅的事件了。（或者，生命周期结束了，若不注销订阅，EventBus实例会保留对该订阅者的引用，所以要注销该订阅者的所有订阅）</p>
 <p> 是的，一个订阅者可以拥有多个订阅，所以，为了注销该订阅者，还得引入</p>
  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 一个订阅者对应订阅了什么事件类型</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;Object, List&lt;Class&lt;?&gt;&gt;&gt; typesBySubscriber;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1. 注册时，添加该订阅者，以及该订阅者订阅了什么关系（方便注销时，改动subscriptionsByEventType）</span></span><br><span class="line">   			List&lt;Class&lt;?&gt;&gt; subscribedEvents = typesBySubscriber.get(subscriber);</span><br><span class="line">        <span class="keyword">if</span> (subscribedEvents == <span class="keyword">null</span>) &#123;</span><br><span class="line">            subscribedEvents = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">            typesBySubscriber.put(subscriber, subscribedEvents);</span><br><span class="line">        &#125;</span><br><span class="line">			  subscribedEvents.add(eventType);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 注销时</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">unregister</span><span class="params">(Object subscriber)</span> </span>&#123;</span><br><span class="line">        List&lt;Class&lt;?&gt;&gt; subscribedTypes = typesBySubscriber.get(subscriber);</span><br><span class="line">        <span class="keyword">if</span> (subscribedTypes != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (Class&lt;?&gt; eventType : subscribedTypes) &#123;</span><br><span class="line">                unsubscribeByEventType(subscriber, eventType); <span class="comment">//</span></span><br><span class="line">            &#125;</span><br><span class="line">            typesBySubscriber.remove(subscriber);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            logger.log(Level.WARNING, <span class="string">"Subscriber to unregister was not registered before: "</span> + subscriber.getClass());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 3. 注销时，内部调用，迫使subscriptionsByEventType移除该订阅者中的订阅</span></span><br><span class="line">    <span class="comment">/** Only updates subscriptionsByEventType, not typesBySubscriber! Caller must update typesBySubscriber. */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">unsubscribeByEventType</span><span class="params">(Object subscriber, Class&lt;?&gt; eventType)</span> </span>&#123;</span><br><span class="line">        List&lt;Subscription&gt; subscriptions = subscriptionsByEventType.get(eventType);</span><br><span class="line">        <span class="keyword">if</span> (subscriptions != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">int</span> size = subscriptions.size();</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">                Subscription subscription = subscriptions.get(i);</span><br><span class="line">                <span class="keyword">if</span> (subscription.subscriber == subscriber) &#123;</span><br><span class="line">                    subscription.active = <span class="keyword">false</span>;</span><br><span class="line">                    subscriptions.remove(i);</span><br><span class="line">                    i--;</span><br><span class="line">                    size--;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
 
 
 
@@ -439,16 +437,13 @@
 <p> 而寻找时</p>
  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (ignoreGeneratedIndex) &#123;</span><br><span class="line">            subscriberMethods = findUsingReflection(subscriberClass);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            subscriberMethods = findUsingInfo(subscriberClass);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
 
-
 <p> 可以看到有一个变量，<code>ignoreGeneratedIndex</code> 是否忽视生成索引，默认情况为false，即会尝试从索引查找的。</p>
 <p> （在这里，若是没有配置生成索引，其实在配置时设置忽略索引，避免多走一些不必要的路）  </p>
 <p> 而进入findUsingInfo()</p>
  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> List&lt;SubscriberMethod&gt; <span class="title">findUsingInfo</span><span class="params">(Class&lt;?&gt; subscriberClass)</span> </span>&#123;</span><br><span class="line">    FindState findState = prepareFindState();</span><br><span class="line">    findState.initForSubscriber(subscriberClass);</span><br><span class="line">    <span class="keyword">while</span> (findState.clazz != <span class="keyword">null</span>) &#123;</span><br><span class="line">        findState.subscriberInfo = getSubscriberInfo(findState);<span class="comment">//尝试获取索引生成信息</span></span><br><span class="line">        <span class="keyword">if</span> (findState.subscriberInfo != <span class="keyword">null</span>) &#123;	<span class="comment">//若有索引，则可直接添加该方法了</span></span><br><span class="line">            SubscriberMethod[] array = findState.subscriberInfo.getSubscriberMethods();</span><br><span class="line">            <span class="keyword">for</span> (SubscriberMethod subscriberMethod : array) &#123;</span><br><span class="line">                <span class="keyword">if</span> (findState.checkAdd(subscriberMethod.method, subscriberMethod.eventType)) &#123;</span><br><span class="line">                    findState.subscriberMethods.add(subscriberMethod);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;	<span class="comment">//否则，还是得倒退到使用索引的情况。</span></span><br><span class="line">            findUsingReflectionInSingleClass(findState);</span><br><span class="line">        &#125;</span><br><span class="line">        findState.moveToSuperclass();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> getMethodsAndRelease(findState);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-
 <p> 而findState中的subscriberInfo是什么呢？</p>
  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/** Base class for generated index classes created by annotation processing. */</span><br><span class="line">public interface SubscriberInfo &#123;</span><br><span class="line">    Class&lt;?&gt; getSubscriberClass();  //订阅者该类的Class作为Key</span><br><span class="line"></span><br><span class="line">    SubscriberMethod[] getSubscriberMethods(); //标记有@Subscriber的方法</span><br><span class="line"></span><br><span class="line">    SubscriberInfo getSuperSubscriberInfo();  //该订阅者父类的信息</span><br><span class="line"></span><br><span class="line">    boolean shouldCheckSuperclass();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 
 <p> 可以看到，这个类定义了EventBus对于一个订阅者，它关注什么信息  </p>
 <p> 注意，文档中说明，对于索引使用是有条件的，如下</p>
@@ -466,11 +461,9 @@
 <p> eventInheritance默认是为true的，支持事件的继承性。</p>
  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//发布一个事件</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">postSingleEvent</span><span class="params">(Object event, PostingThreadState postingState)</span> <span class="keyword">throws</span> Error </span>&#123;</span><br><span class="line">    Class&lt;?&gt; eventClass = event.getClass();	</span><br><span class="line">    <span class="keyword">boolean</span> subscriptionFound = <span class="keyword">false</span>;</span><br><span class="line">    <span class="keyword">if</span> (eventInheritance) &#123;</span><br><span class="line">        List&lt;Class&lt;?&gt;&gt; eventTypes = lookupAllEventTypes(eventClass);	<span class="comment">//寻找所有该类型的所有父类</span></span><br><span class="line">        <span class="keyword">int</span> countTypes = eventTypes.size();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> h = <span class="number">0</span>; h &lt; countTypes; h++) &#123;</span><br><span class="line">            Class&lt;?&gt; clazz = eventTypes.get(h);</span><br><span class="line">            subscriptionFound |= postSingleEventForEventType(event, postingState, clazz);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        subscriptionFound = postSingleEventForEventType(event, postingState, eventClass);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//d</span></span><br><span class="line">    <span class="comment">/** Looks up all Class objects including super classes and interfaces. Should also work for interfaces. */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> List&lt;Class&lt;?&gt;&gt; lookupAllEventTypes(Class&lt;?&gt; eventClass) &#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (eventTypesCache) &#123;</span><br><span class="line">            List&lt;Class&lt;?&gt;&gt; eventTypes = eventTypesCache.get(eventClass);</span><br><span class="line">            <span class="keyword">if</span> (eventTypes == <span class="keyword">null</span>) &#123;</span><br><span class="line">                eventTypes = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">                Class&lt;?&gt; clazz = eventClass;</span><br><span class="line">                <span class="keyword">while</span> (clazz != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    eventTypes.add(clazz); <span class="comment">//添加本身</span></span><br><span class="line">                    addInterfaces(eventTypes, clazz.getInterfaces());<span class="comment">//添加实现的接口</span></span><br><span class="line">                    clazz = clazz.getSuperclass();	<span class="comment">//继续遍历其父类</span></span><br><span class="line">                &#125;</span><br><span class="line">                eventTypesCache.put(eventClass, eventTypes);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> eventTypes;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 
-
 <p> 若是在项目中不会用到事件类型的继承性，也能省不少</p>
 <p> 比如，事件类型类为String.class，会迭代5次</p>
  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">eventTypes = &#123;ArrayList@908&#125;  size = 5</span><br><span class="line"> 0 = &#123;Class@322&#125; &quot;class java.lang.String&quot;</span><br><span class="line"> 1 = &#123;Class@325&#125; &quot;interface java.io.Serializable&quot;</span><br><span class="line"> 2 = &#123;Class@324&#125; &quot;interface java.lang.Comparable&quot;</span><br><span class="line"> 3 = &#123;Class@323&#125; &quot;interface java.lang.CharSequence&quot;</span><br><span class="line"> 4 = &#123;Class@326&#125; &quot;class java.lang.Object&quot;</span><br></pre></td></tr></table></figure>
-
 
 
 
@@ -489,6 +482,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag"># android</a>
+          
+        </div>
       
 
       
@@ -593,7 +592,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -604,7 +603,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -615,7 +614,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -708,7 +707,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">53.3k</span>
+    <span title="Site words total count">54.2k</span>
   
 </div>
 

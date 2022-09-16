@@ -66,7 +66,7 @@
 
 
 
-  <meta name="keywords" content="Leetcode,">
+  <meta name="keywords" content="算法,">
 
 
 
@@ -80,14 +80,14 @@
 
 
 <meta name="description" content="题意提取信封有两属性，宽（w），高（h）;信封a套入信封b的要求: w[a] &amp;lt; w[b] &amp;amp;&amp;amp; h[a] &amp;lt; h[b] 求，在一堆信封中，最多能有多少个个信封可以套在一起？ 解题思路基于生活经验的朴素思路：既然想要套更多的信封，那么先找最小的信封出来，准没错，找出宽高最小的信封a。 然后，再选一个 “最贴近a，又比a大” 的信封。重复该步骤，积累的信封个数就是题目所求">
-<meta name="keywords" content="Leetcode">
+<meta name="keywords" content="算法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="朴素的思路-俄罗斯套娃">
 <meta property="og:url" content="http://wjploop.github.io/2021/03/05/朴素的思路-俄罗斯套娃/index.html">
 <meta property="og:site_name" content="萝卜平">
 <meta property="og:description" content="题意提取信封有两属性，宽（w），高（h）;信封a套入信封b的要求: w[a] &amp;lt; w[b] &amp;amp;&amp;amp; h[a] &amp;lt; h[b] 求，在一堆信封中，最多能有多少个个信封可以套在一起？ 解题思路基于生活经验的朴素思路：既然想要套更多的信封，那么先找最小的信封出来，准没错，找出宽高最小的信封a。 然后，再选一个 “最贴近a，又比a大” 的信封。重复该步骤，积累的信封个数就是题目所求">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2021-03-05T12:05:00.532Z">
+<meta property="og:updated_time" content="2022-09-14T01:53:41.156Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="朴素的思路-俄罗斯套娃">
 <meta name="twitter:description" content="题意提取信封有两属性，宽（w），高（h）;信封a套入信封b的要求: w[a] &amp;lt; w[b] &amp;amp;&amp;amp; h[a] &amp;lt; h[b] 求，在一堆信封中，最多能有多少个个信封可以套在一起？ 解题思路基于生活经验的朴素思路：既然想要套更多的信封，那么先找最小的信封出来，准没错，找出宽高最小的信封a。 然后，再选一个 “最贴近a，又比a大” 的信封。重复该步骤，积累的信封个数就是题目所求">
@@ -381,7 +381,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  981
+                  977
                 </span>
               
 
@@ -446,7 +446,7 @@ w[a] &lt; w[b] &amp;&amp; h[a] &lt; h[b]</p>
 <p>[1,7], [2,3], [3,4] </p>
 </blockquote>
 <p>我们选择了[2,3]作为第一个信封，因为选择它之后，我们可以再套一个[3,4]，而其它两个信封着都没有这样的“额外好处”，或者说其他两信封给的“额外好处”为0，可以说，
-我们是根据它们给的“好处值”的大小来做出选择的，我们定义每个信封的好处值<code>goods[i]</code>为，选择它之后增加了多少个信封。
+我们是根据它们给的“好处值”的大小来做出选择的，我们定义每个信封的好处值<code>goods[i]</code>为，选择它之后最终可以有多少个信封。
 如以上用例的好处值分别为：</p>
 <blockquote>
 <p>1, 2, 1</p>
@@ -457,10 +457,10 @@ w[a] &lt; w[b] &amp;&amp; h[a] &lt; h[b]</p>
 <p>goods[n-1] = 1 </p>
 <p>goods[k] = 在后面的信封中，选择比envelopes[k]大的集合中选择好处值最大的 good+1</p>
 <blockquote>
-<p>哇，发现描述起来好难~</p>
+<p>啊，发现描述起来好难~</p>
 </blockquote>
 <p>代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxEnvelopes</span><span class="params">(<span class="keyword">int</span>[][] envelopes)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (envelopes.length == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> n = envelopes.length;</span><br><span class="line">        <span class="comment">// 将信封按宽优先升序排序</span></span><br><span class="line">        Arrays.sort(envelopes, (o1, o2) -&gt; o1[<span class="number">0</span>] == o2[<span class="number">0</span>] ? Integer.compare(o1[<span class="number">1</span>], o2[<span class="number">1</span>]) : Integer.compare(o1[<span class="number">0</span>], o2[<span class="number">0</span>]));</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span>[] goods = <span class="keyword">new</span> <span class="keyword">int</span>[n];</span><br><span class="line">        goods[n - <span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = n - <span class="number">2</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">            <span class="keyword">int</span> good = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = n - <span class="number">1</span>; j &gt; i; j--) &#123;</span><br><span class="line">                <span class="keyword">if</span> (envelopes[j][<span class="number">0</span>] &gt; envelopes[i][<span class="number">0</span>]) &#123;   <span class="comment">// 比较宽</span></span><br><span class="line">                    <span class="keyword">if</span> (envelopes[j][<span class="number">1</span>] &gt; envelopes[i][<span class="number">1</span>]) &#123;    <span class="comment">// 比较高</span></span><br><span class="line">                        good = Math.max(good, goods[j]);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;   <span class="comment">// 寻找比信封i大的信封，信封j不可能时，前面的信封宽更小，</span></span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            goods[i] = good + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> goods : goods) &#123;</span><br><span class="line">            res = Math.max(res, goods);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxEnvelopes</span><span class="params">(<span class="keyword">int</span>[][] envelopes)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (envelopes.length == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> n = envelopes.length;</span><br><span class="line">        <span class="comment">// 将信封按宽优先升序排序</span></span><br><span class="line">        Arrays.sort(envelopes, (o1, o2) -&gt; o1[<span class="number">0</span>] == o2[<span class="number">0</span>] ? Integer.compare(o1[<span class="number">1</span>], o2[<span class="number">1</span>]) : Integer.compare(o1[<span class="number">0</span>], o2[<span class="number">0</span>]));</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span>[] goods = <span class="keyword">new</span> <span class="keyword">int</span>[n];</span><br><span class="line">        goods[n - <span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = n - <span class="number">2</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">            <span class="keyword">int</span> good = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = n - <span class="number">1</span>; j &gt; i; j--) &#123;</span><br><span class="line">                <span class="keyword">if</span> (envelopes[j][<span class="number">0</span>] &gt; envelopes[i][<span class="number">0</span>]) &#123;   <span class="comment">// 比较宽</span></span><br><span class="line">                    <span class="keyword">if</span> (envelopes[j][<span class="number">1</span>] &gt; envelopes[i][<span class="number">1</span>]) &#123;    <span class="comment">// 比较高</span></span><br><span class="line">                        good = Math.max(good, goods[j]);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;   <span class="comment">// 寻找比信封i大的信封，信封j不可能时，前面的信封宽更小，</span></span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            goods[i] = good + <span class="number">1</span>;</span><br><span class="line">            res = Math.max(res, good);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
       
@@ -479,7 +479,7 @@ w[a] &lt; w[b] &amp;&amp; h[a] &lt; h[b]</p>
       
         <div class="post-tags">
           
-            <a href="/tags/Leetcode/" rel="tag"># Leetcode</a>
+            <a href="/tags/算法/" rel="tag"># 算法</a>
           
         </div>
       
@@ -586,7 +586,7 @@ w[a] &lt; w[b] &amp;&amp; h[a] &lt; h[b]</p>
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -597,7 +597,7 @@ w[a] &lt; w[b] &amp;&amp; h[a] &lt; h[b]</p>
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -608,7 +608,7 @@ w[a] &lt; w[b] &amp;&amp; h[a] &lt; h[b]</p>
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -701,7 +701,7 @@ w[a] &lt; w[b] &amp;&amp; h[a] &lt; h[b]</p>
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">53.3k</span>
+    <span title="Site words total count">54.2k</span>
   
 </div>
 
