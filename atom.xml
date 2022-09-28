@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://wjploop.github.io/"/>
-  <updated>2022-09-14T01:53:41.158Z</updated>
+  <updated>2022-09-14T03:45:55.955Z</updated>
   <id>http://wjploop.github.io/</id>
   
   <author>
@@ -15,48 +15,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title></title>
-    <link href="http://wjploop.github.io/2022/09/14/LiveData/"/>
-    <id>http://wjploop.github.io/2022/09/14/LiveData/</id>
-    <published>2022-09-14T01:53:41.158Z</published>
-    <updated>2022-09-14T01:53:41.158Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="LiveData"><a href="#LiveData" class="headerlink" title="LiveData"></a>LiveData</h3><p>LiveData作为一个可以观察的数据源，其目标也是实现一个消费者模式的模型，不过，它的特别之处在于其消费是具有生命周期的。</p><p>一个传统的消费者模式，就是有一个数据源,和一堆消费者，数据源维护了一个消费者集合，通过<code>订阅</code>将消费者添加到集合中，<code>取消订阅</code>就是将其从集合中删除，当数据变化时，通知集合中的消费者。</p><p>其作用是为了解耦了事件发生、和处理事件的逻辑，比如可以任意添加或删除对一个事件的处理。</p><p>传统的消费者模式在UI中通常存在一个问题，内存泄漏。消费者（Fragment, Activity）一般具有自己的生命周期，当其需要重建时，因为数据源持有它的引用，导致不能及时释放。故，一些数据层持有View层的模型，都需要手动释放View，即<code>取消订阅</code>。</p><p>而 LiveData 内部帮助我们解决了这个问题，通过将observer 绑定在 <code>lifecycleOwner</code>上，使得注册可以感应消费者的生命周期，当其内部生命周期到 <code>destroy</code>状态时便取消订阅。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LiveData.observe(lifecycleOwner, observer)</span><br></pre></td></tr></table></figure><p>除了感应生命周期外，LiveData 也提供了一些额外的特性：</p><p>作为数据源，也想知道自己一直分发数据是否有意义？即，都没有消费者监听数据，则无意义。有一个消费者监听，则有意义。</p><p>数据源可以被 <code>active</code> 或 <code>inActive</code>，使得在没有消费者监听时，可以及时停止分发数据。</p><p>注意，对于数据关心一个不是Fragment，而Fragment中的View，因而我们一般用viewLifecycleOwner而非Fragment本身。</p><p>因为 onStart  &gt; onResume &gt; 跳转到其他页面 &gt; onDestryView &gt; 返回重新执行 onCreateView()</p><p>跳转到其他页面，Fragment不会被销毁，只是销毁其中的View，当重新创建View后，view不能马上更新到LiveData的状态。故而，我们使用 view的生命周期，在onCreatedView后，重新将LiveData的数据重新刷新到view上。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h3 id=&quot;LiveData&quot;&gt;&lt;a href=&quot;#LiveData&quot; class=&quot;headerlink&quot; title=&quot;LiveData&quot;&gt;&lt;/a&gt;LiveData&lt;/h3&gt;&lt;p&gt;LiveData作为一个可以观察的数据源，其目标也是实现一个消费者模式的模型，不过，它的特别
-      
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title></title>
-    <link href="http://wjploop.github.io/2022/09/14/SAM-conversion-%E6%98%AF%E4%BB%80%E4%B9%88/"/>
-    <id>http://wjploop.github.io/2022/09/14/SAM-conversion-是什么/</id>
-    <published>2022-09-14T01:53:41.158Z</published>
-    <updated>2022-09-14T01:53:41.158Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="关于-SAM-conversion"><a href="#关于-SAM-conversion" class="headerlink" title="关于 SAM-conversion"></a>关于 SAM-conversion</h2><p>看到一些注释提到 SAM-conversion，查找之后记录下。</p><p>SAM全称是 Single Abstract Method，当 Interface 只有一个抽象方法时，它可以当作一个函数来调用。比如View点击接口：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 单一抽象方法的接口</span></span><br><span class="line">inteface OnClickListener&#123;</span><br><span class="line">    onClick(View v);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">View</span></span>&#123;</span><br><span class="line">    <span class="comment">// 形参需要一个接口实例</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setOnClickListener</span><span class="params">(OnClickListener l)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 不使用lambda，显式的创建实例</span></span><br><span class="line">view.setOnClickListener(object:View.OnClickListener&#123;</span><br><span class="line">       <span class="function">override fun <span class="title">onClick</span><span class="params">(v: View?)</span> </span>&#123;</span><br><span class="line">                </span><br><span class="line">          &#125;</span><br><span class="line">        &#125;)</span><br><span class="line"><span class="comment">// 使用lambda，隐式创建实例，编译器帮我们转换成显式的代码</span></span><br><span class="line">view.setOnClickListener&#123;v-&gt;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>当将这个接口作为一个方法参数时，需要分两步：</p><ol><li>创建一个实现类，并实现抽象方法（一般是匿名类）</li><li>创建的实现类的实例</li></ol><p>代码上，当形参类型是一个单一方法的接口时，可以用 lambda 表达式代替，但实际中，其形参还是需要一个具体的对象，所以 SAM-conversion就是，代码写了lambda，编译时帮我们转换成显式的代码，运行时创建接口的实例。</p><h2 id="SAM对比类型别名（Type-aliases）"><a href="#SAM对比类型别名（Type-aliases）" class="headerlink" title="SAM对比类型别名（Type aliases）"></a>SAM对比类型别名（Type aliases）</h2><p>与 Java 不同，Kotlin 支持函数类型，函数可以作为方法的形参。我们可以为一个函数类型定义一个别名，如下：</p><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 为一个函数类型取一个别名</span></span><br><span class="line">typelias OnClick = (view) -&gt; <span class="built_in">Unit</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 函数作为形参</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> View.<span class="title">setOnClick</span><span class="params">(onClick: <span class="type">OnClick</span>)</span></span></span><br></pre></td></tr></table></figure><p>虽然类型别名和SAM接口非常像，尤其在使用的时候，都可以写成lambda的形式，但其区别还是有的。</p><ol><li>SAM效率效率低点，需要创建一个新的实例类，并创建实例。而类型别名不会创建新的类型</li><li>SAM也有优势，其接口类可以包含其他成员，比如其他非抽象成员，适用复杂的场景<ol><li>SAM适用和 Java无缝调用，而在 Kotlin 定义的类型别名，在Java中无妨使用</li></ol></li></ol>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h2 id=&quot;关于-SAM-conversion&quot;&gt;&lt;a href=&quot;#关于-SAM-conversion&quot; class=&quot;headerlink&quot; title=&quot;关于 SAM-conversion&quot;&gt;&lt;/a&gt;关于 SAM-conversion&lt;/h2&gt;&lt;p&gt;看到一些注释提到 S
-      
-    
-    </summary>
-    
-    
-  </entry>
   
   <entry>
     <title>误删两行代码引发的测量View问题</title>
@@ -226,6 +184,29 @@ Retrofit依赖OkHttp来实现真正的Http网络请求。而OkHttp相对
   </entry>
   
   <entry>
+    <title>SAM-conversion 是什么</title>
+    <link href="http://wjploop.github.io/2021/07/10/SAM-conversion%20%E6%98%AF%E4%BB%80%E4%B9%88/"/>
+    <id>http://wjploop.github.io/2021/07/10/SAM-conversion 是什么/</id>
+    <published>2021-07-10T07:08:41.000Z</published>
+    <updated>2022-09-28T06:12:35.382Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="关于-SAM-conversion"><a href="#关于-SAM-conversion" class="headerlink" title="关于 SAM-conversion"></a>关于 SAM-conversion</h2><p>看到一些注释提到 SAM-conversion，查找之后记录下。</p><p>SAM全称是 Single Abstract Method，当 Interface 只有一个抽象方法时，它可以当作一个函数来调用。比如View点击接口：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 单一抽象方法的接口</span></span><br><span class="line">inteface OnClickListener&#123;</span><br><span class="line">    onClick(View v);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">View</span></span>&#123;</span><br><span class="line">    <span class="comment">// 形参需要一个接口实例</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setOnClickListener</span><span class="params">(OnClickListener l)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 不使用lambda，显式的创建实例</span></span><br><span class="line">view.setOnClickListener(object:View.OnClickListener&#123;</span><br><span class="line">       <span class="function">override fun <span class="title">onClick</span><span class="params">(v: View?)</span> </span>&#123;</span><br><span class="line">                </span><br><span class="line">          &#125;</span><br><span class="line">        &#125;)</span><br><span class="line"><span class="comment">// 使用lambda，隐式创建实例，编译器帮我们转换成显式的代码</span></span><br><span class="line">view.setOnClickListener&#123;v-&gt;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>当将这个接口作为一个方法参数时，需要分两步：</p><ol><li>创建一个实现类，并实现抽象方法（一般是匿名类）</li><li>创建的实现类的实例</li></ol><p>代码上，当形参类型是一个单一方法的接口时，可以用 lambda 表达式代替，但实际中，其形参还是需要一个具体的对象，所以 SAM-conversion就是，代码写了lambda，编译时帮我们转换成显式的代码，运行时创建接口的实例。</p><h2 id="SAM对比类型别名（Type-aliases）"><a href="#SAM对比类型别名（Type-aliases）" class="headerlink" title="SAM对比类型别名（Type aliases）"></a>SAM对比类型别名（Type aliases）</h2><p>与 Java 不同，Kotlin 支持函数类型，函数可以作为方法的形参。我们可以为一个函数类型定义一个别名，如下：</p><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 为一个函数类型取一个别名</span></span><br><span class="line">typelias OnClick = (view) -&gt; <span class="built_in">Unit</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 函数作为形参</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> View.<span class="title">setOnClick</span><span class="params">(onClick: <span class="type">OnClick</span>)</span></span></span><br></pre></td></tr></table></figure><p>虽然类型别名和SAM接口非常像，尤其在使用的时候，都可以写成lambda的形式，但其区别还是有的。</p><ol><li>SAM效率效率低点，需要创建一个新的实例类，并创建实例。而类型别名不会创建新的类型</li><li>SAM也有优势，其接口类可以包含其他成员，比如其他非抽象成员，适用复杂的场景<ol><li>SAM适用和 Java无缝调用，而在 Kotlin 定义的类型别名，在Java中无妨使用</li></ol></li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;关于-SAM-conversion&quot;&gt;&lt;a href=&quot;#关于-SAM-conversion&quot; class=&quot;headerlink&quot; title=&quot;关于 SAM-conversion&quot;&gt;&lt;/a&gt;关于 SAM-conversion&lt;/h2&gt;&lt;p&gt;看到一些注释提到 S
+      
+    
+    </summary>
+    
+    
+      <category term="Android" scheme="http://wjploop.github.io/tags/Android/"/>
+    
+  </entry>
+  
+  <entry>
     <title>SparseArray</title>
     <link href="http://wjploop.github.io/2021/07/07/SparseArray/"/>
     <id>http://wjploop.github.io/2021/07/07/SparseArray/</id>
@@ -317,6 +298,29 @@ Retrofit依赖OkHttp来实现真正的Http网络请求。而OkHttp相对
     
     </summary>
     
+    
+  </entry>
+  
+  <entry>
+    <title>LiveData</title>
+    <link href="http://wjploop.github.io/2021/05/12/LiveData/"/>
+    <id>http://wjploop.github.io/2021/05/12/LiveData/</id>
+    <published>2021-05-12T07:08:10.000Z</published>
+    <updated>2022-09-28T06:26:36.627Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="LiveData"><a href="#LiveData" class="headerlink" title="LiveData"></a>LiveData</h3><p>LiveData作为一个可以观察的数据源，其目标也是实现一个消费者模式的模型，不过，它的特别之处在于其消费是具有生命周期的。</p><p>一个传统的消费者模式，就是有一个数据源,和一堆消费者，数据源维护了一个消费者集合，通过<code>订阅</code>将消费者添加到集合中，<code>取消订阅</code>就是将其从集合中删除，当数据变化时，通知集合中的消费者。</p><p>其作用是为了解耦了事件发生、和处理事件的逻辑，比如可以任意添加或删除对一个事件的处理。</p><p>传统的消费者模式在UI中通常存在一个问题，内存泄漏。消费者（Fragment, Activity）一般具有自己的生命周期，当其需要重建时，因为数据源持有它的引用，导致不能及时释放。故，一些数据层持有View层的模型，都需要手动释放View，即<code>取消订阅</code>。</p><p>而 LiveData 内部帮助我们解决了这个问题，通过将observer 绑定在 <code>lifecycleOwner</code>上，使得注册可以感应消费者的生命周期，当其内部生命周期到 <code>destroy</code>状态时便取消订阅。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LiveData.observe(lifecycleOwner, observer)</span><br></pre></td></tr></table></figure><p>除了感应生命周期外，LiveData 也提供了一些额外的特性：</p><p>作为数据源，也想知道自己一直分发数据是否有意义？即，都没有消费者监听数据，则无意义。有一个消费者监听，则有意义。</p><p>数据源可以被 <code>active</code> 或 <code>inActive</code>，使得在没有消费者监听时，可以及时停止分发数据。</p><p>注意，对于数据关心一个不是Fragment，而Fragment中的View，因而我们一般用viewLifecycleOwner而非Fragment本身。</p><p>因为 onStart  &gt; onResume &gt; 跳转到其他页面 &gt; onDestryView &gt; 返回重新执行 onCreateView()</p><p>跳转到其他页面，Fragment不会被销毁，只是销毁其中的View，当重新创建View后，view不能马上更新到LiveData的状态。故而，我们使用 view的生命周期，在onCreatedView后，重新将LiveData的数据重新刷新到view上。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;LiveData&quot;&gt;&lt;a href=&quot;#LiveData&quot; class=&quot;headerlink&quot; title=&quot;LiveData&quot;&gt;&lt;/a&gt;LiveData&lt;/h3&gt;&lt;p&gt;LiveData作为一个可以观察的数据源，其目标也是实现一个消费者模式的模型，不过，它的特别
+      
+    
+    </summary>
+    
+    
+      <category term="Android" scheme="http://wjploop.github.io/tags/Android/"/>
     
   </entry>
   

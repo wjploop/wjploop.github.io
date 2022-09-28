@@ -66,7 +66,7 @@
 
 
 
-  <meta name="keywords" content="android,">
+  <meta name="keywords" content="Hexo, NexT">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="遇到了个好问题，以及一个好答案，记之 问：在xml布局中，ScrollView 里面包含一个RecyclerView，页面启动之后，直接滚动RecyclerView的位置了。 答： 分析流程：  在Activity加载该xml布局后，通过LayoutInflater.inflater(XmlPullParser parser, ViewGroup root, boolean attachToRoo">
-<meta name="keywords" content="android">
+<meta name="description" content="这两个类在framework.dart中，可见其重要性。其实自己看过了多次，不过现在还是想用文字记录着再看一次，因为它们太重要了。 两者还有一个父类，Widget12345678910111213141516171819/// Element的配置信息abstract class Widget &amp;#123;  final Key key;  // Widget的存在的目的就是创建出Element，">
+<meta name="keywords" content="滴滴哒哒">
 <meta property="og:type" content="article">
-<meta property="og:title" content="android_note_0">
-<meta property="og:url" content="http://wjploop.github.io/2019/04/27/android-note-0/index.html">
+<meta property="og:title" content="StatelessWidget_vs_StatefulWidget">
+<meta property="og:url" content="http://wjploop.github.io/2020/07/27/StatelessWidget-vs-StatefulWidget/index.html">
 <meta property="og:site_name" content="萝卜平">
-<meta property="og:description" content="遇到了个好问题，以及一个好答案，记之 问：在xml布局中，ScrollView 里面包含一个RecyclerView，页面启动之后，直接滚动RecyclerView的位置了。 答： 分析流程：  在Activity加载该xml布局后，通过LayoutInflater.inflater(XmlPullParser parser, ViewGroup root, boolean attachToRoo">
+<meta property="og:description" content="这两个类在framework.dart中，可见其重要性。其实自己看过了多次，不过现在还是想用文字记录着再看一次，因为它们太重要了。 两者还有一个父类，Widget12345678910111213141516171819/// Element的配置信息abstract class Widget &amp;#123;  final Key key;  // Widget的存在的目的就是创建出Element，">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-09-11T00:41:01.000Z">
+<meta property="og:updated_time" content="2020-08-07T03:44:03.510Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="android_note_0">
-<meta name="twitter:description" content="遇到了个好问题，以及一个好答案，记之 问：在xml布局中，ScrollView 里面包含一个RecyclerView，页面启动之后，直接滚动RecyclerView的位置了。 答： 分析流程：  在Activity加载该xml布局后，通过LayoutInflater.inflater(XmlPullParser parser, ViewGroup root, boolean attachToRoo">
+<meta name="twitter:title" content="StatelessWidget_vs_StatefulWidget">
+<meta name="twitter:description" content="这两个类在framework.dart中，可见其重要性。其实自己看过了多次，不过现在还是想用文字记录着再看一次，因为它们太重要了。 两者还有一个父类，Widget12345678910111213141516171819/// Element的配置信息abstract class Widget &amp;#123;  final Key key;  // Widget的存在的目的就是创建出Element，">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://wjploop.github.io/2019/04/27/android-note-0/">
+  <link rel="canonical" href="http://wjploop.github.io/2020/07/27/StatelessWidget-vs-StatefulWidget/">
 
 
 
 
 
-  <title>android_note_0 | 萝卜平</title>
+  <title>StatelessWidget_vs_StatefulWidget | 萝卜平</title>
   
 
 
@@ -305,7 +305,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://wjploop.github.io/2019/04/27/android-note-0/">
+    <link itemprop="mainEntityOfPage" href="http://wjploop.github.io/2020/07/27/StatelessWidget-vs-StatefulWidget/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="萝卜平">
@@ -322,7 +322,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">android_note_0</h1>
+          <h1 class="post-title" itemprop="name headline">StatelessWidget_vs_StatefulWidget</h1>
         
 
         <div class="post-meta">
@@ -334,8 +334,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-27T15:14:27+08:00">
-                2019-04-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-27T18:01:17+08:00">
+                2020-07-27
               </time>
             
 
@@ -345,39 +345,6 @@
           </span>
 
           
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/code/" itemprop="url" rel="index">
-                    <span itemprop="name">code</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/code/android/" itemprop="url" rel="index">
-                    <span itemprop="name">android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
 
           
             
@@ -386,8 +353,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/04/27/android-note-0/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/04/27/android-note-0/" itemprop="commentCount"></span>
+                <a href="/2020/07/27/StatelessWidget-vs-StatefulWidget/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/07/27/StatelessWidget-vs-StatefulWidget/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -414,7 +381,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  358
+                  1.3k
                 </span>
               
 
@@ -430,7 +397,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  5
                 </span>
               
             </div>
@@ -451,29 +418,31 @@
       
 
       
-        <p>遇到了个好问题，以及一个好答案，记之</p>
-<p>问：在xml布局中，ScrollView 里面包含一个RecyclerView，页面启动之后，直接滚动RecyclerView的位置了。
-答：
-分析流程：</p>
-<ol>
-<li>在Activity加载该xml布局后，通过<code>LayoutInflater.inflater(XmlPullParser parser, ViewGroup root, boolean attachToRoot)</code>.</li>
-</ol>
-<p>加载并解析xml文件后，便开始构造View树。 rInflater(…)</p>
-<p>其内部，是创建View，并递归加入到已有的View中。</p>
-<p>addView（child，index，LayoutParams params）</p>
-<p>其内部调用了addViewInner（child,index,params,preventRequestLayout) //addView之后，可以选择是否立即刷新当前布局的效果。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//在添加一个拥有焦点的View时，递归为找到具体的view，其真有获有焦点</span><br><span class="line">final boolean childHasFocus = child.hasFocus();</span><br><span class="line">if (childHasFocus) &#123;</span><br><span class="line">    requestChildFocus(child, child.findFocus());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <p>这两个类在framework.dart中，可见其重要性。其实自己看过了多次，不过现在还是想用文字记录着再看一次，因为它们太重要了。</p>
+<h2 id="两者还有一个父类，Widget"><a href="#两者还有一个父类，Widget" class="headerlink" title="两者还有一个父类，Widget"></a>两者还有一个父类，Widget</h2><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/// Element的配置信息</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Widget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> Key key;</span><br><span class="line">  <span class="comment">// Widget的存在的目的就是创建出Element，作为元素再Element树中</span></span><br><span class="line">  <span class="comment">// 其创建过程我们称之为inflate，注意可以加载多次，对应多个Element</span></span><br><span class="line">  <span class="built_in">Element</span> createElement();</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 当 oldWidget 创建的Element加载在树中后</span></span><br><span class="line">  <span class="comment">// 当我们再次调用build方法时，对于原先的Element是怎么处理呢？</span></span><br><span class="line">  <span class="comment">// 我们是否能够更新原先老的Element？</span></span><br><span class="line">  <span class="comment">// 这个问题很重要，决定了Element能否被复用，而不是重新创建的新的Element来替换掉原先的Element。</span></span><br><span class="line">  <span class="comment">// 这个问题的换个说法，就是原先的Element能否被更新？ </span></span><br><span class="line">  <span class="comment">// 答案是，需要runtime和key都相同。</span></span><br><span class="line">  <span class="comment">// 注意，当key都为空时，也认为key相同，当然这个很符合逻辑。</span></span><br><span class="line">  <span class="built_in">bool</span> canUpdate(Widget oldWidget, Widget newWidget)&#123;</span><br><span class="line">    <span class="comment">// runtimeType &amp;&amp; key equal</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<h2 id="StatelessWidget"><a href="#StatelessWidget" class="headerlink" title="StatelessWidget"></a>StatelessWidget</h2><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/// 强调了UI仅依赖配置信息，和当前环境BuildContext</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// 性能考虑</span></span><br><span class="line"><span class="comment">/// </span></span><br><span class="line"><span class="comment">/// build()方法的执行时机有三种</span></span><br><span class="line"><span class="comment">/// 1. 第一次插入到 Element 树中</span></span><br><span class="line"><span class="comment">/// 2, 父级的Widget改变，递归到导致该方法执行</span></span><br><span class="line"><span class="comment">/// 3, 依赖信息改变，其依赖的信息形式是InheritedWidget</span></span><br><span class="line"><span class="comment">/// </span></span><br><span class="line"><span class="comment">/// 尽管build方法的执行，并不会每次都会重新新的Element，但还是避免频繁调用build方法的。措施如下下</span></span><br><span class="line"><span class="comment">/// 减少节点层级，使得节点递归创建。如Align替代 Row，Column 的混用</span></span><br><span class="line"><span class="comment">/// 使用const修饰构造器，可以避免每次setState而重建</span></span><br><span class="line"><span class="comment">/// 考虑使用statefulWidget来利用相关的缓存技术</span></span><br><span class="line"><span class="comment">/// 在使用InheritedWidget时，将依赖更加精细化</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">StatelessWidget</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  StatelessElement createElement() =&gt; StatelessElement(<span class="keyword">this</span>);</span><br><span class="line">  </span><br><span class="line">  Widget build(BuildContext context);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<h2 id="StatefulWidget"><a href="#StatefulWidget" class="headerlink" title="StatefulWidget"></a>StatefulWidget</h2><p>状态信息可以异步读取<br>状态信息可以在Widget的生命周期内修改</p>
+<p>注意到，StatefulWidget本身是不可变，只有State是可变的，其属性State是final field，创建后后指向。</p>
+<p>每次 inflate Widget 便会调用createSate()。从树中移除后，重新插入也会导致创建createState</p>
+<p>当使用GlobalKey时，移动Element的位置，可以复用原来的State，这样我们可以移动一个子树，注意移除还插入的动作需要在动画的同一帧完成。</p>
+<p>性能考虑：</p>
+<p>将State尽可能放到叶子，下放<br>要是子树不会改变，缓存子树<br>避免修改子树的深度和类型，转而使用属性来控制相应的状态。这个可以用 canUpdate() 来理解，改变状态来可以避免原先Element被替换。
+若是子树深度非要改变，子树使用GlobalKey。使用KeyedSubtree要是不方便指定Widget来使用GlobalKey。</p>
+<h3 id="State"><a href="#State" class="headerlink" title="State"></a>State</h3><p>Widget创建的State绑定到 BuildContext 被认为是 mounted状态，其关联关系绑定后不可变了。</p>
+<p>绑定后，可以根据Context来 initSate()</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">StatefulWidget</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  StatefulWidget createElement() =&gt; StatefulElement(<span class="keyword">this</span>);</span><br><span class="line">  </span><br><span class="line">  State createState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">enum</span> _StateLifeCycle&#123;</span><br><span class="line">  <span class="comment">// initState()未执行</span></span><br><span class="line">  created,</span><br><span class="line">  <span class="comment">// 需要执行didChangeDependencies（）</span></span><br><span class="line">  initialized,</span><br><span class="line">  <span class="comment">// 可以执行build，且dispose未执行</span></span><br><span class="line">  ready,</span><br><span class="line">  <span class="comment">// dispose()已执行，不能再重新build</span></span><br><span class="line">  defunct</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">State</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span>&gt; </span>&#123;</span><br><span class="line">  </span><br><span class="line">  T _widget;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// widget z</span></span><br><span class="line">  BuildContext <span class="keyword">get</span> context =&gt; _element;</span><br><span class="line">  StatefulElement _element;</span><br><span class="line">  </span><br><span class="line">  <span class="built_in">bool</span> <span class="keyword">get</span> mounted =&gt; element != <span class="keyword">null</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 当Widget插入到树中时调用</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">void</span> initState()&#123;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 当配置发生变化调用</span></span><br><span class="line">  <span class="comment">// 当父级Widget重建需要更新该Widget，（runtimeType和Key相同），导致的结果是</span></span><br><span class="line">  <span class="comment">// 更新该State，基于原先的oldWidget创建新的Widget</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">//  在这个方法后，回到调用build方法的，所以无需再手动setState</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">void</span> didUpdateWidget(covariant T oldWidget)&#123;&#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 通知框架，该State中的属性改变了，需要更新</span></span><br><span class="line">  <span class="comment">// </span></span><br><span class="line">  <span class="comment">/// Future&lt;void&gt; _incrementCounter() async &#123;</span></span><br><span class="line">  <span class="comment">///   setState(() &#123;</span></span><br><span class="line">        <span class="comment">// 影响Widget的放在里面</span></span><br><span class="line">  <span class="comment">///     _counter++;</span></span><br><span class="line">  <span class="comment">///   &#125;);</span></span><br><span class="line">        <span class="comment">// 其他不直接影响的放外面</span></span><br><span class="line">  <span class="comment">///   Directory directory = await getApplicationDocumentsDirectory();</span></span><br><span class="line">  <span class="comment">///   final String dirName = directory.path;</span></span><br><span class="line">  <span class="comment">///   await File('$dir/counter.txt').writeAsString('$_counter');</span></span><br><span class="line">  <span class="comment">/// &#125;</span></span><br><span class="line">  <span class="keyword">void</span> setState(VoidCallback fn)&#123;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">dynamic</span> result = fn() <span class="keyword">as</span> <span class="keyword">dynamic</span>;</span><br><span class="line">    _element.markNeedBuild();</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 当State在被移除树时</span></span><br><span class="line">  <span class="comment">// 当State更新，从一个位置移动另一个位置时，在该方法调用后，会保证调用build方法的</span></span><br><span class="line">  <span class="comment">// 注意哦</span></span><br><span class="line">  <span class="comment">// 由于移除和插入是两个步骤，且插入的动作需要保证在动画的新一帧绘制前完成，故需要该方法执行要快,故释放资源的操作该</span></span><br><span class="line">  <span class="comment">// 放在 dispose（）中</span></span><br><span class="line">  <span class="keyword">void</span> deactivate()&#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">void</span> dispose();</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 该方法可能在下列情况下执行</span></span><br><span class="line">  <span class="comment">// after initState</span></span><br><span class="line">  <span class="comment">// after didUpdateWidget</span></span><br><span class="line">  <span class="comment">// after receive a call to setState</span></span><br><span class="line">  <span class="comment">// a dependency of State change</span></span><br><span class="line">  <span class="comment">// after call deactivate and reinsert State into other location</span></span><br><span class="line">  <span class="comment">//</span></span><br><span class="line">  <span class="comment">// </span></span><br><span class="line"></span><br><span class="line">  Widget build(BuildContext context);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">void</span> didChangeDependencies() &#123; &#125;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>看看requestChildFocus()</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//看到这个，可以直接阻止上层View获取焦点，这个蛮方便的</span></span><br><span class="line"><span class="keyword">if</span> (getDescendantFocusability() == FOCUS_BLOCK_DESCENDANTS) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// We had a previous notion of who had focus. Clear it.</span></span><br><span class="line">        <span class="keyword">if</span> (mFocused != child) &#123;</span><br><span class="line">            <span class="keyword">if</span> (mFocused != <span class="keyword">null</span>) &#123;</span><br><span class="line">                mFocused.unFocus(focused);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            mFocused = child;</span><br><span class="line">        &#125;      </span><br><span class="line">        <span class="comment">//请求</span></span><br><span class="line">         <span class="keyword">if</span> (mParent != <span class="keyword">null</span>) &#123;</span><br><span class="line">            mParent.requestChildFocus(<span class="keyword">this</span>, focused);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">requestChildFocus</span><span class="params">(View child, View focused)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (DEBUG_INPUT_RESIZE) &#123;</span><br><span class="line">        Log.v(mTag, <span class="string">"Request child focus: focus now "</span> + focused);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//会重绘</span></span><br><span class="line">    checkThread();</span><br><span class="line">    scheduleTraversals();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="一个设计问题？为什么-Build（）放在State，而不是放在StatefulWidget"><a href="#一个设计问题？为什么-Build（）放在State，而不是放在StatefulWidget" class="headerlink" title="一个设计问题？为什么 Build（）放在State，而不是放在StatefulWidget"></a>一个设计问题？为什么 Build（）放在State，而不是放在StatefulWidget</h3><p>没有在StatefulWidget中这么写，给StatefulWidget更多的灵活性，如何理解呢？</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Widget build(BuildContext context, State state) &#123;&#125;</span><br></pre></td></tr></table></figure>
 
-<p>到此，可以知道，焦点会在加载之后确定。</p>
-<p>另一个问题，为什么在Scrollview中，为什么会滚动到，获取的到焦点的View</p>
-<p>在在ScrollView的重绘, onLayout()有，有一个mChildToScrollTo属性，
-若是其不为空，会移动到该View位置。</p>
-<p>而在requestChildFocus中，已经为其赋值。</p>
+<p>AnimateWidget是很多动画的表示，假设在StatefulWidget中防止Build方法，则导致Widget依赖很多动画的实现State</p>
+<p>概念上，StatelessWidget是StatefulWidget的子类，若是将StatefulWidget多了个方法，那么将不可能了</p>
+<h3 id="State中的注册和注销"><a href="#State中的注册和注销" class="headerlink" title="State中的注册和注销"></a>State中的注册和注销</h3><p>假设我们构造的目标对象，依赖了某些对象，我们该在什么时机注册和注销这些依赖呢</p>
+<p>initState() 中订阅</p>
+<p>didUpdateWidget() 中，若是需要，unSubscribe原先的源并更换新的源</p>
+<p>dispose() 注销所有的源</p>
 
       
     </div>
@@ -489,12 +458,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/android/" rel="tag"># android</a>
-          
-        </div>
-      
 
       
       
@@ -504,8 +467,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/04/21/LoadingLayout/" rel="next" title="LoadingLayout">
-                <i class="fa fa-chevron-left"></i> LoadingLayout
+              <a href="/2020/07/27/flutter-ListView/" rel="next" title="flutter-ListView">
+                <i class="fa fa-chevron-left"></i> flutter-ListView
               </a>
             
           </div>
@@ -514,8 +477,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/06/05/python-note-1/" rel="prev" title="python-note_1">
-                python-note_1 <i class="fa fa-chevron-right"></i>
+              <a href="/2020/08/26/Flutter之Builder/" rel="prev" title="Flutter之Builder">
+                Flutter之Builder <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -571,8 +534,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -589,7 +561,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-count">50</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -661,6 +633,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#两者还有一个父类，Widget"><span class="nav-number">1.</span> <span class="nav-text">两者还有一个父类，Widget</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#StatelessWidget"><span class="nav-number">2.</span> <span class="nav-text">StatelessWidget</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#StatefulWidget"><span class="nav-number">3.</span> <span class="nav-text">StatefulWidget</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#State"><span class="nav-number">3.1.</span> <span class="nav-text">State</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一个设计问题？为什么-Build（）放在State，而不是放在StatefulWidget"><span class="nav-number">3.2.</span> <span class="nav-text">一个设计问题？为什么 Build（）放在State，而不是放在StatefulWidget</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#State中的注册和注销"><span class="nav-number">3.3.</span> <span class="nav-text">State中的注册和注销</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -688,7 +676,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">54.2k</span>
+    <span title="Site words total count">60.6k</span>
   
 </div>
 

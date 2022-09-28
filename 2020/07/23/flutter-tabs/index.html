@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next mist" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="source,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="萝卜平" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354import &apos;package:flutter/material.dart&apos;;class TabPage extends StatefulWidget &amp;#123;  @override  _TabPa">
+<meta name="keywords" content="source">
+<meta property="og:type" content="article">
+<meta property="og:title" content="flutter_tabs">
+<meta property="og:url" content="http://wjploop.github.io/2020/07/23/flutter-tabs/index.html">
+<meta property="og:site_name" content="萝卜平">
+<meta property="og:description" content="123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354import &apos;package:flutter/material.dart&apos;;class TabPage extends StatefulWidget &amp;#123;  @override  _TabPa">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-07-27T09:09:27.263Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="flutter_tabs">
+<meta name="twitter:description" content="123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354import &apos;package:flutter/material.dart&apos;;class TabPage extends StatefulWidget &amp;#123;  @override  _TabPa">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://wjploop.github.io/2020/07/23/flutter-tabs/">
+
+
+
+
+
+  <title>flutter_tabs | 萝卜平</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?478e3d64eb01e301d525f47d26394d76";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">萝卜平</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">没想好的一个副标题</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://wjploop.github.io/2020/07/23/flutter-tabs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="萝卜平">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="萝卜平">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">flutter_tabs</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-23T17:01:12+08:00">
+                2020-07-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/07/23/flutter-tabs/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/07/23/flutter-tabs/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  10
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">'package:flutter/material.dart'</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TabPage</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  _TabPageState createState() =&gt; _TabPageState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_TabPageState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">TabPage</span>&gt; <span class="title">with</span> <span class="title">SingleTickerProviderStateMixin</span> </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> tabs = &lt;Tab&gt;[</span><br><span class="line">    Tab(</span><br><span class="line">      text: <span class="string">"动态"</span>,</span><br><span class="line">    ),</span><br><span class="line">    Tab(</span><br><span class="line">      text: <span class="string">"热门"</span>,</span><br><span class="line">    )</span><br><span class="line">  ];</span><br><span class="line">  TabController _tabController;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> initState() &#123;</span><br><span class="line">    <span class="keyword">super</span>.initState();</span><br><span class="line">    _tabController = TabController(length: tabs.length, vsync: <span class="keyword">this</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> dispose() &#123;</span><br><span class="line">    _tabController.dispose();</span><br><span class="line">    <span class="keyword">super</span>.dispose();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      appBar: AppBar(</span><br><span class="line">          bottom: TabBar(</span><br><span class="line">            tabs: tabs,</span><br><span class="line">            controller: _tabController,</span><br><span class="line">          ),</span><br><span class="line">      ),</span><br><span class="line">      body: TabBarView(children: tabs.map((e) =&gt;</span><br><span class="line">          Center(</span><br><span class="line">            child: Text(</span><br><span class="line">              <span class="string">"Hey,I am content of <span class="subst">$e</span>"</span>, style: TextStyle(fontSize: <span class="number">18</span>),),</span><br><span class="line">          )).toList()),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line"> </span><br><span class="line">  runApp(TabPage());</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Scaffold-的创建需要传入带有-MediaQuery-数据的-Context"><a href="#Scaffold-的创建需要传入带有-MediaQuery-数据的-Context" class="headerlink" title="Scaffold 的创建需要传入带有 MediaQuery 数据的 Context"></a>Scaffold 的创建需要传入带有 MediaQuery 数据的 Context</h2><p>报错如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">I/flutter ( 2928): The following assertion was thrown building TabPage(state: _TabPageState#f2fb0(ticker inactive)):</span><br><span class="line">I/flutter ( 2928): MediaQuery.of() called with a context that does not contain a MediaQuery.</span><br><span class="line">I/flutter ( 2928): No MediaQuery ancestor could be found starting from the context that was passed to MediaQuery.of().</span><br><span class="line">I/flutter ( 2928): This can happen because you do not have a WidgetsApp or MaterialApp widget (those widgets introduce</span><br><span class="line">I/flutter ( 2928): a MediaQuery), or it can happen if the context you use comes from a widget above those widgets.</span><br><span class="line">I/flutter ( 2928): The context used was:</span><br><span class="line">I/flutter ( 2928):   Scaffold</span><br></pre></td></tr></table></figure>
+
+<p>Scaffold作为一个脚手架，创建时不能直接作为根视图，还是需要外包 MaterialApp 等，其创建后，可以为子Widget提供一些数据，比如当前
+屏幕的大小，像素密度等。</p>
+<p>我们看看 WidgetsApp 如何为下层提供MediaQuery相关数据的？</p>
+<p>我们看到其内部使用一个MediaQueryFromWindow包裹，即从Window中获取屏幕的信息，其获取方法使用使用 WidgetsBindingObserver 的方式，
+而在MediaQuery中，使用静态方法，将data绑定到Context，后续子Widget想要获取该信息就可以直接通过下面获取</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var data = MediaQuery.of(context)</span><br></pre></td></tr></table></figure>
+
+<p>另外，由于MediaQuery是继承 InheritedWidget的，当子Widget实现了didChangeDependencies方法后，当屏幕信息改变，根视图WidgetsApp会
+通过观察者WidgetsBindingObserver观察到，重新设置当前的MediaQueryData，之后子Widget也能收到屏幕变化，从而重建。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// Builds [MediaQuery] from `window` by listening to [WidgetsBinding].</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// It is performed in a standalone widget to rebuild **only** [MediaQuery] and</span></span><br><span class="line"><span class="comment">/// its dependents when `window` changes, instead of rebuilding the entire widget tree.</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_MediaQueryFromWindow</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_MediaQueryFromWindowsState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">_MediaQueryFromWindow</span>&gt; <span class="title">with</span> <span class="title">WidgetsBindingObserver</span> </span>&#123;</span><br><span class="line">    <span class="meta">@override</span></span><br><span class="line">    Widget build(BuildContext context) &#123;</span><br><span class="line">      <span class="comment">// 通过Bindg实例的window，连通我们的屏幕，获取相关的信息</span></span><br><span class="line">      MediaQueryData data = MediaQueryData.fromWindow(WidgetsBinding.instance.<span class="built_in">window</span>);</span><br><span class="line">      <span class="keyword">if</span> (!kReleaseMode) &#123;</span><br><span class="line">        data = data.copyWith(platformBrightness: debugBrightnessOverride);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> MediaQuery(</span><br><span class="line">        data: data,</span><br><span class="line">        child: widget.child,</span><br><span class="line">      );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// The data from the closest instance of this class that encloses the given</span></span><br><span class="line"> <span class="comment">/// context.</span></span><br><span class="line"> <span class="comment">///</span></span><br><span class="line"> <span class="comment">/// You can use this function to query the size an orientation of the screen.</span></span><br><span class="line"> <span class="comment">/// When that information changes, your widget will be scheduled to be</span></span><br><span class="line"> <span class="comment">/// rebuilt, keeping your widget up-to-date.</span></span><br><span class="line"> <span class="comment">///</span></span><br><span class="line"> <span class="comment">/// Typical usage is as follows:</span></span><br><span class="line"> <span class="comment">///</span></span><br><span class="line"> <span class="comment">/// ```dart</span></span><br><span class="line"> <span class="comment">/// MediaQueryData media = MediaQuery.of(context);</span></span><br><span class="line"> <span class="comment">///</span></span><br></pre></td></tr></table></figure>
+
+<p>  ///
+  /// If there is no [MediaQuery] in scope, then this will throw an exception.
+  /// To return null if there is no [MediaQuery], then pass <code>nullOk: true</code>.
+  ///
+  /// If you use this from a widget (e.g. in its build function), consider
+  /// calling [debugCheckHasMediaQuery].
+  static MediaQueryData of(BuildContext context, { bool nullOk = false }) {
+    assert(context != null);
+    assert(nullOk != null);
+    final MediaQuery query = context.dependOnInheritedWidgetOfExactType<mediaquery>();
+    if (query != null)
+      return query.data;
+    if (nullOk)
+      return null;
+    throw FlutterError.fromParts(<diagnosticsnode>[
+      ErrorSummary(‘MediaQuery.of() called with a context that does not contain a MediaQuery.’),
+      ErrorDescription(
+        ‘No MediaQuery ancestor could be found starting from the context that was passed ‘
+        ‘to MediaQuery.of(). This can happen because you do not have a WidgetsApp or ‘
+        ‘MaterialApp widget (those widgets introduce a MediaQuery), or it can happen ‘
+        ‘if the context you use comes from a widget above those widgets.’
+      ),
+      context.describeElement(‘The context used was’)
+    ]);
+  }</diagnosticsnode></mediaquery></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### WidgetsApp 与 MaterialApp 的区别</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">看看前者WidgetsApp的定义,打包了一个应用普遍需要的Widget</span><br><span class="line">&gt;/// A convenience widget that wraps a number of widgets that are commonly  </span><br><span class="line"> /// required for an application.</span><br><span class="line"></span><br><span class="line">而 MaterialApp 可以说是在前者的基础上实现了Material风格，与之对应的风格还有苹果风格 CupertinoApp</span><br><span class="line"></span><br><span class="line">&gt; /// A convenience widget that wraps a number of widgets that are commonly</span><br><span class="line">  /// required for material design applications. It builds upon a [WidgetsApp] by</span><br><span class="line">  /// adding material-design specific functionality, such as [AnimatedTheme] and</span><br><span class="line">  /// [GridPaper].</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 好了，我们还是回到 TabController 吧</span><br><span class="line"></span><br><span class="line">看看定义，就是协同 `Tabbar` 和 `TabBarView` 选中关系的，两者都有自己的index，当其中一个index发生改变时，另一个index也要跟着</span><br><span class="line">变化哈。</span><br><span class="line"></span><br><span class="line">TabController作为两者其中的沟通的桥梁</span><br><span class="line"></span><br><span class="line">其中有个比较关键的点，其中的Animation中的值, 值的范围为[0-tabs.length],是double类型，代表着TabBar 和 TabBarView的滚动偏移量</span><br><span class="line">scrollOffset</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">```dart</span><br><span class="line">/// </span><br><span class="line">/// Coordinates tab selection between a [TabBar] and a [TabBarView].</span><br><span class="line">///</span><br><span class="line">/// The [index] property is the index of the selected tab and the [animation]</span><br><span class="line">/// represents the current scroll positions of the tab bar and the tab bar view.</span><br><span class="line">/// The selected tab&apos;s index can be changed with [animateTo].</span><br><span class="line">///</span><br><span class="line">/// A stateful widget that builds a [TabBar] or a [TabBarView] can create</span><br><span class="line">/// a [TabController] and share it directly.</span><br><span class="line">///</span><br><span class="line">/// When the [TabBar] and [TabBarView] don&apos;t have a convenient stateful</span><br><span class="line">/// ancestor, a [TabController] can be shared by providing a</span><br><span class="line">/// [DefaultTabController] inherited widget.</span><br><span class="line">///</span><br><span class="line">  </span><br><span class="line"> </span><br><span class="line">  /// An animation whose value represents the current position of the [TabBar]&apos;s</span><br><span class="line">  /// selected tab indicator as well as the scrollOffsets of the [TabBar]</span><br><span class="line">  /// and [TabBarView].</span><br><span class="line">  ///</span><br><span class="line">  /// The animation&apos;s value ranges from 0.0 to [length] - 1.0. After the</span><br><span class="line">  /// selected tab is changed, the animation&apos;s value equals [index]. The</span><br><span class="line">  /// animation&apos;s value can be [offset] by +/- 1.0 to reflect [TabBarView]</span><br><span class="line">  /// drag scrolling.</span><br><span class="line">  ///</span><br><span class="line">  /// If this [TabController] was disposed, then return null.</span><br><span class="line">  Animation&lt;double&gt; get animation =&gt; _animationController?.view;</span><br><span class="line">  AnimationController _animationController;</span><br><span class="line"></span><br><span class="line">  /// 易见的思维，维护两个值</span><br><span class="line">  int _previousIndex;</span><br><span class="line">  int _index;</span><br><span class="line">  </span><br><span class="line">  /// 可以看到改变index时，会执行相应的动画哈</span><br><span class="line">  void _changeIndex(int value, &#123; Duration duration, Curve curve &#125;) &#123;</span><br><span class="line">    if (value == _index || length &lt; 2)</span><br><span class="line">      return;</span><br><span class="line">    _previousIndex = index;</span><br><span class="line">    _index = value;</span><br><span class="line">    if (duration != null) &#123;</span><br><span class="line">      _indexIsChangingCount += 1;</span><br><span class="line">      notifyListeners(); // Because the value of indexIsChanging may have changed.</span><br><span class="line">      // 使用AnimationController来执行动画</span><br><span class="line">      _animationController</span><br><span class="line">        .animateTo(_index.toDouble(), duration: duration, curve: curve)</span><br><span class="line">        .whenCompleteOrCancel(() &#123;</span><br><span class="line">          _indexIsChangingCount -= 1;</span><br><span class="line">          notifyListeners();</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      _indexIsChangingCount += 1;</span><br><span class="line">      _animationController.value = _index.toDouble();</span><br><span class="line">      _indexIsChangingCount -= 1;</span><br><span class="line">      notifyListeners();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>在TabBar中我们就可以看大调用controller方法的例子</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  <span class="comment">/// 这里我们及监听frame的变化哦，这样，几乎实时更TabPagView保持同步偏移</span></span><br><span class="line"><span class="keyword">void</span> _handleTabControllerAnimationTick() &#123;</span><br><span class="line">  <span class="keyword">assert</span>(mounted);</span><br><span class="line">  <span class="keyword">if</span> (!_controller.indexIsChanging &amp;&amp; widget.isScrollable) &#123;</span><br><span class="line">    <span class="comment">// Sync the TabBar's scroll position with the TabBarView's PageView.</span></span><br><span class="line">    _currentIndex = _controller.index;</span><br><span class="line">    _scrollToControllerValue();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> _handleTabControllerTick() &#123;</span><br><span class="line">  <span class="keyword">if</span> (_controller.index != _currentIndex) &#123;</span><br><span class="line">    _currentIndex = _controller.index;</span><br><span class="line">    <span class="keyword">if</span> (widget.isScrollable)</span><br><span class="line">      _scrollToCurrentIndex();</span><br><span class="line">  &#125;</span><br><span class="line">  setState(() &#123;</span><br><span class="line">    <span class="comment">// Rebuild the tabs after a (potentially animated) index change</span></span><br><span class="line">    <span class="comment">// has completed.</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/// 最典型的例子，点击tab，导致controller对应的tabPageView也会滚动到对应页面</span></span><br><span class="line"><span class="keyword">void</span> _handleTap(<span class="built_in">int</span> index) &#123;</span><br><span class="line">  <span class="keyword">assert</span>(index &gt;= <span class="number">0</span> &amp;&amp; index &lt; widget.tabs.length);</span><br><span class="line">  _controller.animateTo(index);</span><br><span class="line">  <span class="keyword">if</span> (widget.onTap != <span class="keyword">null</span>) &#123;</span><br><span class="line">    widget.onTap(index);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="看看-TabBarState的实现"><a href="#看看-TabBarState的实现" class="headerlink" title="看看 _TabBarState的实现"></a>看看 _TabBarState的实现</h3><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_TabBarState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">TabBar</span>&gt; </span>&#123;</span><br><span class="line">  <span class="comment">// Tabs 一般可以左右滑动，用于控制当前TabBar的整体偏移量</span></span><br><span class="line">  ScrollController _scrollController;</span><br><span class="line">  <span class="comment">// 与TabBarView交换数据的</span></span><br><span class="line">  TabController _controller;</span><br><span class="line">  <span class="comment">// 指示器，这个时候很有搞头，可以做一些炫酷（花哨）的效果 todo 了解在画布上自己画东西</span></span><br><span class="line">  _IndicatorPainter _indicatorPainter;</span><br><span class="line">  <span class="built_in">int</span> _currentIndex;</span><br><span class="line">  <span class="comment">// 基本指示器的宽度是如何确定的呢</span></span><br><span class="line">  <span class="built_in">double</span> _tabStripWidth;</span><br><span class="line">  <span class="comment">// GlobalKey最大的作用，就是可以reparent，可以在Element树中更换位置， todo 了解这些Key的作用</span></span><br><span class="line">  <span class="built_in">List</span>&lt;GlobalKey&gt; _tabKeys;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/// 似乎也挺简单的，所有天的tab添加点击事件</span></span><br><span class="line">    <span class="comment">// Add the tap handler to each tab. If the tab bar is not scrollable,</span></span><br><span class="line">    <span class="comment">// then give all of the tabs equal flexibility so that they each occupy</span></span><br><span class="line">    <span class="comment">// the same share of the tab bar's overall width.</span></span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">int</span> tabCount = widget.tabs.length;</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> index = <span class="number">0</span>; index &lt; tabCount; index += <span class="number">1</span>) &#123;</span><br><span class="line">      <span class="comment">// 包裹InkWell 墨水池，挺形象的，水波效果</span></span><br><span class="line">      wrappedTabs[index] = InkWell(</span><br><span class="line">        mouseCursor: widget.mouseCursor ?? SystemMouseCursors.click,</span><br><span class="line">        onTap: () &#123; _handleTap(index); &#125;,</span><br><span class="line">        child: Padding(</span><br><span class="line">          padding: EdgeInsets.only(bottom: widget.indicatorWeight),</span><br><span class="line">          child: Stack(</span><br><span class="line">            children: &lt;Widget&gt;[</span><br><span class="line">              wrappedTabs[index],</span><br><span class="line">              <span class="comment">// 这个为视觉不好的人，辅助功能呀</span></span><br><span class="line">              Semantics(</span><br><span class="line">                selected: index == _currentIndex,</span><br><span class="line">                label: localizations.tabLabel(tabIndex: index + <span class="number">1</span>, tabCount: tabCount),</span><br><span class="line">              ),</span><br><span class="line">            ],</span><br><span class="line">          ),</span><br><span class="line">        ),</span><br><span class="line">      );</span><br><span class="line">    <span class="comment">// 若是不可滚动，这是使用Expanded包裹，所有的tab能平分水平距离</span></span><br><span class="line">      <span class="keyword">if</span> (!widget.isScrollable)</span><br><span class="line">        wrappedTabs[index] = Expanded(child: wrappedTabs[index]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Widget tabBar = CustomPaint(</span><br><span class="line">      painter: _indicatorPainter,</span><br><span class="line">      child: _TabStyle(</span><br><span class="line">        animation: kAlwaysDismissedAnimation,</span><br><span class="line">        selected: <span class="keyword">false</span>,</span><br><span class="line">        labelColor: widget.labelColor,</span><br><span class="line">        unselectedLabelColor: widget.unselectedLabelColor,</span><br><span class="line">        labelStyle: widget.labelStyle,</span><br><span class="line">        unselectedLabelStyle: widget.unselectedLabelStyle,</span><br><span class="line">        child: _TabLabelBar(</span><br><span class="line">          <span class="comment">// 重新布局时，保存当前tab的Offset，内部TabLabelBar的实现</span></span><br><span class="line">          onPerformLayout: _saveTabOffsets,</span><br><span class="line">          children: wrappedTabs,</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (widget.isScrollable) &#123;</span><br><span class="line">      _scrollController ??= _TabBarScrollController(<span class="keyword">this</span>);</span><br><span class="line">      <span class="comment">// 为Android的ScrollView的取了一个更精确的名字</span></span><br><span class="line">      tabBar = SingleChildScrollView(</span><br><span class="line">        dragStartBehavior: widget.dragStartBehavior,</span><br><span class="line">        scrollDirection: Axis.horizontal,</span><br><span class="line">        controller: _scrollController,</span><br><span class="line">        physics: widget.physics,</span><br><span class="line">        child: tabBar,</span><br><span class="line">      );</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> tabBar;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_TabBarViewState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">TabBarView</span>&gt; </span>&#123;</span><br><span class="line">  TabController _controller;</span><br><span class="line">  PageController _pageController;</span><br><span class="line">  <span class="comment">// 这里我们看到children不是直接用了，而是附加上一Key，这个Key是根绝Index来生成了</span></span><br><span class="line">  <span class="comment">//_childrenWithKey = KeyedSubtree.ensureUniqueKeysForList(widget.children);</span></span><br><span class="line">  <span class="comment">// 为什么呢？</span></span><br><span class="line">  <span class="comment">// Creates a KeyedSubtree for child with a key that's based on the child's existing key or childIndex.</span></span><br><span class="line">  <span class="comment">// Key和对应的index是确定的，似乎就是保存当前视图的状态了</span></span><br><span class="line">  <span class="built_in">List</span>&lt;Widget&gt; _children;</span><br><span class="line">  <span class="built_in">List</span>&lt;Widget&gt; _childrenWithKey;</span><br><span class="line">  <span class="built_in">int</span> _currentIndex;</span><br><span class="line">  <span class="built_in">int</span> _warpUnderwayCount = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="comment">// 这里使用NotificationListener,就是要要监听冒泡上来的事件，传入的泛型就是它想关注的通知</span></span><br><span class="line">    <span class="keyword">return</span> NotificationListener&lt;ScrollNotification&gt;(</span><br><span class="line">      onNotification: _handleScrollNotification,</span><br><span class="line">      child: PageView(</span><br><span class="line">        dragStartBehavior: widget.dragStartBehavior,</span><br><span class="line">        controller: _pageController,</span><br><span class="line">        physics: widget.physics == <span class="keyword">null</span></span><br><span class="line">          ? _kTabBarViewPhysics.applyTo(<span class="keyword">const</span> ClampingScrollPhysics())</span><br><span class="line">          : _kTabBarViewPhysics.applyTo(widget.physics),</span><br><span class="line">        <span class="comment">// </span></span><br><span class="line">        children: _childrenWithKey,</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/source/" rel="tag"># source</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/07/18/2020-07-18左右抖动的动画/" rel="next" title="左右抖动的动画">
+                <i class="fa fa-chevron-left"></i> 左右抖动的动画
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/07/27/flutter-ListView/" rel="prev" title="flutter-ListView">
+                flutter-ListView <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpeg" alt="萝卜平">
+            
+              <p class="site-author-name" itemprop="name">萝卜平</p>
+              <p class="site-description motion-element" itemprop="description">Android, Java</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/wjploop" target="_blank" title="GitHub">
+                      GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:wjploop@gmail.com" target="_blank" title="E-Mail">
+                      E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/wjploop" target="_blank" title="Google">
+                      Google</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Scaffold-的创建需要传入带有-MediaQuery-数据的-Context"><span class="nav-number">1.</span> <span class="nav-text">Scaffold 的创建需要传入带有 MediaQuery 数据的 Context</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#看看-TabBarState的实现"><span class="nav-number">1.1.</span> <span class="nav-text">看看 _TabBarState的实现</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">萝卜平</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">60.6k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'VipNTLR7JbL6sNRHDHVjzSIo-gzGzoHsz',
+        appKey: 'cIR7F3k3JyRsMwF8Lto5UtT7',
+        placeholder: '说点什么？',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+    
+  </script>
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

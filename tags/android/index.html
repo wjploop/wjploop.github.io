@@ -309,6 +309,32 @@
 
       <h2 class="post-title">
         
+            <a class="post-title-link" href="/2021/07/10/SAM-conversion 是什么/" itemprop="url">
+              
+                <span itemprop="name">SAM-conversion 是什么</span>
+              
+            </a>
+        
+      </h2>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated" datetime="2021-07-10T15:08:41+08:00" content="2021-07-10">
+          07-10
+        </time>
+      </div>
+
+    </header>
+  </article>
+
+
+      
+        
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h2 class="post-title">
+        
             <a class="post-title-link" href="/2021/07/07/SparseArray/" itemprop="url">
               
                 <span itemprop="name">SparseArray</span>
@@ -320,6 +346,32 @@
       <div class="post-meta">
         <time class="post-time" itemprop="dateCreated" datetime="2021-07-07T16:18:29+08:00" content="2021-07-07">
           07-07
+        </time>
+      </div>
+
+    </header>
+  </article>
+
+
+      
+        
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h2 class="post-title">
+        
+            <a class="post-title-link" href="/2021/05/12/LiveData/" itemprop="url">
+              
+                <span itemprop="name">LiveData</span>
+              
+            </a>
+        
+      </h2>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated" datetime="2021-05-12T15:08:10+08:00" content="2021-05-12">
+          05-12
         </time>
       </div>
 
@@ -381,7 +433,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-count">50</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -480,7 +532,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">54.2k</span>
+    <span title="Site words total count">60.6k</span>
   
 </div>
 
@@ -1030,33 +1082,7 @@
 
 </body>
 </html>
-esOfContent = [];
-                  while (indexOfContent.length != 0) {
-                    var item = indexOfContent[indexOfContent.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    // cut out 100 characters
-                    var start = position - 20;
-                    var end = position + 80;
-                    if(start < 0){
-                      start = 0;
-                    }
-                    if (end < position + word.length) {
-                      end = position + word.length;
-                    }
-                    if(end > content.length){
-                      end = content.length;
-                    }
-                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
-                  }
-
-                  // sort slices in content by search text's count and hits' count
-
-                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
-                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
-                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
-                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
-                      return sliceRight.hits.length - sliceLeft.hits.length;
+               return sliceRight.hits.length - sliceLeft.hits.length;
                     } else {
                       return sliceLeft.start - sliceRight.start;
                     }
