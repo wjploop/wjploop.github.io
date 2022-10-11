@@ -66,7 +66,7 @@
 
 
 
-  <meta name="keywords" content="android,">
+  <meta name="keywords" content="Android,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="官方的自我介绍：简化组件之间通信 发送者与接收者处理逻辑的解耦 可以在activity, fragment, service之中完美运行 避免了与生命周期打交道，易于检测错误。 个人理解一个发布事件，订阅事件的系统，与Android自身的广播相比，使用更加简单，不依赖context，可以在不同线程发送/处理事件。   源码实现 为了捉住这个库的主干，我对比看了EventBus的最初版本(即使用gi">
-<meta name="keywords" content="android">
+<meta name="description" content="给自己一个自认为熟悉的感念，表达出来能得到多少分？ 是的，我认为我对 SparseArray 熟悉，可当我要表述这个数据结构时，我该怎么表达呢？ 首先，描述使用范围，对比HashMapSparseArray 适用于key-value结构的数据，相比于Java基础库提供的通用的 HashMap， SparseArray 限制了key只能为int类型，可以节省存储空间，在数据范围小时存取效率优于 Ha">
+<meta name="keywords" content="Android">
 <meta property="og:type" content="article">
-<meta property="og:title" content="EventBus笔记">
-<meta property="og:url" content="http://wjploop.github.io/2019/09/11/EventBus笔记/index.html">
+<meta property="og:title" content="SparseArray vs HashMap">
+<meta property="og:url" content="http://wjploop.github.io/2021/07/07/SparseArray-vs-HashMap/index.html">
 <meta property="og:site_name" content="萝卜平">
-<meta property="og:description" content="官方的自我介绍：简化组件之间通信 发送者与接收者处理逻辑的解耦 可以在activity, fragment, service之中完美运行 避免了与生命周期打交道，易于检测错误。 个人理解一个发布事件，订阅事件的系统，与Android自身的广播相比，使用更加简单，不依赖context，可以在不同线程发送/处理事件。   源码实现 为了捉住这个库的主干，我对比看了EventBus的最初版本(即使用gi">
+<meta property="og:description" content="给自己一个自认为熟悉的感念，表达出来能得到多少分？ 是的，我认为我对 SparseArray 熟悉，可当我要表述这个数据结构时，我该怎么表达呢？ 首先，描述使用范围，对比HashMapSparseArray 适用于key-value结构的数据，相比于Java基础库提供的通用的 HashMap， SparseArray 限制了key只能为int类型，可以节省存储空间，在数据范围小时存取效率优于 Ha">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2022-09-14T01:53:41.148Z">
+<meta property="og:updated_time" content="2022-10-11T08:59:56.193Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="EventBus笔记">
-<meta name="twitter:description" content="官方的自我介绍：简化组件之间通信 发送者与接收者处理逻辑的解耦 可以在activity, fragment, service之中完美运行 避免了与生命周期打交道，易于检测错误。 个人理解一个发布事件，订阅事件的系统，与Android自身的广播相比，使用更加简单，不依赖context，可以在不同线程发送/处理事件。   源码实现 为了捉住这个库的主干，我对比看了EventBus的最初版本(即使用gi">
+<meta name="twitter:title" content="SparseArray vs HashMap">
+<meta name="twitter:description" content="给自己一个自认为熟悉的感念，表达出来能得到多少分？ 是的，我认为我对 SparseArray 熟悉，可当我要表述这个数据结构时，我该怎么表达呢？ 首先，描述使用范围，对比HashMapSparseArray 适用于key-value结构的数据，相比于Java基础库提供的通用的 HashMap， SparseArray 限制了key只能为int类型，可以节省存储空间，在数据范围小时存取效率优于 Ha">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://wjploop.github.io/2019/09/11/EventBus笔记/">
+  <link rel="canonical" href="http://wjploop.github.io/2021/07/07/SparseArray-vs-HashMap/">
 
 
 
 
 
-  <title>EventBus笔记 | 萝卜平</title>
+  <title>SparseArray vs HashMap | 萝卜平</title>
   
 
 
@@ -305,7 +305,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://wjploop.github.io/2019/09/11/EventBus笔记/">
+    <link itemprop="mainEntityOfPage" href="http://wjploop.github.io/2021/07/07/SparseArray-vs-HashMap/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="萝卜平">
@@ -322,7 +322,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">EventBus笔记</h1>
+          <h1 class="post-title" itemprop="name headline">SparseArray vs HashMap</h1>
         
 
         <div class="post-meta">
@@ -334,8 +334,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-11T08:36:59+08:00">
-                2019-09-11
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-07-07T16:18:29+08:00">
+                2021-07-07
               </time>
             
 
@@ -353,8 +353,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/09/11/EventBus笔记/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/09/11/EventBus笔记/" itemprop="commentCount"></span>
+                <a href="/2021/07/07/SparseArray-vs-HashMap/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2021/07/07/SparseArray-vs-HashMap/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -381,7 +381,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  412
+                  1.5k
                 </span>
               
 
@@ -397,7 +397,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  6
                 </span>
               
             </div>
@@ -418,21 +418,46 @@
       
 
       
-        <h3 id="官方的自我介绍："><a href="#官方的自我介绍：" class="headerlink" title="官方的自我介绍："></a>官方的自我介绍：</h3><p>简化组件之间通信
-发送者与接收者处理逻辑的解耦
-可以在activity, fragment, service之中完美运行
-避免了与生命周期打交道，易于检测错误。</p>
-<h3 id="个人理解"><a href="#个人理解" class="headerlink" title="个人理解"></a>个人理解</h3><p>一个发布事件，订阅事件的系统，与Android自身的广播相比，使用更加简单，不依赖context，可以在不同线程发送/处理事件。  </p>
-<h3 id="源码实现"><a href="#源码实现" class="headerlink" title="源码实现"></a>源码实现</h3><blockquote>
-<p>为了捉住这个库的主干，我对比看了EventBus的最初版本(即使用git切换到最初的版本)，即实现一个最简单的逻辑。</p>
-</blockquote>
-<p>EventBus作为一个单例，里面保存了两个最重要的Map。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//一个事件类型，拥有的的订阅Subscription，（subscriber,method）</span></span><br><span class="line"><span class="comment">//Subscription即表示一个订阅，里面保存着一个订阅者，一个当收到事件后的处理方法。</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;Class&lt;?&gt;, CopyOnWriteArrayList&lt;Subscription&gt;&gt; subscriptionsByEventType;</span><br><span class="line"><span class="comment">//一个订阅者，对应订阅了多少个事件，即一个订阅者订阅了什么事件。</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;Object, List&lt;Class&lt;?&gt;&gt;&gt; typesBySubscriber;</span><br></pre></td></tr></table></figure>
+        <p>给自己一个自认为熟悉的感念，表达出来能得到多少分？</p>
+<p>是的，我认为我对 <code>SparseArray</code> 熟悉，可当我要表述这个数据结构时，我该怎么表达呢？</p>
+<h3 id="首先，描述使用范围，对比HashMap"><a href="#首先，描述使用范围，对比HashMap" class="headerlink" title="首先，描述使用范围，对比HashMap"></a>首先，描述使用范围，对比HashMap</h3><p><code>SparseArray</code> 适用于key-value结构的数据，相比于Java基础库提供的通用的 <code>HashMap</code>，
+<code>SparseArray</code> 限制了key只能为int类型，可以节省存储空间，在数据范围小时存取效率优于 <code>HashMap</code>。</p>
+<p>为何省空间？</p>
+<p>其key直接使用了基本类型int，不同于HashMap存储时经过装箱使用Integer，而且，当确定value也是一种基本类型时，
+可以使用对相应得SparseXXXArray，比如对于 &lt;Integer,Integer&gt;，可以使用 <code>SparseIntArray</code>，这样value也可以存储
+在基本类型数组，而基本类型所占内存是远小于对象的。</p>
+<p><code>SparseArray</code>内部有两个数组，<code>mKeys</code>, <code>mValues</code>, key直接升序放置在 <code>mKeys</code>数组中，其插入过程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">key -&gt; binarySearch -&gt; index </span><br><span class="line">    put key in mKeys[index]</span><br><span class="line">    put value in mValues[index]</span><br></pre></td></tr></table></figure>
 
-<p>了解这两个键值对，就能大概明白这个模块具体思路。</p>
-<p>首先，订阅者Subscriber订阅了事件A，并在onEvent中表达了收到事件后要做什么，表示为method，内部将这个订阅关系保存到系统中，
-有了一个Subscription（A,method），并将之放到Map&lt;A,Subscription&gt;中，并且，Subscriber对A事件的订阅关系，保存在typesBySubscriber中。
-发布一个事件到EventBus，EventBus根据这个事件类型找到相关的对应关系，并调用该Subscription中的方法。</p>
+<p>将key转换成index是一次二分查找得过程，其要求key在数组中有序的。</p>
+<p>而 HashMap 其内部可以看作有一个 <code>tables</code>，元素类型是一个Entry&lt;Key,Value&gt;，其插入过程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">key -&gt; hash -&gt; index</span><br><span class="line">     h = key.hashCode()</span><br><span class="line">     hash = h ^ ( h &gt;&gt;&gt; 16) </span><br><span class="line">     ensure hash &lt; n ,(n = table.length)</span><br><span class="line">     index = hash &amp; (n - 1)   // 依赖n为2的k次方</span><br></pre></td></tr></table></figure>
+
+<p>生成hash时，将高16位与低位异或，高16位相当于取非了，从而把高位的信息分配到低位上，这样做的原因是，最后我们可以
+利用到的高位的信息。<br>为何？假设 n = table.length &lt;= pow(2,16)，那么在转移成index时，我们仅仅利用到了hash的低16位。</p>
+<p>生后hash后，要确保hash值能在范围n里面，其思路是指截取n包括的低比特位，大于n的比特位都丢掉的，这样便得到所需的index。</p>
+<p>使用index时，理想情况下，table[index]没有元素，即无hash冲突。<br>冲突时，转为链表，其实存储时，tables存储的就是链表节点，甚至为树节点。<br>存在类存在这样的继承关系，Entry &gt; Node &gt; TreeNode。    </p>
+<p>两者都存在从 key 到 index的过程，理论上，可以看到查找时间复杂度，前者为 O(logN)，后者为 O(1)，似乎后者更胜一筹。 但应了解到，这里说的时间
+复杂度是简化分析后的结果，忽略了复杂度前面的常量，前者常量可能是1，后者可能是50，当数据量N比较小时，假设N=20，<code>1 * log2(20) &lt; 50 * 1</code>
+实际上是前者更快一点的。这一点，做题时也有所体会，有时暴力比最优解更快，原因是用例N太小了。 </p>
+<h3 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h3><h4 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SparseArray</span>&lt;<span class="title">E</span>&gt; <span class="keyword">implements</span> <span class="title">Cloneable</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 删除时用于标记某坑位，避免每次删除时都要挪动元素</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Object DELETED = <span class="keyword">new</span> Object();</span><br><span class="line">    <span class="comment">// 是否有可能清理DELETED垃圾</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> mGarbage = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 关键两个数组</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] mKeys;</span><br><span class="line">    <span class="keyword">private</span> Object[] mValues;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mSize;</span><br></pre></td></tr></table></figure>
+
+<h4 id="put"><a href="#put" class="headerlink" title="put"></a>put</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">(<span class="keyword">int</span> key, E value)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 寻找到这个key应该放在哪？</span></span><br><span class="line">    <span class="comment">// 这个二分查找，特别之处在于当找不到时，返回该插入下标的取非（不是相反数吧，取反+1才是，不纠结）</span></span><br><span class="line">    <span class="comment">// 取非必然为负数，因为首位0改为1了,这样用负数表示不能存在该key，而且还把该插入的下标变相地保存了下来</span></span><br><span class="line">    <span class="comment">// 是我孤陋寡闻了</span></span><br><span class="line">    <span class="keyword">int</span> i = ContainerHelpers.binarySearch(mKeys, mSize, key);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (i &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">// 存在已放置的 key 相同，直接替换（并没有HashMap的替换与否的策略）</span></span><br><span class="line">        mValues[i] = value;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 转为该插入下的下标</span></span><br><span class="line">        i = ~i;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 发现居然那个坑是无用的，直接替换，免除数组插入的困扰</span></span><br><span class="line">        <span class="keyword">if</span> (i &lt; mSize &amp;&amp; mValues[i] == DELETED) &#123;</span><br><span class="line">            mKeys[i] = key;</span><br><span class="line">            mValues[i] = value;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 坑位使用完了，且可能存在垃圾，尝试回收下</span></span><br><span class="line">        <span class="keyword">if</span> (mGarbage &amp;&amp; mSize &gt;= mKeys.length) &#123;</span><br><span class="line">            <span class="comment">// 思路就是移除mValues数组中DELETED无效元素，有效元素往前移</span></span><br><span class="line">            <span class="comment">// JVM老年代垃圾清除算法思路（更追求省内存，碎片整体）</span></span><br><span class="line">            gc();</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Search again because indices may have changed.</span></span><br><span class="line">            i = ~ContainerHelpers.binarySearch(mKeys, mSize, key);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 将key插入到mKeys的i位置上</span></span><br><span class="line">        <span class="comment">// mSize + 1 == mKeys.length 时，扩容 currentSize &lt;= 4 ? 8 : currentSize * 2，创建新的数组复制原来的元素</span></span><br><span class="line">        <span class="comment">// 即使不需要扩容，也需要移动 i 位置之后元素后移一位</span></span><br><span class="line">        mKeys = GrowingArrayUtils.insert(mKeys, mSize, i, key);</span><br><span class="line">        mValues = GrowingArrayUtils.insert(mValues, mSize, i, value);</span><br><span class="line">        mSize++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="查询-无需整理"><a href="#查询-无需整理" class="headerlink" title="查询,无需整理"></a>查询,无需整理</h4><p>通过key来查询，不需要整理</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> E <span class="title">get</span><span class="params">(<span class="keyword">int</span> key)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> get(key, <span class="keyword">null</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> E <span class="title">get</span><span class="params">(<span class="keyword">int</span> key, E valueIfKeyNotFound)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = ContainerHelpers.binarySearch(mKeys, mSize, key);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 利用标记，我们确认某个key不存在，或已经被删除</span></span><br><span class="line">    <span class="keyword">if</span> (i &lt; <span class="number">0</span> || mValues[i] == DELETED) &#123;</span><br><span class="line">        <span class="keyword">return</span> valueIfKeyNotFound;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> (E) mValues[i];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="查询，需整理"><a href="#查询，需整理" class="headerlink" title="查询，需整理"></a>查询，需整理</h4><p>发现依赖了index的查询需要gc,当然还包括插入时也得gc</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public int size() &#123;</span><br><span class="line">    if (mGarbage) &#123;</span><br><span class="line">        gc();</span><br><span class="line">    &#125;</span><br><span class="line">    return mSize;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public int keyAt(int index) &#123;</span><br><span class="line">    if (mGarbage) &#123;</span><br><span class="line">        gc();</span><br><span class="line">    &#125;</span><br><span class="line">    return mKeys[index];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="remove"><a href="#remove" class="headerlink" title="remove"></a>remove</h4><p>可以欣赏的一点就是，频繁删除元素后，不会马上整理Values数组，而时延后到查询/插入时才会整理，整理就是清除无用的DELETED坑位</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(<span class="keyword">int</span> key)</span> </span>&#123;</span><br><span class="line">    delete(key);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">delete</span><span class="params">(<span class="keyword">int</span> key)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = ContainerHelpers.binarySearch(mKeys, mSize, key);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (i &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (mValues[i] != DELETED) &#123;</span><br><span class="line">            mValues[i] = DELETED;</span><br><span class="line">            mGarbage = <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> E <span class="title">removeReturnOld</span><span class="params">(<span class="keyword">int</span> key)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = ContainerHelpers.binarySearch(mKeys, mSize, key);</span><br><span class="line">    <span class="keyword">if</span> (i &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (mValues[i] != DELETED) &#123;</span><br><span class="line">            <span class="keyword">final</span> E old = (E) mValues[i];</span><br><span class="line">            mValues[i] = DELETED;</span><br><span class="line">            mGarbage = <span class="keyword">true</span>;</span><br><span class="line">            <span class="keyword">return</span> old;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h3><p>另外，SparseXXXMap都要求Key必须为int，若是key不是int，可以用ArrayMap，大略看了下，相似度挺高的，大致是将key转为hash作为key来排序。</p>
+<p>好了，发现自己表达起来确实很着急~
+对比大佬的<a href="https://juejin.cn/post/6844903961963528199#heading-10" target="_blank" rel="noopener">博文</a></p>
+<p>别人家写的，虽然自己也能感受到的，但表达出来还是很困难。</p>
+<p>引用大佬总结的三个关键字，<em>双数组，二分查找，DELETED标记</em>。</p>
 
       
     </div>
@@ -450,7 +475,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/android/" rel="tag"># android</a>
+            <a href="/tags/Android/" rel="tag"># Android</a>
           
         </div>
       
@@ -463,8 +488,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/09/03/fail-fast/" rel="next" title="fail-fast">
-                <i class="fa fa-chevron-left"></i> fail-fast
+              <a href="/2021/06/19/关于并发/" rel="next" title="关于并发">
+                <i class="fa fa-chevron-left"></i> 关于并发
               </a>
             
           </div>
@@ -473,8 +498,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/09/17/android消息机制/" rel="prev" title="android消息机制">
-                android消息机制 <i class="fa fa-chevron-right"></i>
+              <a href="/2021/07/10/Retrofit/" rel="prev" title="Retrofit">
+                Retrofit <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -638,7 +663,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#官方的自我介绍："><span class="nav-number">1.</span> <span class="nav-text">官方的自我介绍：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#个人理解"><span class="nav-number">2.</span> <span class="nav-text">个人理解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源码实现"><span class="nav-number">3.</span> <span class="nav-text">源码实现</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#首先，描述使用范围，对比HashMap"><span class="nav-number">1.</span> <span class="nav-text">首先，描述使用范围，对比HashMap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源码分析"><span class="nav-number">2.</span> <span class="nav-text">源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#结构"><span class="nav-number">2.1.</span> <span class="nav-text">结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#put"><span class="nav-number">2.2.</span> <span class="nav-text">put</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查询-无需整理"><span class="nav-number">2.3.</span> <span class="nav-text">查询,无需整理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查询，需整理"><span class="nav-number">2.4.</span> <span class="nav-text">查询，需整理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#remove"><span class="nav-number">2.5.</span> <span class="nav-text">remove</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后记"><span class="nav-number">3.</span> <span class="nav-text">后记</span></a></li></ol></div>
             
 
           </div>
